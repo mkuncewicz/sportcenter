@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.EmployeeController">
+   <children>
+      <VBox layoutX="15.0" layoutY="147.0" prefHeight="290.0" prefWidth="220.0">
+         <children>
+            <Label prefHeight="17.0" prefWidth="222.0" style="-fx-alignment: center;" text="Pracownicy" />
+            <ListView fx:id="listViewEmployees" prefHeight="149.0" prefWidth="178.0" />
+            <TextField fx:id="fieldFirstName" promptText="imie" />
+            <TextField fx:id="fieldLastName" promptText="nazwisko" />
+            <TextField fx:id="fieldPhone" promptText="numer" />
+            <HBox prefHeight="30.0" prefWidth="220.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#addNewEmployee" text="Dodaj" />
+                  <Button mnemonicParsing="false" onAction="#updateEmployee" text="Aktualizuj" />
+                  <Button mnemonicParsing="false" onAction="#deleteEmployee" text="Usuń" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="239.0" layoutY="165.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="labelEmFirstName" prefHeight="17.0" prefWidth="160.0" text="IMIE:" />
+            <Label fx:id="labelEmLastName" prefHeight="17.0" prefWidth="160.0" text="NAZWISKO:" />
+            <Label fx:id="labelEmPhone" prefHeight="17.0" prefWidth="160.0" text="NR TEL:" />
+         </children>
+      </VBox>
+      <ListView fx:id="listViewSpecialization" layoutX="979.0" layoutY="89.0" prefHeight="200.0" prefWidth="200.0" />
+      <Label layoutX="1026.0" layoutY="58.0" prefHeight="17.0" prefWidth="106.0" text="Specjalizacje" />
+      <TextField fx:id="fieldSpecName" layoutX="1005.0" layoutY="327.0" promptText="nazwa" />
+      <Button layoutX="981.0" layoutY="378.0" mnemonicParsing="false" onAction="#addNewSpecialization" text="Stwórz" />
+      <Button layoutX="1050.0" layoutY="378.0" mnemonicParsing="false" onAction="#addSpecToEmployee" text="Dodaj do pracownika" />
+      <ListView fx:id="listViewSpecOfEmployee" layoutX="532.0" layoutY="189.0" prefHeight="200.0" prefWidth="160.0" />
+      <Button layoutX="986.0" layoutY="430.0" mnemonicParsing="false" onAction="#deleteSpecialization" text="Usuń" />
+      <Button layoutX="597.0" layoutY="430.0" mnemonicParsing="false" onAction="#deleteSpecializationOfEmployee" text="Usuń" />
+      <ComboBox fx:id="selectEmployees" layoutX="239.0" layoutY="389.0" prefWidth="150.0" />
+      <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="70.0" prefWidth="100.0" text="Wróć" />
+   </children>
+</AnchorPane>

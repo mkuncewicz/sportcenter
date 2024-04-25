@@ -37,6 +37,8 @@ public class MenuController {
 
         if(clickedButton == buttonChoice1) {
             fxmlFile = "/com/example/sportcenterv1/employeeManager.fxml";
+        }else if (clickedButton == buttonChoice2){
+            fxmlFile = "/com/example/sportcenterv1/spaceManager.fxml";
         }
         if (!fxmlFile.isEmpty()) {
             FXMLLoader loader = new FXMLLoader();

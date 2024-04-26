@@ -29,10 +29,10 @@ public class SpaceService {
 
     public void updateSpace(Long spaceID,Space updateSpace){
 
-        Optional<Space> spaceDB = spaceRepository.findById(spaceID);
+        Optional<Space> optionalSpace = spaceRepository.findById(spaceID);
 
-        if (spaceDB.isPresent()){
-            Space saveSpace = spaceDB.get();
+        if (optionalSpace.isPresent()){
+            Space saveSpace = optionalSpace.get();
 
             if (updateSpace.getName() != null) saveSpace.setName(updateSpace.getName());
             if (updateSpace.getSqrMeters() > 0) saveSpace.setSqrMeters(updateSpace.getSqrMeters());

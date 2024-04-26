@@ -110,7 +110,9 @@ public class EmployeeController {
         allOption.setId(null);
         allOption.setName("Wszyscy");
 
-        specializationObservableList.add(0, allOption);
+
+        List<Specialization> specializations = specializationObservableList;
+
         selectEmployees.setItems(specializationObservableList);
         filterEmployees();
     }
@@ -210,7 +212,6 @@ public class EmployeeController {
         allOption.setName("Wybierz wszystkich");  // Nazwa wyświetlana użytkownikowi
 
         // Dodawanie na początku listy
-        specializationObservableList.add(0, allOption);
         specializationObservableList.setAll(curSpecList);
     }
 

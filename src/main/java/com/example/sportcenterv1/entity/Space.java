@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "spaces")
 @Getter
@@ -27,7 +29,18 @@ public class Space {
     private double length;
 
     @Column
+    private double depth;
+
+    @Column
     private String type;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "space_specialization",
+            joinColumns = @JoinColumn(name = "space_id"),
+            inverseJoinColumns = @JoinColumn(name = "specialization_id")
+    )
+    private Set<Specialization> specializations;
 
 
 }

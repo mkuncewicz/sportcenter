@@ -22,6 +22,9 @@ public class Specialization {
     @ManyToMany(mappedBy = "specializations", fetch = FetchType.LAZY)
     private Set<Employee> employees;
 
+    @ManyToMany(mappedBy = "specializations", fetch = FetchType.LAZY)
+    private Set<Space> spaces;
+
     @Override
     public String toString() {
         return name;

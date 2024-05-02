@@ -7,40 +7,30 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
-@Table(name = "spaces")
+@Table(name = "employees")
 @Getter
 @Setter
-public class Space {
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String name;
+    @Column(nullable = false)
+    private String firstName;
 
-    @Column
-    private double sqrMeters;
+    @Column(nullable = false)
+    private String lastName;
 
-    @Column
-    private double width;
-
-    @Column
-    private double length;
-
-    @Column
-    private double depth;
-
-    @Column
-    private String type;
+    @Column(nullable = false)
+    private String phoneNumber;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "space_specialization",
-            joinColumns = @JoinColumn(name = "space_id"),
+            name = "employee_specialization",
+            joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "specialization_id")
     )
     private Set<Specialization> specializations;
-
 
 }

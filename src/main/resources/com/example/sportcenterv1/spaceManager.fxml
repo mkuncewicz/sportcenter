@@ -1,38 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" styleClass="root" stylesheets="@../../../css/spaceManagerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.SpaceController">
    <children>
-      <Button layoutX="74.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="70.0" prefWidth="100.0" styleClass="backButton" text="Wróć" />
-      <ListView layoutX="481.0" layoutY="261.0" prefHeight="200.0" prefWidth="200.0" />
-      <VBox layoutX="118.0" layoutY="249.0" prefHeight="487.0" prefWidth="200.0">
+      <Button layoutX="38.0" layoutY="41.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="50.0" prefWidth="100.0" styleClass="backButton" text="Wróć" />
+      <VBox layoutX="179.0" layoutY="153.0" prefHeight="880.0" prefWidth="800.0" styleClass="vbox-main">
          <children>
-            <Label prefHeight="17.0" prefWidth="200.0" style="-fx-alignment: center;" text="Przestrzeń" />
-            <ListView fx:id="listViewSpaces" prefHeight="300.0" prefWidth="200.0" />
-            <VBox prefHeight="100.0" prefWidth="200.0">
+            <Label alignment="CENTER" prefHeight="50.0" prefWidth="800.0" styleClass="label-space" text="Obiekty" />
+            <ComboBox fx:id="comboTest" prefWidth="150.0" styleClass="combo-box-select">
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+            </ComboBox>
+            <HBox fx:id="hboxTest" prefHeight="750.0" prefWidth="800.0" styleClass="space-con">
                <children>
-                  <TextField fx:id="fieldName" prefHeight="25.0" prefWidth="200.0" promptText="nazwa" />
-                  <TextField fx:id="fieldWidth" prefHeight="25.0" prefWidth="200.0" promptText="szerokość" />
-                  <TextField fx:id="fieldLength" prefHeight="25.0" prefWidth="200.0" promptText="wysokość" />
-                  <TextField fx:id="fieldDepth" prefHeight="25.0" prefWidth="200.0" promptText="głębokość" />
-               </children>
-            </VBox>
-            <HBox prefHeight="28.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#addNewSpace" prefHeight="37.0" prefWidth="100.0" styleClass="buttonSpaceOption" text="Stwórz" />
-                  <Button mnemonicParsing="false" onAction="#updateSpace" prefWidth="100.0" styleClass="buttonSpaceOption" text="Aktualizacja" />
-               </children>
-            </HBox>
-            <HBox prefHeight="47.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#deleteSpace" prefWidth="100.0" styleClass="buttonSpaceOption" text="Usuń" />
+                  <VBox prefHeight="750.0" prefWidth="350.0">
+                     <children>
+                        <ListView fx:id="listViewSpaces" prefHeight="300.0" prefWidth="350.0" styleClass="listViewSpaces" />
+                        <VBox fx:id="vboxTest" prefHeight="300.0" prefWidth="350.0" />
+                        <HBox fx:id="buttonList" prefHeight="100.0" prefWidth="345.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#createNewSpace" prefHeight="100.0" prefWidth="175.0" styleClass="buttonSpaceOption" text="Stwórz" />
+                              <Button mnemonicParsing="false" onAction="#updateSpace" prefHeight="100.0" prefWidth="175.0" styleClass="buttonSpaceOption" text="Aktualizuj" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#deleteSpace" prefHeight="100.0" prefWidth="175.0" styleClass="buttonSpaceOption" text="Usuń" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="750.0" prefWidth="450.0">
+                     <children>
+                        <VBox fx:id="spaceDetails" prefHeight="400.0" prefWidth="440.0" />
+                     </children></VBox>
                </children>
             </HBox>
          </children>

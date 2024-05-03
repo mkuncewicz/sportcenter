@@ -1,6 +1,8 @@
 package com.example.sportcenterv1.controller;
 
-import com.example.sportcenterv1.entity.Space;
+import com.example.sportcenterv1.controllerview.SpaceDetails;
+import com.example.sportcenterv1.controllerview.SpaceView;
+import com.example.sportcenterv1.entity.space.*;
 import com.example.sportcenterv1.service.SpaceService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,15 +12,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -36,17 +41,16 @@ public class SpaceController {
     private ObservableList<Space> spaceObservableList = FXCollections.observableArrayList();
 
     @FXML
-    private TextField fieldName;
+    private ComboBox<String> comboTest;
 
     @FXML
-    private TextField fieldWidth;
+    private VBox vboxTest;
+    private SpaceView curSpaceView = new SpaceView("",spaceService);
 
     @FXML
-    private TextField fieldLength;
+    private VBox spaceDetails;
 
-    @FXML
-    private TextField fieldDepth;
-
+    private SpaceDetails details = new SpaceDetails();
 
     @FXML
     private void handleBackToMenu(ActionEvent event) throws IOException {
@@ -65,106 +69,116 @@ public class SpaceController {
 
     @FXML
     public void initialize(){
+        settingChoice();
+        settingSpaceView();
+        listenerToComboBox();
+        settingListViewSpace();
         spaceObservableList.setAll(spaceService.getAllSpaces());
-        settingListSpaces();
+
+        //Test
+        listenerToListViewItem();
     }
 
-    private void settingListSpaces(){
-        listViewSpaces.setCellFactory(employee -> new ListCell<Space>() {
+    private void settingSpaceView(){
+        SpaceView newView = new SpaceView("", spaceService);
+        vboxTest.getChildren().clear(); // Wyczyść zawartość HBox, jeśli chcesz podmienić widok
+        vboxTest.getChildren().add(newView); // Dodaj nowy widok
+    }
+
+    private void settingChoice(){
+        List<String> stringList = List.of("","Koszykówka","Sztuki walki","Piłka nożna","Basen","Medyczne");
+        ObservableList<String> listOfTypeSpaces = FXCollections.observableArrayList();
+        listOfTypeSpaces.setAll(stringList);
+        comboTest.setItems(listOfTypeSpaces);
+    }
+    private void listenerToComboBox(){
+        comboTest.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
+
+            SpaceView newView = new SpaceView(t1, spaceService);
+
+            curSpaceView = newView;
+
+            vboxTest.getChildren().clear();
+            vboxTest.getChildren().add(newView);
+            setCurSpaceList(t1);
+
+                });
+    }
+
+    private void listenerToListViewItem(){
+
+        listViewSpaces.getSelectionModel().selectedItemProperty().addListener((observableValue, space, t1) -> {
+            System.out.println("Uzyłeś");
+            System.out.print("Obiekt: " + t1.getName());
+
+            List<Label> listLabel = details.getLabels((Room)t1);
+            spaceDetails.getChildren().clear();
+            spaceDetails.getChildren().addAll(listLabel);
+        });
+    }
+
+    private void setCurSpaceList(String choice){
+
+        if (choice.equalsIgnoreCase("")){
+            List<Space> spaceList = spaceService.getAllSpaces();
+            spaceObservableList.setAll(spaceList);
+
+        } else if (choice.equalsIgnoreCase("Koszykówka")) {
+            List<Space> spaceList = spaceService.getAllSpaces("BASKETBALL_ROOM");
+            spaceObservableList.setAll(spaceList);
+
+        } else if (choice.equalsIgnoreCase("Sztuki walki")) {
+            List<Space> spaceList = spaceService.getAllSpaces("MARTIAL_ARTS_ROOM");
+            spaceObservableList.setAll(spaceList);
+
+        }else if(choice.equalsIgnoreCase("Piłka nożna")){
+            List<Space> spaceList = spaceService.getAllSpaces("SOCCER_FIELD");
+            spaceObservableList.setAll(spaceList);
+
+        }else if(choice.equalsIgnoreCase("Basen")){
+            List<Space> spaceList = spaceService.getAllSpaces("SWIMMING_POOL");
+            spaceObservableList.setAll(spaceList);
+
+        } else if (choice.equalsIgnoreCase("Medyczne")) {
+            List<Space> spaceList = spaceService.getAllSpaces("MEDICAL_ROOM");
+            spaceObservableList.setAll(spaceList);
+        }
+    }
+
+    private void settingListViewSpace(){
+        listViewSpaces.setCellFactory(space -> new ListCell<Space>(){
+
             @Override
             protected void updateItem(Space item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null) {
+
+                if (empty || item == null){
                     setText(null);
-                } else {
-                    setText(item.getName() + ", " + item.getType()); // Możesz tutaj wyświetlić dowolną właściwość obiektu Client
+                }else {
+                    setText(item.getName());
                 }
             }
         });
-        updateLists();
         listViewSpaces.setItems(spaceObservableList);
     }
 
-    private void updateLists(){
-        List<Space> listSpace = spaceService.getAllSpaces();
-        spaceObservableList.setAll(listSpace);
+    @FXML
+    private void createNewSpace(){
+        curSpaceView.createSpace();
+
     }
 
     @FXML
-    private void addNewSpace(){
-        Space saveSpace = new Space();
+    private void deleteSpace(){
 
-        String name = fieldName.getText();
-        double width = Double.parseDouble(fieldWidth.getText());
-        double length = Double.parseDouble(fieldLength.getText());
-        double depth = Double.parseDouble(fieldDepth.getText());
+        Space space = listViewSpaces.getSelectionModel().getSelectedItem();
+        spaceService.deleteSpace(space.getId());
 
-        saveSpace.setName(name);
-        saveSpace.setWidth(width);
-        saveSpace.setLength(length);
-        saveSpace.setDepth(depth);
-
-        spaceService.createSpace(saveSpace);
-        updateLists();
     }
 
     @FXML
-    public void updateSpace(){
-
-        Space selectedSpace = listViewSpaces.getSelectionModel().getSelectedItem();
-
-        Space updateSpace = new Space();
-
-        String name = fieldName.getText();
-        String widthText = fieldWidth.getText();
-        String lengthText = fieldLength.getText();
-        String depthText = fieldDepth.getText();
-
-
-        if (name != null && !name.isBlank()){
-            updateSpace.setName(name);
-        }
-
-        if (widthText != null && !widthText.isBlank()){
-            try {
-                double width = Double.parseDouble(widthText);
-                updateSpace.setWidth(width);
-            }catch (NumberFormatException e){
-
-            }
-        }
-
-        if (lengthText != null && !lengthText.isBlank()){
-            try {
-                double length = Double.parseDouble(lengthText);
-                updateSpace.setLength(length);
-            }catch (NumberFormatException e){
-
-            }
-        }
-
-        if (depthText != null && !depthText.isBlank()){
-            try {
-                double depth = Double.parseDouble(depthText);
-                updateSpace.setDepth(depth);
-            }catch (NumberFormatException e){
-
-            }
-        }
-
-
-        spaceService.updateSpace(selectedSpace.getId(), updateSpace);
-        updateLists();
+    private void updateSpace(){
+        Long spaceID = listViewSpaces.getSelectionModel().getSelectedItem().getId();
+        curSpaceView.updateSpace(spaceID);
     }
-
-    @FXML
-    public void deleteSpace(){
-        Space selectedSpace = listViewSpaces.getSelectionModel().getSelectedItem();
-
-        if (selectedSpace != null){
-            spaceService.deleteSpace(selectedSpace.getId());
-        }
-        updateLists();
-    }
-
 }

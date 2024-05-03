@@ -21,6 +21,9 @@ public class MenuController {
     private Button buttonChoice2;
 
     @FXML
+    private Button buttonClient;
+
+    @FXML
     private Button buttonChoice3;
 
     @FXML
@@ -39,6 +42,8 @@ public class MenuController {
             fxmlFile = "/com/example/sportcenterv1/employeeManager.fxml";
         }else if (clickedButton == buttonChoice2){
             fxmlFile = "/com/example/sportcenterv1/spaceManager.fxml";
+        } else if (clickedButton == buttonClient) {
+            fxmlFile = "/com/example/sportcenterv1/clientManager.fxml";
         }
         if (!fxmlFile.isEmpty()) {
             FXMLLoader loader = new FXMLLoader();

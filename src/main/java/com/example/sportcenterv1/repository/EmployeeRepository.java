@@ -1,7 +1,7 @@
 package com.example.sportcenterv1.repository;
 
 
-import com.example.sportcenterv1.entity.Employee;
+import com.example.sportcenterv1.entity.employee.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

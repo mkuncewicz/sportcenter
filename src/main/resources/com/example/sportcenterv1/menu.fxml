@@ -6,12 +6,19 @@
 
 <AnchorPane minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" styleClass="root" stylesheets="@../../../css/menuStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.MenuController">
    <children>
-      <VBox alignment="CENTER" layoutX="810.0" layoutY="200.0" spacing="20">
+      <VBox alignment="CENTER" layoutX="413.0" layoutY="136.0" spacing="20">
          <children>
             <Button fx:id="buttonChoice1" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Pracownicy" />
             <Button fx:id="buttonChoice2" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Obiekty" />
-            <Button fx:id="buttonChoice3" mnemonicParsing="false" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Rezerwacje" />
-            <Button fx:id="buttonChoice4" mnemonicParsing="false" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Inne" />
+            <Button fx:id="buttonChoice21" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Kontrakty" />
+            <Button fx:id="buttonChoice22" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Finanse" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="1064.0" layoutY="136.0" spacing="20">
+         <children>
+            <Button fx:id="buttonChoice31" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Usługi" />
+            <Button fx:id="buttonChoice41" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Rezerwacje" />
+            <Button fx:id="buttonClient" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Klienci" />
          </children>
       </VBox>
    </children>

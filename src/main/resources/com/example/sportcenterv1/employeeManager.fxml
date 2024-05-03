@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -11,53 +12,72 @@
 
 <AnchorPane minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/employeeManagerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.EmployeeController">
    <children>
-      <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="70.0" prefWidth="100.0" styleClass="backButton" text="Wróć" />
-      <HBox layoutX="168.0" layoutY="264.0" prefHeight="288.0" prefWidth="403.0">
+      <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="50.0" prefWidth="100.0" styleClass="backButton" text="Wróć" />
+      <VBox layoutX="114.0" layoutY="176.0" prefHeight="752.0" prefWidth="802.0">
          <children>
-            <VBox prefHeight="290.0" prefWidth="220.0">
+            <Label prefHeight="30.0" prefWidth="800.0" style="-fx-alignment: center;" text="Pracownicy" />
+            <HBox prefHeight="70.0" prefWidth="802.0">
                <children>
-                  <Label prefHeight="17.0" prefWidth="222.0" style="-fx-alignment: center;" text="Pracownicy" />
-                  <ListView fx:id="listViewEmployees" prefHeight="149.0" prefWidth="178.0" />
-                  <TextField fx:id="fieldFirstName" promptText="imie" />
-                  <TextField fx:id="fieldLastName" promptText="nazwisko" />
-                  <TextField fx:id="fieldPhone" promptText="numer" />
-                  <HBox prefHeight="30.0" prefWidth="220.0">
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#addNewEmployee" prefHeight="39.0" prefWidth="76.0" styleClass="buttonEmployeeOption" text="Dodaj" />
-                        <Button mnemonicParsing="false" onAction="#updateEmployee" prefHeight="39.0" prefWidth="90.0" styleClass="buttonEmployeeOption" text="Aktualizuj" />
-                        <Button mnemonicParsing="false" onAction="#deleteEmployee" prefHeight="39.0" prefWidth="77.0" styleClass="buttonEmployeeOption" text="Usuń" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <Label fx:id="labelEmFirstName" prefHeight="17.0" prefWidth="160.0" text="IMIE:" />
-                  <Label fx:id="labelEmLastName" prefHeight="17.0" prefWidth="160.0" text="NAZWISKO:" />
-                  <Label fx:id="labelEmPhone" prefHeight="17.0" prefWidth="160.0" text="NR TEL:" />
-                  <ComboBox fx:id="selectEmployees" prefWidth="150.0" />
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-      <VBox layoutX="658.0" layoutY="327.0" prefHeight="241.0" prefWidth="170.0">
-         <children>
-            <ListView fx:id="listViewSpecOfEmployee" prefHeight="200.0" prefWidth="160.0" />
-            <Button mnemonicParsing="false" onAction="#deleteSpecializationOfEmployee" prefHeight="37.0" prefWidth="184.0" styleClass="buttonSpecOfEmployee" text="Usuń" />
-         </children>
-      </VBox>
-      <VBox layoutX="1452.0" layoutY="191.0" prefHeight="328.0" prefWidth="200.0">
-         <children>
-            <Label prefHeight="21.0" prefWidth="202.0" style="-fx-alignment: center;" text="Specjalizacje" />
-            <ListView fx:id="listViewSpecialization" prefHeight="200.0" prefWidth="200.0" />
-            <TextField fx:id="fieldSpecName" promptText="nazwa" />
-            <HBox prefHeight="41.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#addNewSpecialization" prefHeight="37.0" prefWidth="100.0" styleClass="buttonSpecializationOption" text="Stwórz" />
-                  <Button mnemonicParsing="false" onAction="#deleteSpecialization" prefHeight="37.0" prefWidth="100.0" styleClass="buttonSpecializationOption" text="Usuń" />
+                  <ComboBox fx:id="selectEmployees" prefHeight="44.0" prefWidth="230.0" />
                </children>
             </HBox>
-            <Button mnemonicParsing="false" onAction="#addSpecToEmployee" prefHeight="37.0" prefWidth="200.0" styleClass="buttonSpecializationOption" text="Dodaj do pracownika" />
+            <HBox prefHeight="620.0" prefWidth="802.0" styleClass="dataOfEmployee">
+               <children>
+                  <VBox prefHeight="650.0" prefWidth="360.0">
+                     <children>
+                        <ListView fx:id="listViewEmployees" fixedCellSize="40.0" prefHeight="523.0" prefWidth="220.0" />
+                        <TextField fx:id="fieldFirstName" promptText="imie" />
+                        <TextField fx:id="fieldLastName" promptText="nazwisko" />
+                        <TextField fx:id="fieldPhone" promptText="numer" />
+                        <HBox prefHeight="30.0" prefWidth="220.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#addNewEmployee" prefHeight="37.0" prefWidth="120.0" styleClass="buttonEmployeeOption" text="Dodaj" />
+                              <Button mnemonicParsing="false" onAction="#updateEmployee" prefHeight="39.0" prefWidth="120.0" styleClass="buttonEmployeeOption" text="Aktualizuj" />
+                              <Button mnemonicParsing="false" onAction="#deleteEmployee" prefHeight="39.0" prefWidth="120.0" styleClass="buttonEmployeeOption" text="Usuń" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="654.0" prefWidth="444.0">
+                     <children>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="464.0" prefWidth="438.0">
+                           <children>
+                              <Label fx:id="labelEmFirstName" prefHeight="30.0" prefWidth="300.0" styleClass="labelEmployee" text="Imie:" />
+                              <Label fx:id="labelEmLastName" prefHeight="30.0" prefWidth="300.0" styleClass="labelEmployee" text="Nazwisko:" />
+                              <Label fx:id="labelEmPhone" prefHeight="30.0" prefWidth="300.0" styleClass="labelEmployee" text="NR TEL:" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </VBox>
+                        <VBox fx:id="vboxSpecOfEmployee" prefHeight="300.0" prefWidth="438.0">
+                           <children>
+                              <ListView fx:id="listViewSpecOfEmployee" prefHeight="170.0" prefWidth="438.0" />
+                              <Button mnemonicParsing="false" onAction="#deleteSpecializationOfEmployee" prefHeight="49.0" prefWidth="440.0" styleClass="buttonSpecOfEmployee" text="Usuń" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="1259.0" layoutY="256.0" prefHeight="600.0" prefWidth="380.0">
+         <children>
+            <Label prefHeight="30.0" prefWidth="380.0" style="-fx-alignment: center;" text="Specjalizacje" />
+            <VBox prefHeight="475.0" prefWidth="379.0" styleClass="dataOfEmployee">
+               <children>
+                  <ListView fx:id="listViewSpecialization" prefHeight="500.0" prefWidth="380.0" />
+                  <TextField fx:id="fieldSpecName" promptText="nazwa" />
+                  <HBox prefHeight="41.0" prefWidth="350.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#addNewSpecialization" prefHeight="49.0" prefWidth="190.0" styleClass="buttonSpecializationOption" text="Stwórz" />
+                        <Button mnemonicParsing="false" onAction="#deleteSpecialization" prefHeight="49.0" prefWidth="190.0" styleClass="buttonSpecializationOption" text="Usuń" />
+                     </children>
+                  </HBox>
+                  <Button mnemonicParsing="false" onAction="#addSpecToEmployee" prefHeight="49.0" prefWidth="380.0" styleClass="buttonSpecializationOption" text="Dodaj do pracownika" />
+               </children>
+            </VBox>
          </children>
       </VBox>
    </children>

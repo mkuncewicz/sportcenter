@@ -1,6 +1,6 @@
 package com.example.sportcenterv1.controller;
 
-import com.example.sportcenterv1.entity.Employee;
+import com.example.sportcenterv1.entity.employee.Employee;
 import com.example.sportcenterv1.entity.Specialization;
 import com.example.sportcenterv1.service.EmployeeService;
 import com.example.sportcenterv1.service.EmployeeSpecializationService;
@@ -16,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -81,13 +82,15 @@ public class EmployeeController {
 
     private ObservableList<Specialization> specOfEmployeeObservableList = FXCollections.observableArrayList();
 
+    @FXML
+    private VBox vboxSpecOfEmployee;
 
     @FXML
     private void handleBackToMenu(ActionEvent event) throws IOException {
         // Użyj FXMLLoadera, aby załadować widok menu
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/com/example/sportcenterv1/menu.fxml"));
-        loader.setControllerFactory(springContext::getBean); // Upewnij się, że kontekst Springa jest dostępny
+        loader.setControllerFactory(springContext::getBean);
 
         Parent menuView = loader.load();
         Scene menuScene = new Scene(menuView, 1920, 1080);
@@ -103,6 +106,7 @@ public class EmployeeController {
        settingListSpec();
        settingListSpecOfEmployee();
        settingSelectionEmployees();
+       vboxSpecOfEmployee.setVisible(false);
     }
 
     private void settingSelectionEmployees(){
@@ -191,12 +195,14 @@ public class EmployeeController {
             public void changed(ObservableValue<? extends Employee> observable, Employee oldValue, Employee newValue) {
                 if (newValue != null) {
                     // Wykonaj akcję, gdy wybrano nowego klienta
-                    labelEmFirstName.setText("IMIE: " + newValue.getFirstName());
-                    labelEmLastName.setText("NAZWISKO: " + newValue.getLastName());
+                    labelEmFirstName.setText("Imie: " + newValue.getFirstName());
+                    labelEmLastName.setText("Nazwisko: " + newValue.getLastName());
                     labelEmPhone.setText("NR TEL: " + newValue.getPhoneNumber());
 
                     List<Specialization> curSpecOfEmployee = newValue.getSpecializations().stream().toList();
                     specOfEmployeeObservableList.setAll(curSpecOfEmployee);
+
+                    vboxSpecOfEmployee.setVisible(true);
                 }
             }
         });

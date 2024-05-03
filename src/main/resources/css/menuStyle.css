@@ -11,6 +11,9 @@
     -fx-border-width: 2px; /* Szerokość ramki */
     -fx-padding: 15px 30px; /* Padding przycisków */
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
+    -fx-pref-height: 200px;
+    -fx-pref-width: 600px;
+    -fx-font-size: 40px;
 }
 
 .button:hover {

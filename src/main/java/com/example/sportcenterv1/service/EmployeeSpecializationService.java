@@ -1,6 +1,6 @@
 package com.example.sportcenterv1.service;
 
-import com.example.sportcenterv1.entity.Employee;
+import com.example.sportcenterv1.entity.employee.Employee;
 import com.example.sportcenterv1.entity.Specialization;
 import com.example.sportcenterv1.repository.EmployeeRepository;
 import com.example.sportcenterv1.repository.SpecializationRepository;

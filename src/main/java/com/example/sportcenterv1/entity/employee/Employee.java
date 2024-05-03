@@ -1,5 +1,6 @@
-package com.example.sportcenterv1.entity;
+package com.example.sportcenterv1.entity.employee;
 
+import com.example.sportcenterv1.entity.Specialization;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

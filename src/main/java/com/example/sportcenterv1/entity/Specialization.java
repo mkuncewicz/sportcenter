@@ -1,5 +1,7 @@
 package com.example.sportcenterv1.entity;
 
+import com.example.sportcenterv1.entity.employee.Employee;
+import com.example.sportcenterv1.entity.space.Space;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,8 +18,11 @@ public class Specialization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
+
+    @Column
+    private String level;
 
     @ManyToMany(mappedBy = "specializations", fetch = FetchType.LAZY)
     private Set<Employee> employees;

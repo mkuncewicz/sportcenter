@@ -15,7 +15,7 @@
       <VBox layoutX="179.0" layoutY="153.0" prefHeight="880.0" prefWidth="800.0" styleClass="vbox-main">
          <children>
             <Label alignment="CENTER" prefHeight="50.0" prefWidth="800.0" styleClass="label-space" text="Obiekty" />
-            <ComboBox fx:id="comboTest" prefWidth="150.0" styleClass="combo-box-select">
+            <ComboBox fx:id="comboCat" prefWidth="150.0" styleClass="combo-box-select">
                <VBox.margin>
                   <Insets bottom="30.0" />
                </VBox.margin>
@@ -25,7 +25,7 @@
                   <VBox prefHeight="750.0" prefWidth="350.0">
                      <children>
                         <ListView fx:id="listViewSpaces" prefHeight="300.0" prefWidth="350.0" styleClass="listViewSpaces" />
-                        <VBox fx:id="vboxTest" prefHeight="300.0" prefWidth="350.0" />
+                        <VBox fx:id="vboxFieldsMod" prefHeight="300.0" prefWidth="350.0" />
                         <HBox fx:id="buttonList" prefHeight="100.0" prefWidth="345.0">
                            <children>
                               <Button mnemonicParsing="false" onAction="#createNewSpace" prefHeight="100.0" prefWidth="175.0" styleClass="buttonSpaceOption" text="Stwórz" />
@@ -35,6 +35,7 @@
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Button mnemonicParsing="false" onAction="#deleteSpace" prefHeight="100.0" prefWidth="175.0" styleClass="buttonSpaceOption" text="Usuń" />
+                              <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="175.0" styleClass="buttonSpaceOption" text="Usuń spec" />
                            </children>
                         </HBox>
                      </children>
@@ -42,7 +43,25 @@
                   <VBox prefHeight="750.0" prefWidth="450.0">
                      <children>
                         <VBox fx:id="spaceDetails" prefHeight="400.0" prefWidth="440.0" />
+                        <ListView prefHeight="340.0" prefWidth="440.0" />
                      </children></VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="1300.0" layoutY="66.0" prefHeight="450.0" prefWidth="500.0" styleClass="vbox-spec">
+         <children>
+            <Label alignment="CENTER" prefHeight="50.0" prefWidth="500.0" styleClass="label-spec" text="Pracownicy" />
+            <ListView prefHeight="400.0" prefWidth="500.0" />
+         </children>
+      </VBox>
+      <VBox layoutX="1300.0" layoutY="583.0" prefHeight="450.0" prefWidth="500.0" styleClass="vbox-spec">
+         <children>
+            <Label alignment="CENTER" prefHeight="50.0" prefWidth="500.0" styleClass="label-spec" text="Specialiazacje" />
+            <ListView fx:id="listOfSpec" prefHeight="350.0" prefWidth="500.0" styleClass="listOfSpec" />
+            <HBox prefHeight="50.0" prefWidth="500.0">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="500.0" styleClass="buttonSpecOption" text="Dodaj specjalizacje do obiektu" />
                </children>
             </HBox>
          </children>

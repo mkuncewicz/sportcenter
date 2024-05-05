@@ -28,6 +28,16 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
 }
 
+.buttonSpecOption{
+    -fx-background-color: #092e31; /* Jasnoniebieski kolor przycisków */
+    -fx-text-fill: white; /* Biały tekst */
+    -fx-font-size: 20px; /* Większy rozmiar tekstu dla lepszej widoczności */
+    -fx-border-color: white; /* Biała ramka przycisków */
+    -fx-border-width: 1px; /* Szerokość ramki */
+    -fx-padding: 10px 15px; /* Padding przycisków */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
+}
+
 .button:hover {
     -fx-background-color: #2980b9; /* Ciemniejszy niebieski kolor przycisków przy najechaniu */
 }
@@ -66,6 +76,10 @@
     -fx-font-size: 30px;
 }
 
+.label-spec{
+    -fx-font-size: 25px;
+}
+
 .vbox-main{
     -fx-border-color: black;
     -fx-border-width: 5;
@@ -75,7 +89,19 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 30, 0, 0, 0);
 }
 
+.vbox-spec{
+    -fx-border-color: black;
+    -fx-border-width: 5;
+    -fx-border-style: solid;
+    -fx-background-color: whitesmoke;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 30, 0, 0, 0);
+}
 
 .listViewSpaces{
-    -fx-font-size: 18;
+    -fx-font-size: 18px;
+}
+
+.listOfSpec{
+    -fx-font-size: 18px;
 }

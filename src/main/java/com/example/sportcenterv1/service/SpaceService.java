@@ -17,6 +17,13 @@ public class SpaceService {
     @Autowired
     private SpaceRepository spaceRepository;
 
+
+    public String getSpaceType(Long spaceID){
+        return spaceRepository.findSpaceTypeById(spaceID);
+    }
+
+
+
     public Optional<Space> getSpace(Long spaceID){
 
         return spaceRepository.findById(spaceID);
@@ -25,7 +32,7 @@ public class SpaceService {
     public List<Space> getAllSpaces(){
         return spaceRepository.findAll();
     }
-
+    //Przeciążenie metody
     public List<Space> getAllSpaces(Specialization specialization){
 
         List<Space> result = spaceRepository.findAll().stream()
@@ -33,7 +40,7 @@ public class SpaceService {
 
         return result;
     }
-
+    //Przeciążenie metody
     public List<Space> getAllSpaces(String spaceType){
         return spaceRepository.findSpacesByType(spaceType);
     }
@@ -64,7 +71,6 @@ public class SpaceService {
         }
     }
 
-    @Transactional
     public boolean updateBasketballRoom(Long spaceID, BasketballRoom updateBasketballRoom){
         try {
             Optional<Space> optionalSpace = spaceRepository.findById(spaceID);

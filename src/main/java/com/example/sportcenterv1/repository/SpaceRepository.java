@@ -10,4 +10,7 @@ import java.util.List;
 public interface SpaceRepository extends JpaRepository<Space,Long> {
     @Query(value = "SELECT * FROM spaces WHERE space_type LIKE :spaceType", nativeQuery = true)
     List<Space> findSpacesByType(@Param("spaceType") String spaceType);
+
+    @Query(value = "SELECT space_type FROM spaces WHERE id = :id", nativeQuery = true)
+    String findSpaceTypeById(@Param("id") Long id);
 }

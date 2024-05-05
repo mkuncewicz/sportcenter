@@ -2,8 +2,11 @@ package com.example.sportcenterv1.controller;
 
 import com.example.sportcenterv1.controllerview.SpaceDetails;
 import com.example.sportcenterv1.controllerview.SpaceView;
-import com.example.sportcenterv1.entity.space.*;
+import com.example.sportcenterv1.entity.Specialization;
+import com.example.sportcenterv1.entity.space.Space;
 import com.example.sportcenterv1.service.SpaceService;
+import com.example.sportcenterv1.service.SpaceSpecializationService;
+import com.example.sportcenterv1.service.SpecializationService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,10 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -35,22 +34,38 @@ public class SpaceController {
     @Autowired
     private SpaceService spaceService;
 
+    @Autowired
+    private SpecializationService specializationService;
+
+    @Autowired
+    private SpaceSpecializationService spaceSpecializationService;
+
     @FXML
     private ListView<Space> listViewSpaces;
 
     private ObservableList<Space> spaceObservableList = FXCollections.observableArrayList();
 
     @FXML
-    private ComboBox<String> comboTest;
+    private ComboBox<String> comboCat;
 
     @FXML
-    private VBox vboxTest;
+    private VBox vboxFieldsMod;
     private SpaceView curSpaceView = new SpaceView("",spaceService);
 
     @FXML
     private VBox spaceDetails;
 
     private SpaceDetails details = new SpaceDetails();
+
+    //Specialization
+    @FXML
+    private ListView<Specialization> listOfSpec;
+
+    private ObservableList<Specialization> specializationObservableList = FXCollections.observableArrayList();
+
+    //SpecOfSpace
+    private ObservableList<Specialization> specOfSpaceObservableList = FXCollections.observableArrayList();
+
 
     @FXML
     private void handleBackToMenu(ActionEvent event) throws IOException {
@@ -74,32 +89,34 @@ public class SpaceController {
         listenerToComboBox();
         settingListViewSpace();
         spaceObservableList.setAll(spaceService.getAllSpaces());
-
-        //Test
         listenerToListViewItem();
+
+        //Spec list test
+        specializationObservableList.setAll(specializationService.getAllSpecializations());
+        settingSpecList();
     }
 
     private void settingSpaceView(){
         SpaceView newView = new SpaceView("", spaceService);
-        vboxTest.getChildren().clear(); // Wyczyść zawartość HBox, jeśli chcesz podmienić widok
-        vboxTest.getChildren().add(newView); // Dodaj nowy widok
+        vboxFieldsMod.getChildren().clear(); // Wyczyść zawartość HBox, jeśli chcesz podmienić widok
+        vboxFieldsMod.getChildren().add(newView); // Dodaj nowy widok
     }
 
     private void settingChoice(){
         List<String> stringList = List.of("","Koszykówka","Sztuki walki","Piłka nożna","Basen","Medyczne");
         ObservableList<String> listOfTypeSpaces = FXCollections.observableArrayList();
         listOfTypeSpaces.setAll(stringList);
-        comboTest.setItems(listOfTypeSpaces);
+        comboCat.setItems(listOfTypeSpaces);
     }
     private void listenerToComboBox(){
-        comboTest.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
+        comboCat.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
 
             SpaceView newView = new SpaceView(t1, spaceService);
 
             curSpaceView = newView;
 
-            vboxTest.getChildren().clear();
-            vboxTest.getChildren().add(newView);
+            vboxFieldsMod.getChildren().clear();
+            vboxFieldsMod.getChildren().add(newView);
             setCurSpaceList(t1);
 
                 });
@@ -108,12 +125,21 @@ public class SpaceController {
     private void listenerToListViewItem(){
 
         listViewSpaces.getSelectionModel().selectedItemProperty().addListener((observableValue, space, t1) -> {
-            System.out.println("Uzyłeś");
-            System.out.print("Obiekt: " + t1.getName());
 
-            List<Label> listLabel = details.getLabels((Room)t1);
+
+            List<Label> listLabel = details.getDetailsLabelsForSpace(t1);
             spaceDetails.getChildren().clear();
             spaceDetails.getChildren().addAll(listLabel);
+
+            String type = spaceService.getSpaceType(t1.getId());
+
+            SpaceView newView = new SpaceView(type, spaceService);
+
+            curSpaceView = newView;
+
+            vboxFieldsMod.getChildren().clear();
+            vboxFieldsMod.getChildren().add(newView);
+            setCurSpaceList(type);
         });
     }
 
@@ -165,7 +191,7 @@ public class SpaceController {
     @FXML
     private void createNewSpace(){
         curSpaceView.createSpace();
-
+        spaceObservableList.setAll(spaceService.getAllSpaces());
     }
 
     @FXML
@@ -173,7 +199,7 @@ public class SpaceController {
 
         Space space = listViewSpaces.getSelectionModel().getSelectedItem();
         spaceService.deleteSpace(space.getId());
-
+        spaceObservableList.setAll(spaceService.getAllSpaces());
     }
 
     @FXML
@@ -181,4 +207,29 @@ public class SpaceController {
         Long spaceID = listViewSpaces.getSelectionModel().getSelectedItem().getId();
         curSpaceView.updateSpace(spaceID);
     }
+
+    private void settingSpecList(){
+        listOfSpec.setCellFactory(spec -> new ListCell<Specialization>(){
+
+            @Override
+            protected void updateItem(Specialization item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null){
+                    setText(null);
+                }else {
+                    setText(item.getName());
+                }
+            }
+        });
+        listOfSpec.setItems(specializationObservableList);
+    }
+
+    @FXML
+    private void addSpecializationToSpace(){
+        Space space = listViewSpaces.getSelectionModel().getSelectedItem();
+        Specialization specialization = listOfSpec.getSelectionModel().getSelectedItem();
+    }
+
+
 }

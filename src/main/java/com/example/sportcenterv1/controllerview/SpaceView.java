@@ -1,17 +1,18 @@
 package com.example.sportcenterv1.controllerview;
 
+import com.example.sportcenterv1.entity.Specialization;
 import com.example.sportcenterv1.entity.enums.CourtType;
 import com.example.sportcenterv1.entity.enums.TurfType;
 import com.example.sportcenterv1.entity.space.*;
 import com.example.sportcenterv1.service.SpaceService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,10 @@ public class SpaceView extends VBox {
 
     private ComboBox<TurfType> turfTypeComboBox = new ComboBox<>();
 
-    private ComboBox<String> comboBoxTest = new ComboBox<>();
+    private ComboBox<String> comboCat = new ComboBox<>();
+
+    @FXML
+    private ListView<Specialization> listOfSpec;
 
     @Getter
     private String curChoice;
@@ -51,17 +55,17 @@ public class SpaceView extends VBox {
     private void  choiceSetting(String choice){
         settingForEnum();
         this.getChildren().clear();
-        if (choice.equalsIgnoreCase("")){
+        if (choice.equalsIgnoreCase("") || choice.equalsIgnoreCase("Room")){
             textFieldForBasicRoom();
-        } else if (choice.equalsIgnoreCase("Koszykówka")) {
+        } else if (choice.equalsIgnoreCase("Koszykówka") || choice.equalsIgnoreCase("BASKETBALL_ROOM")) {
             textFieldForBasketball();
-        } else if (choice.equalsIgnoreCase("Sztuki walki")) {
+        } else if (choice.equalsIgnoreCase("Sztuki walki") || choice.equalsIgnoreCase("MARTIAL_ARTS_ROOM")) {
             textFieldForMartialArts();
-        } else if (choice.equalsIgnoreCase("Piłka nożna")) {
+        } else if (choice.equalsIgnoreCase("Piłka nożna") || choice.equalsIgnoreCase("SOCCER_FIELD")) {
             textFieldForSoccer();
-        } else if (choice.equalsIgnoreCase("Basen")) {
+        } else if (choice.equalsIgnoreCase("Basen") || choice.equalsIgnoreCase("SWIMMING_POOL")) {
             textFieldForSwimmingPool();
-        } else if (choice.equalsIgnoreCase("Medyczne")) {
+        } else if (choice.equalsIgnoreCase("Medyczne") || choice.equalsIgnoreCase("MEDICAL_ROOM")) {
             textFieldForMedical();
         }
     }
@@ -82,14 +86,14 @@ public class SpaceView extends VBox {
         tex2.setPromptText("Pojemność");
         tex3.setPromptText("Przestrzeń (metry kwadratowe)");
 
-      tex4.setPromptText("Liczba koszy");
-      courtTypeComboBox.setPromptText("Typ nawierzchni");
+        tex4.setPromptText("Liczba koszy");
+        courtTypeComboBox.setPromptText("Typ nawierzchni");
 
-      this.getChildren().add(tex1);
-      this.getChildren().add(tex2);
-      this.getChildren().add(tex3);
-      this.getChildren().add(tex4);
-      this.getChildren().add(courtTypeComboBox);
+        this.getChildren().add(tex1);
+        this.getChildren().add(tex2);
+        this.getChildren().add(tex3);
+        this.getChildren().add(tex4);
+        this.getChildren().add(courtTypeComboBox);
     }
 
     private void textFieldForSoccer(){
@@ -120,13 +124,13 @@ public class SpaceView extends VBox {
         tex1.setPromptText("Nazwa");
         tex2.setPromptText("Pojemność");
         tex3.setPromptText("Przestrzeń (metry kwadratowe)");
-        comboBoxTest.setPromptText("Czy jest sterylna");
+        comboCat.setPromptText("Czy jest sterylna");
 
 
         this.getChildren().add(tex1);
         this.getChildren().add(tex2);
         this.getChildren().add(tex3);
-        this.getChildren().add(comboBoxTest);
+        this.getChildren().add(comboCat);
     }
 
 
@@ -157,7 +161,7 @@ public class SpaceView extends VBox {
         stringList.add("Tak");
         stringList.add("Nie");
         ObservableList<String> stringObservableList = FXCollections.observableList(stringList);
-        comboBoxTest.setItems(stringObservableList);
+        comboCat.setItems(stringObservableList);
 
     }
 
@@ -237,7 +241,7 @@ public class SpaceView extends VBox {
         double squareFootage = 10;
         boolean choice = false;
 
-        String select = comboBoxTest.getSelectionModel().getSelectedItem();
+        String select = comboCat.getSelectionModel().getSelectedItem();
 
         if (!tex1.getText().isBlank()) name = tex1.getText();
         if (!tex2.getText().isBlank()) capacity = Integer.parseInt(tex2.getText());
@@ -312,17 +316,17 @@ public class SpaceView extends VBox {
     }
 
     public void updateSpace(Long spaceID){
-        if (curChoice.equalsIgnoreCase("")){
+        if (curChoice.equalsIgnoreCase("") || curChoice.equalsIgnoreCase("Room")){
             updateRoom(spaceID);
-        } else if (curChoice.equalsIgnoreCase("Koszykówka")) {
+        } else if (curChoice.equalsIgnoreCase("Koszykówka") || curChoice.equalsIgnoreCase("BASKETBALL_ROOM")) {
             updateBasketballRoom(spaceID);
-        } else if (curChoice.equalsIgnoreCase("Sztuki walki")) {
+        } else if (curChoice.equalsIgnoreCase("Sztuki walki") || curChoice.equalsIgnoreCase("MARTIAL_ARTS_ROOM")) {
             updateMariatlArtsRoom(spaceID);
-        } else if (curChoice.equalsIgnoreCase("Piłka nożna")) {
+        } else if (curChoice.equalsIgnoreCase("Piłka nożna") || curChoice.equalsIgnoreCase("SOCCER_FIELD")) {
             updateSoccerField(spaceID);
-        } else if (curChoice.equalsIgnoreCase("Basen")) {
+        } else if (curChoice.equalsIgnoreCase("Basen") || curChoice.equalsIgnoreCase("SWIMMING_POOL")) {
             updateSwimmingPool(spaceID);
-        } else if (curChoice.equalsIgnoreCase("Medyczne")) {
+        } else if (curChoice.equalsIgnoreCase("Medyczne") || curChoice.equalsIgnoreCase("MEDICAL_ROOM")) {
             updateMedicalRoom(spaceID);
         }
     }
@@ -403,7 +407,7 @@ public class SpaceView extends VBox {
         SoccerField updateSoccerField = new SoccerField();
 
         if (!tex1.getText().isBlank()) updateSoccerField.setName(tex1.getText());
-        
+
         try {
             updateSoccerField.setSquareFootage(Double.parseDouble(tex2.getText()));
         }catch (NumberFormatException e){
@@ -415,8 +419,8 @@ public class SpaceView extends VBox {
         }catch (NumberFormatException e){
             System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex3.getText());
         }
-        
-        
+
+
         updateSoccerField.setTurfType(turfTypeComboBox.getSelectionModel().getSelectedItem());
 
         spaceService.updateSpace(spaceID,updateSoccerField);
@@ -426,25 +430,25 @@ public class SpaceView extends VBox {
         SwimmingPool updateSwimmingPool = new SwimmingPool();
 
         if (!tex1.getText().isBlank()) updateSwimmingPool.setName(tex1.getText());
-        
+
         try {
-            updateSwimmingPool.setPoolLength(Double.parseDouble(tex2.getText()));    
+            updateSwimmingPool.setPoolLength(Double.parseDouble(tex2.getText()));
         }catch (NumberFormatException e){
             System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex2.getText());
         }
-        
+
         try {
             updateSwimmingPool.setPoolDepth(Double.parseDouble(tex3.getText()));
         }catch (NumberFormatException e){
             System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex3.getText());
         }
-        
+
         try {
             updateSwimmingPool.setLaneCount(Integer.parseInt(tex4.getText()));
         }catch (NumberFormatException e){
             System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex4.getText());
         }
-        
+
 
         spaceService.updateSpace(spaceID,updateSwimmingPool);
     }
@@ -470,9 +474,9 @@ public class SpaceView extends VBox {
             updateMedical.setCapacity(Integer.parseInt(tex3.getText()));
         }
 
-        if (comboBoxTest.getSelectionModel().getSelectedItem().equalsIgnoreCase( "Tak")){
+        if (comboCat.getSelectionModel().getSelectedItem().equalsIgnoreCase( "Tak")){
             updateMedical.setSterile(true);
-        } else if (comboBoxTest.getSelectionModel().getSelectedItem().equalsIgnoreCase("Nie")) {
+        } else if (comboCat.getSelectionModel().getSelectedItem().equalsIgnoreCase("Nie")) {
             updateMedical.setSterile(false);
         }else {
             updateMedical.setSterile(space.isSterile());

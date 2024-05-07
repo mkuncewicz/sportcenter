@@ -7,16 +7,19 @@ import com.example.sportcenterv1.entity.space.Space;
 import com.example.sportcenterv1.service.SpaceService;
 import com.example.sportcenterv1.service.SpaceSpecializationService;
 import com.example.sportcenterv1.service.SpecializationService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -64,7 +67,10 @@ public class SpaceController {
     private ObservableList<Specialization> specializationObservableList = FXCollections.observableArrayList();
 
     //SpecOfSpace
+    @FXML
+    private ListView<Specialization> listViewSpecOfSpace;
     private ObservableList<Specialization> specOfSpaceObservableList = FXCollections.observableArrayList();
+
 
 
     @FXML
@@ -82,6 +88,7 @@ public class SpaceController {
         window.setScene(menuScene);
     }
 
+
     @FXML
     public void initialize(){
         settingChoice();
@@ -94,6 +101,14 @@ public class SpaceController {
         //Spec list test
         specializationObservableList.setAll(specializationService.getAllSpecializations());
         settingSpecList();
+
+        //Spec of Space
+        listViewSpecOfSpace.setItems(specOfSpaceObservableList);
+    }
+
+    private void getSpecOfSpace(Space space){
+        specOfSpaceObservableList.setAll(space.getSpecializations());
+
     }
 
     private void settingSpaceView(){
@@ -118,7 +133,6 @@ public class SpaceController {
             vboxFieldsMod.getChildren().clear();
             vboxFieldsMod.getChildren().add(newView);
             setCurSpaceList(t1);
-
                 });
     }
 
@@ -140,6 +154,8 @@ public class SpaceController {
             vboxFieldsMod.getChildren().clear();
             vboxFieldsMod.getChildren().add(newView);
             setCurSpaceList(type);
+
+            getSpecOfSpace(t1);
         });
     }
 
@@ -229,7 +245,20 @@ public class SpaceController {
     private void addSpecializationToSpace(){
         Space space = listViewSpaces.getSelectionModel().getSelectedItem();
         Specialization specialization = listOfSpec.getSelectionModel().getSelectedItem();
+
+        spaceSpecializationService.addSpaceToSpecialization(space.getId(), specialization.getId());
+
+        specOfSpaceObservableList.setAll(space.getSpecializations());
+        listViewSpecOfSpace.setItems(specOfSpaceObservableList);
+
+
     }
 
+    @FXML
+    private void removeSpecializationFromSpace(){
+        Space space = listViewSpaces.getSelectionModel().getSelectedItem();
+        Specialization specialization = listViewSpecOfSpace.getSelectionModel().getSelectedItem();
 
+        spaceSpecializationService.deleteSpaceFromSpecialization(space.getId(), specialization.getId());
+    }
 }

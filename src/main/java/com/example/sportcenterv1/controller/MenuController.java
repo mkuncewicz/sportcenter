@@ -55,5 +55,4 @@ public class MenuController {
             window.setScene(new Scene(root, 1920, 1080));
         }
     }
-
 }

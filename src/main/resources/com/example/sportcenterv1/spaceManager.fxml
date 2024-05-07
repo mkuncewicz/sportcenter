@@ -35,7 +35,7 @@
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Button mnemonicParsing="false" onAction="#deleteSpace" prefHeight="100.0" prefWidth="175.0" styleClass="buttonSpaceOption" text="Usuń" />
-                              <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="175.0" styleClass="buttonSpaceOption" text="Usuń spec" />
+                              <Button mnemonicParsing="false" onAction="#removeSpecializationFromSpace" prefHeight="100.0" prefWidth="175.0" styleClass="buttonSpaceOption" text="Usuń spec" />
                            </children>
                         </HBox>
                      </children>
@@ -43,7 +43,7 @@
                   <VBox prefHeight="750.0" prefWidth="450.0">
                      <children>
                         <VBox fx:id="spaceDetails" prefHeight="400.0" prefWidth="440.0" />
-                        <ListView prefHeight="340.0" prefWidth="440.0" />
+                        <ListView fx:id="listViewSpecOfSpace" prefHeight="340.0" prefWidth="440.0" styleClass="listViewSpecOfSpace" />
                      </children></VBox>
                </children>
             </HBox>
@@ -61,7 +61,7 @@
             <ListView fx:id="listOfSpec" prefHeight="350.0" prefWidth="500.0" styleClass="listOfSpec" />
             <HBox prefHeight="50.0" prefWidth="500.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="500.0" styleClass="buttonSpecOption" text="Dodaj specjalizacje do obiektu" />
+                  <Button mnemonicParsing="false" onAction="#addSpecializationToSpace" prefHeight="50.0" prefWidth="500.0" styleClass="buttonSpecOption" text="Dodaj specjalizacje do obiektu" />
                </children>
             </HBox>
          </children>

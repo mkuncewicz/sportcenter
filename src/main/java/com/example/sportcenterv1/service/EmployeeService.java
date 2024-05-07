@@ -1,6 +1,8 @@
 package com.example.sportcenterv1.service;
 
+import com.example.sportcenterv1.entity.Contract;
 import com.example.sportcenterv1.entity.employee.Employee;
+import com.example.sportcenterv1.repository.ContractRepository;
 import com.example.sportcenterv1.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ public class EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private ContractRepository contractRepository;
 
     public Optional<Employee> getEmployee(Long employeeID){
         return employeeRepository.findById(employeeID);
@@ -57,5 +62,28 @@ public class EmployeeService {
 
     public List<Employee> getEmployeesWithSpecialization(Long specId){
         return employeeRepository.findEmployeesBySpecializationId(specId);
+    }
+
+    public void addContractToEmployee(Long employeeID, Contract contract){
+
+        Optional<Employee> optionalEmployee = employeeRepository.findById(employeeID);
+
+        if(optionalEmployee.isPresent()){
+
+            Employee employee = optionalEmployee.get();
+
+            employee.getContracts().add(contract);
+            contract.setEmployee(employee);
+
+            employeeRepository.save(employee);
+            contractRepository.save(contract);
+        }
+    }
+
+    public void removeContract(Long employeeID, Long contractID){
+
+        Optional<Employee> optionalEmployee = employeeRepository.findById(employeeID);
+        Optional<Contract> optionalContract = contractRepository.findById(contractID);
+
     }
 }

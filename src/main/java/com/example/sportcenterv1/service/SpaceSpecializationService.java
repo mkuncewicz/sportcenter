@@ -4,6 +4,7 @@ import com.example.sportcenterv1.entity.Specialization;
 import com.example.sportcenterv1.entity.space.Space;
 import com.example.sportcenterv1.repository.SpaceRepository;
 import com.example.sportcenterv1.repository.SpecializationRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class SpaceSpecializationService {
     @Autowired
     private SpecializationRepository specializationRepository;
 
-
+    @Transactional
     public void addSpaceToSpecialization(Long spaceID, Long specID){
 
         Optional<Space> optionalSpace = spaceRepository.findById(spaceID);
@@ -37,6 +38,7 @@ public class SpaceSpecializationService {
         }
     }
 
+    @Transactional
     public void deleteSpaceFromSpecialization(Long spaceID, Long specID){
 
         Optional<Space> optionalSpace = spaceRepository.findById(spaceID);

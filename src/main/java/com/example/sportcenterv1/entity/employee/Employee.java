@@ -39,4 +39,5 @@ public class Employee {
     //Asocjacja kompozycja
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "employee")
     private Set<Contract> contracts = new HashSet<>();
+
 }

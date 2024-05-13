@@ -6,7 +6,6 @@ import com.example.sportcenterv1.repository.ContractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -88,5 +87,5 @@ public class ContractService {
         contractRepository.deleteById(contractID);
     }
 
-
 }
+

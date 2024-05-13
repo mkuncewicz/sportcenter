@@ -262,3 +262,4 @@ public class SpaceController {
         spaceSpecializationService.deleteSpaceFromSpecialization(space.getId(), specialization.getId());
     }
 }
+

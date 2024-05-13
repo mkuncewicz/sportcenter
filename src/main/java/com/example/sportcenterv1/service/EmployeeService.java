@@ -76,7 +76,8 @@ public class EmployeeService {
             contract.setEmployee(employee);
 
             employeeRepository.save(employee);
-//            contractRepository.save(contract);
+
+            contractRepository.save(contract);
         }
     }
 
@@ -97,3 +98,4 @@ public class EmployeeService {
         }
     }
 }
+

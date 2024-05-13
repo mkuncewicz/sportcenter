@@ -39,18 +39,18 @@ public class MenuController {
     private ApplicationContext springContext;
 
     @FXML
-    protected void handleButton(ActionEvent event) throws Exception{
+    protected void handleButton(ActionEvent event) throws Exception {
         Button clickedButton = (Button) event.getSource();
 
         String fxmlFile = "";
 
-        if(clickedButton == buttonEmployee) {
+        if (clickedButton == buttonEmployee) {
             fxmlFile = "/com/example/sportcenterv1/employeeManager.fxml";
-        }else if (clickedButton == buttonSpace){
+        } else if (clickedButton == buttonSpace) {
             fxmlFile = "/com/example/sportcenterv1/spaceManager.fxml";
         } else if (clickedButton == buttonClient) {
             fxmlFile = "/com/example/sportcenterv1/clientManager.fxml";
-        }else if(clickedButton == buttonContracts){
+        } else if (clickedButton == buttonContracts) {
             fxmlFile = "/com/example/sportcenterv1/contractManager.fxml";
         } else if (clickedButton == buttonFinances) {
             fxmlFile = "/com/example/sportcenterv1/financeManager.fxml";
@@ -70,3 +70,4 @@ public class MenuController {
         }
     }
 }
+

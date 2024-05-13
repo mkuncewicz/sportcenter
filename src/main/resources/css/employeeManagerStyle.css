@@ -55,8 +55,8 @@
 }
 
 .label{
-    -fx-text-fill: white;
-    -fx-font-size: 20px;
+    -fx-text-fill: #070000;
+    -fx-font-size: 25px;
 }
 
 .labelEmployee{
@@ -78,4 +78,18 @@
 
 .combo-box{
     -fx-font-size: 20px;
+}
+
+.mainvboxspace{
+    -fx-background-color: #ffffff;
+    -fx-border-color: black; /* Biała ramka przycisków */
+    -fx-border-width: 3px; /* Szerokość ramki */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.specvboxmain{
+    -fx-background-color: #ffffff;
+    -fx-border-color: black;
+    -fx-border-width: 3px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }

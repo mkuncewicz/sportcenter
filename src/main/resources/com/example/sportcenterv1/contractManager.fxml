@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/contractManager.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.ContractController">
+   <children>
+      <Button layoutX="35.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="75.0" prefWidth="125.0" styleClass="backButton" text="Wróć" />
+      <VBox layoutX="35.0" layoutY="213.0" prefHeight="700.0" prefWidth="600.0" styleClass="employee-con">
+         <children>
+            <Label alignment="CENTER" prefHeight="50.0" prefWidth="600.0" text="Wybierz pracownika" />
+            <ListView fx:id="listViewEmployees" prefHeight="650.0" prefWidth="600.0" />
+         </children>
+      </VBox>
+      <HBox layoutX="763.0" layoutY="189.0" prefHeight="800.0" prefWidth="1100.0" styleClass="contract-con">
+         <children>
+            <VBox prefHeight="800.0" prefWidth="750.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="750.0" text="Kontrakty" />
+                  <ListView fx:id="listViewContracts" prefHeight="450.0" prefWidth="750.0" />
+                  <TextField fx:id="textFieldSalary" prefHeight="50.0" promptText="Wynagrodzenie (brutto)" styleClass="biggerText" />
+                  <DatePicker fx:id="datePickerDateStart" prefHeight="50.0" prefWidth="750.0" promptText="Data Rozpoczęcia" styleClass="biggerText" />
+                  <DatePicker fx:id="datePickerDateEnd" prefHeight="50.0" prefWidth="750.0" promptText="Data Zakończenia" styleClass="biggerText" />
+                  <ComboBox fx:id="comboBoxContractType" prefHeight="50.0" prefWidth="750.0" promptText="Typ umowy" styleClass="biggerText" />
+                  <HBox prefHeight="150.0" prefWidth="700.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#createContract" prefHeight="150.0" prefWidth="250.0" text="Dodaj nowy kontrakt" />
+                        <Button mnemonicParsing="false" prefHeight="150.0" prefWidth="250.0" text="Aktualizuj kontrakt" />
+                        <Button mnemonicParsing="false" onAction="#deleteContract" prefHeight="150.0" prefWidth="250.0" text="Usuń kontrakt" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="800.0" prefWidth="350.0">
+               <children>
+                  <VBox prefHeight="600.0" prefWidth="350.0">
+                     <children>
+                        <Label fx:id="labelSalary" prefHeight="50.0" prefWidth="350.0" text="Wynagrodzenie:">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="labelDateStart" prefHeight="50.0" prefWidth="350.0" text="Rozpoczęcie:">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="labelDateEnd" prefHeight="50.0" prefWidth="350.0" text="Zakończenie:">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="labelContractType" prefHeight="50.0" prefWidth="350.0" text="Typ umowy: ">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="labelContractStatusType" prefHeight="50.0" prefWidth="350.0" text="Status:">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <ComboBox fx:id="comboBoxUpdate" prefHeight="50.0" prefWidth="350.0" promptText="Status" styleClass="biggerText" />
+                  <Button mnemonicParsing="false" prefHeight="150.0" prefWidth="350.0" text="Zmień status" />
+               </children>
+            </VBox>
+         </children></HBox>
+   </children>
+</AnchorPane>

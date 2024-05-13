@@ -9,8 +9,7 @@
 .backButton{
     -fx-background-color: #ffffff; /* Jasnoniebieski kolor przycisków */
     -fx-text-fill: #070000; /* Biały tekst */
-    -fx-font-size: 15px; /* Większy rozmiar tekstu dla lepszej widoczności */
-    -fx-font-weight: 700;
+    -fx-font-size: 22px; /* Większy rozmiar tekstu dla lepszej widoczności */
     -fx-border-color: #2a2929; /* Biała ramka przycisków */
     -fx-border-width: 1px; /* Szerokość ramki */
     -fx-padding: 10px 15px; /* Padding przycisków */
@@ -103,5 +102,9 @@
 }
 
 .listOfSpec{
+    -fx-font-size: 18px;
+}
+
+.listViewSpecOfSpace{
     -fx-font-size: 18px;
 }

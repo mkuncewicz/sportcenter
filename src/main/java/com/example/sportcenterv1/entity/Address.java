@@ -10,15 +10,25 @@ import lombok.Setter;
 @Setter
 public class Address {
 
-    @Column
+    @Column(name = "city")
     private String city;
 
-    @Column
+    @Column(name = "street")
     private String street;
 
-    @Column
+    @Column(name = "building_number")
     private String buildingNumber;
 
-    @Column(nullable = false)
+    @Column(name = "apartment_number")
     private String apartmentNumber;
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", buildingNumber='" + buildingNumber + '\'' +
+                ", apartmentNumber='" + apartmentNumber + '\'' +
+                '}';
+    }
 }

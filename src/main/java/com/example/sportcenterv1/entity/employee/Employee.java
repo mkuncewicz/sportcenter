@@ -1,10 +1,12 @@
 package com.example.sportcenterv1.entity.employee;
 
+import com.example.sportcenterv1.entity.Contract;
 import com.example.sportcenterv1.entity.Specialization;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -34,4 +36,7 @@ public class Employee {
     )
     private Set<Specialization> specializations;
 
+    //Asocjacja kompozycja
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "employee")
+    private Set<Contract> contracts = new HashSet<>();
 }

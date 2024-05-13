@@ -15,19 +15,25 @@ import org.springframework.stereotype.Component;
 public class MenuController {
 
     @FXML
-    private Button buttonChoice1;
+    private Button buttonEmployee;
 
     @FXML
-    private Button buttonChoice2;
+    private Button buttonSpace;
 
     @FXML
     private Button buttonClient;
 
     @FXML
-    private Button buttonChoice3;
+    private Button buttonContracts;
 
     @FXML
-    private Button buttonChoice4;
+    private Button buttonFinances;
+
+    @FXML
+    private Button buttonOffer;
+
+    @FXML
+    private Button buttonReservation;
 
     @Autowired
     private ApplicationContext springContext;
@@ -38,12 +44,20 @@ public class MenuController {
 
         String fxmlFile = "";
 
-        if(clickedButton == buttonChoice1) {
+        if(clickedButton == buttonEmployee) {
             fxmlFile = "/com/example/sportcenterv1/employeeManager.fxml";
-        }else if (clickedButton == buttonChoice2){
+        }else if (clickedButton == buttonSpace){
             fxmlFile = "/com/example/sportcenterv1/spaceManager.fxml";
         } else if (clickedButton == buttonClient) {
             fxmlFile = "/com/example/sportcenterv1/clientManager.fxml";
+        }else if(clickedButton == buttonContracts){
+            fxmlFile = "/com/example/sportcenterv1/contractManager.fxml";
+        } else if (clickedButton == buttonFinances) {
+            fxmlFile = "/com/example/sportcenterv1/financeManager.fxml";
+        } else if (clickedButton == buttonOffer) {
+            fxmlFile = "/com/example/sportcenterv1/offerManager.fxml";
+        } else if (clickedButton == buttonReservation) {
+            fxmlFile = "/com/example/sportcenterv1/reservationManager.fxml";
         }
         if (!fxmlFile.isEmpty()) {
             FXMLLoader loader = new FXMLLoader();
@@ -55,5 +69,4 @@ public class MenuController {
             window.setScene(new Scene(root, 1920, 1080));
         }
     }
-
 }

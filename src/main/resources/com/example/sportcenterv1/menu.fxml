@@ -8,16 +8,16 @@
    <children>
       <VBox alignment="CENTER" layoutX="413.0" layoutY="136.0" spacing="20">
          <children>
-            <Button fx:id="buttonChoice1" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Pracownicy" />
-            <Button fx:id="buttonChoice2" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Obiekty" />
-            <Button fx:id="buttonChoice21" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Kontrakty" />
-            <Button fx:id="buttonChoice22" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Finanse" />
+            <Button fx:id="buttonEmployee" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Pracownicy" />
+            <Button fx:id="buttonSpace" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Obiekty" />
+            <Button fx:id="buttonContracts" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Kontrakty" />
+            <Button fx:id="buttonFinances" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Finanse" />
          </children>
       </VBox>
       <VBox alignment="CENTER" layoutX="1064.0" layoutY="136.0" spacing="20">
          <children>
-            <Button fx:id="buttonChoice31" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Usługi" />
-            <Button fx:id="buttonChoice41" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Rezerwacje" />
+            <Button fx:id="buttonOffer" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Usługi" />
+            <Button fx:id="buttonReservation" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Rezerwacje" />
             <Button fx:id="buttonClient" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Klienci" />
          </children>
       </VBox>

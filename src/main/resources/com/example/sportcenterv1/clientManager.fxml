@@ -2,29 +2,90 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/clientManager.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.ClientController">
-   <children>
-      <Button layoutX="47.0" layoutY="47.0" mnemonicParsing="false" onAction="#handleBackToMenu" styleClass="backButton" text="Wróć" />
-      <HBox layoutX="82.0" layoutY="284.0" prefHeight="500.0" prefWidth="600.0" styleClass="client-con">
+    <children>
+        <Button layoutX="35.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="75.0" prefWidth="125.0" styleClass="backButton" text="Wróć" />
+      <VBox layoutX="281.0" layoutY="110.0" prefHeight="900.0" prefWidth="1200.0" styleClass="client-con">
          <children>
-            <VBox prefHeight="200.0" prefWidth="300.0">
+            <Label alignment="CENTER" prefHeight="50.0" prefWidth="1200.0" text="Klienci">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <HBox prefHeight="900.0" prefWidth="1000.0">
                <children>
-                  <ListView fx:id="listViewClient" prefHeight="300.0" prefWidth="295.0" />
-                  <TextField />
-                  <TextField />
-                  <TextField />
-                  <DatePicker prefHeight="25.0" prefWidth="300.0" />
+                  <VBox prefHeight="900.0" prefWidth="700.0">
+                     <children>
+                        <ListView fx:id="listViewClient" prefHeight="400.0" prefWidth="700.0" />
+                        <TextField fx:id="textFieldFirstName" prefHeight="50.0" prefWidth="700.0" promptText="Imie">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="textFieldLastName" prefHeight="50.0" prefWidth="700.0" promptText="Nazwisko">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="textFieldPhone" prefHeight="50.0" prefWidth="700.0" promptText="Telefon">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <DatePicker fx:id="datePickerBirth" prefHeight="50.0" prefWidth="700.0" promptText="Data urodzenia" styleClass="urodziny" />
+                        <TextField fx:id="textFieldCity" prefHeight="50.0" prefWidth="700.0" promptText="Miasto">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="textFieldStreet" prefHeight="50.0" prefWidth="700.0" promptText="Ulica">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="textFieldBuildingNumber" prefHeight="50.0" prefWidth="700.0" promptText="Nr domu">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="textFieldApartmentNumber" prefHeight="50.0" prefWidth="700.0" promptText="Nr mieszkania">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <HBox prefHeight="100.0" prefWidth="700.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#addNewClient" prefHeight="100.0" prefWidth="250.0" text="Dodaj" />
+                              <Button mnemonicParsing="false" onAction="#updateClient" prefHeight="100.0" prefWidth="250.0" text="Aktualizuj" />
+                              <Button mnemonicParsing="false" onAction="#deleteClient" prefHeight="150.0" prefWidth="250.0" text="Usuń" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="854.0" prefWidth="500.0">
+                     <children>
+                        <Label fx:id="labelFirstName" prefHeight="17.0" prefWidth="500.0" text="Imie:" />
+                        <Label fx:id="labelLastName" prefHeight="17.0" prefWidth="500.0" text="Nazwisko:" />
+                        <Label fx:id="labelPhone" prefHeight="17.0" prefWidth="500.0" text="Telefon:" />
+                        <Label fx:id="labelDateBirth" prefHeight="17.0" prefWidth="500.0" text="Data urodzenia:" />
+                        <Label fx:id="labelCity" prefHeight="17.0" prefWidth="500.0" text="Miasto:" />
+                        <Label fx:id="labelStreet" prefHeight="17.0" prefWidth="500.0" text="Ulica:" />
+                        <Label fx:id="labelBuildingNumber" prefHeight="17.0" prefWidth="500.0" text="Numer budynku:" />
+                        <Label fx:id="labelApartmentNumber" prefHeight="17.0" prefWidth="500.0" text="Numer mieszkania:" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="300.0" />
+            </HBox>
          </children>
-      </HBox>
-      <Button layoutX="82.0" layoutY="803.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="105.0" text="Button" />
-   </children>
+      </VBox>
+      <TextField fx:id="textFieldFiltr" layoutX="281.0" layoutY="50.0" prefHeight="50.0" prefWidth="250.0" />
+    </children>
 </AnchorPane>

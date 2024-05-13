@@ -12,8 +12,8 @@
 
 <AnchorPane minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/employeeManagerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.EmployeeController">
    <children>
-      <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="50.0" prefWidth="100.0" styleClass="backButton" text="Wróć" />
-      <VBox layoutX="114.0" layoutY="176.0" prefHeight="752.0" prefWidth="802.0">
+      <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="75.0" prefWidth="125.0" styleClass="backButton" text="Wróć" />
+      <VBox layoutX="114.0" layoutY="176.0" prefHeight="720.0" prefWidth="802.0" styleClass="mainvboxspace">
          <children>
             <Label prefHeight="30.0" prefWidth="800.0" style="-fx-alignment: center;" text="Pracownicy" />
             <HBox prefHeight="70.0" prefWidth="802.0">
@@ -62,20 +62,20 @@
             </HBox>
          </children>
       </VBox>
-      <VBox layoutX="1259.0" layoutY="256.0" prefHeight="600.0" prefWidth="380.0">
+      <VBox layoutX="1134.0" layoutY="186.0" prefHeight="700.0" prefWidth="500.0" styleClass="specvboxmain">
          <children>
-            <Label prefHeight="30.0" prefWidth="380.0" style="-fx-alignment: center;" text="Specjalizacje" />
-            <VBox prefHeight="475.0" prefWidth="379.0" styleClass="dataOfEmployee">
+            <Label prefHeight="70.0" prefWidth="500.0" style="-fx-alignment: center;" text="Specjalizacje" />
+            <VBox prefHeight="665.0" prefWidth="494.0" styleClass="dataOfEmployee">
                <children>
                   <ListView fx:id="listViewSpecialization" prefHeight="500.0" prefWidth="380.0" />
                   <TextField fx:id="fieldSpecName" promptText="nazwa" />
-                  <HBox prefHeight="41.0" prefWidth="350.0">
+                  <HBox prefHeight="50.0" prefWidth="500.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#addNewSpecialization" prefHeight="49.0" prefWidth="190.0" styleClass="buttonSpecializationOption" text="Stwórz" />
-                        <Button mnemonicParsing="false" onAction="#deleteSpecialization" prefHeight="49.0" prefWidth="190.0" styleClass="buttonSpecializationOption" text="Usuń" />
+                        <Button mnemonicParsing="false" onAction="#addNewSpecialization" prefHeight="49.0" prefWidth="250.0" styleClass="buttonSpecializationOption" text="Stwórz" />
+                        <Button mnemonicParsing="false" onAction="#deleteSpecialization" prefHeight="49.0" prefWidth="250.0" styleClass="buttonSpecializationOption" text="Usuń" />
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" onAction="#addSpecToEmployee" prefHeight="49.0" prefWidth="380.0" styleClass="buttonSpecializationOption" text="Dodaj do pracownika" />
+                  <Button mnemonicParsing="false" onAction="#addSpecToEmployee" prefHeight="49.0" prefWidth="500.0" styleClass="buttonSpecializationOption" text="Dodaj do pracownika" />
                </children>
             </VBox>
          </children>

@@ -3,7 +3,6 @@ package com.example.sportcenterv1.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.Date;
 
 @Entity
@@ -31,4 +30,15 @@ public class Client {
     @Embedded
     private Address address;
 
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address=" + address +
+                '}';
+    }
 }

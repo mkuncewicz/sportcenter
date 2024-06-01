@@ -1,21 +1,31 @@
 /* menuStyle.css */
 .root {
-    -fx-background-color: #2c3e50; /* Ciemny granat tła */
+    -fx-background-color: #90beef; /* Ciemny granat tła */
 }
 
 .button {
-    -fx-background-color: #3498db; /* Jasnoniebieski kolor przycisków */
-    -fx-text-fill: white; /* Biały tekst */
-    -fx-font-size: 18px; /* Większy rozmiar tekstu dla lepszej widoczności */
-    -fx-border-color: white; /* Biała ramka przycisków */
+    -fx-background-color: #48a7ea; /* Jasnoniebieski kolor przycisków */
+    -fx-text-fill: #000000; /* Biały tekst */
+    -fx-border-color: #000000; /* Biała ramka przycisków */
     -fx-border-width: 2px; /* Szerokość ramki */
     -fx-padding: 15px 30px; /* Padding przycisków */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.8), 10, 0, 0, 0); /* Cień dla przycisków */
     -fx-pref-height: 200px;
     -fx-pref-width: 600px;
     -fx-font-size: 40px;
 }
 
 .button:hover {
-    -fx-background-color: #2980b9; /* Ciemniejszy niebieski kolor przycisków przy najechaniu */
+    -fx-background-color: #2e5673; /* Ciemniejszy niebieski kolor przycisków przy najechaniu */
+}
+
+.buttonDarkMode{
+    -fx-background-color: #bdb3b3;
+    -fx-pref-height: 50px;
+    -fx-pref-width: 200px;
+    -fx-font-size: 27px;
+}
+
+.buttonDarkMode:hover{
+    -fx-background-color: #262626;
 }

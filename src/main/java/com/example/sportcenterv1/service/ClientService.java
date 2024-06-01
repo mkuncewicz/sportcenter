@@ -2,11 +2,13 @@ package com.example.sportcenterv1.service;
 
 import com.example.sportcenterv1.entity.Address;
 import com.example.sportcenterv1.entity.Client;
+import com.example.sportcenterv1.entity.employee.Employee;
 import com.example.sportcenterv1.repository.ClientRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +23,22 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
+    public List<Client> getAllClientsByName(String name){
+
+        List<Client> clientList = clientRepository.findAll();
+
+        List<Client> result = new ArrayList<>();
+
+        for(Client client : clientList){
+            String nameOfEmployee = client.getFirstName() + " " + client.getLastName();
+            String lowerName = nameOfEmployee.toLowerCase();
+
+            if (lowerName.contains(name.toLowerCase())) result.add(client);
+        }
+
+        return result;
+    }
+
     public Optional<Client> getClient(Long clientID){
 
         return clientRepository.findById(clientID);
@@ -29,6 +47,9 @@ public class ClientService {
     @Transactional
     public void createClient(Client client){
 
+        if (client.getAddress() == null){
+            client.setAddress(new Address());
+        }
         clientRepository.save(client);
     }
 

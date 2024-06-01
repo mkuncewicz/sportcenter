@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MenuController {
+
+    @FXML
+    private AnchorPane mainPane;
 
     @FXML
     private Button buttonEmployee;
@@ -37,6 +41,8 @@ public class MenuController {
 
     @Autowired
     private ApplicationContext springContext;
+
+    private boolean isDarkMode = false;
 
     @FXML
     protected void handleButton(ActionEvent event) throws Exception {
@@ -69,5 +75,21 @@ public class MenuController {
             window.setScene(new Scene(root, 1920, 1080));
         }
     }
+
+    @FXML
+    private void setDarkMode(){
+
+        String darkMode = getClass().getResource("/css/DMmenuStyle.css").toExternalForm();
+
+        if (isDarkMode){
+            mainPane.getStylesheets().remove(darkMode);
+            isDarkMode = false;
+        }else {
+            mainPane.getStylesheets().add(darkMode);
+            isDarkMode = true;
+        }
+    }
+
+
 }
 

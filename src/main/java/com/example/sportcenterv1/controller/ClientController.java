@@ -8,12 +8,14 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -28,6 +30,11 @@ import java.util.List;
 
 @Component
 public class ClientController {
+
+    @FXML
+    private AnchorPane mainPane;
+
+    private boolean isDarkMode = false;
 
     @Autowired
     private ApplicationContext springContext;
@@ -64,7 +71,6 @@ public class ClientController {
 
     private ObservableList<Client> clientObservableList = FXCollections.observableArrayList();
 
-
     @FXML
     private Label labelFirstName;
 
@@ -90,6 +96,12 @@ public class ClientController {
     private Label labelApartmentNumber;
 
     @FXML
+    private Label errorLabel;
+
+    @FXML
+    private TextField textfieldsearch;
+
+    @FXML
     private void handleBackToMenu(ActionEvent event) throws IOException {
         // Użyj FXMLLoadera, aby załadować widok menu
         FXMLLoader loader = new FXMLLoader();
@@ -105,11 +117,26 @@ public class ClientController {
     }
 
     @FXML
+    private void setDarkMode(){
+        String darkMode = getClass().getResource("/css/DMclientManager.css").toExternalForm();
+
+        if (isDarkMode){
+            mainPane.getStylesheets().remove(darkMode);
+            isDarkMode = false;
+        }else {
+            mainPane.getStylesheets().add(darkMode);
+            isDarkMode = true;
+        }
+    }
+
+    @FXML
     protected void initialize(){
         updateList();
         settingListViewClients();
         listViewClient.setItems(clientObservableList);
         listenToListViewClient();
+
+        listenTotextFieldSearch();
     }
 
     private void settingListViewClients(){
@@ -136,11 +163,26 @@ public class ClientController {
         listViewClient.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Client>() {
             @Override
             public void changed(ObservableValue<? extends Client> observable, Client oldValue, Client newValue) {
+                clearLabels();
                 if (newValue != null) {
                     setLabels(newValue);
                 } else {
                     clearLabels();
                 }
+            }
+        });
+    }
+
+    private void listenTotextFieldSearch(){
+
+        textfieldsearch.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String searchName = "";
+                searchName = textfieldsearch.getText();
+
+                List<Client> clientList = clientService.getAllClientsByName(searchName);
+                clientObservableList.setAll(clientList);
             }
         });
     }
@@ -163,7 +205,8 @@ public class ClientController {
         String apartmentNumber = textFieldApartmentNumber.getText();
 
         if (firstName.isBlank() || lastName.isBlank() || phone.isBlank() || birth == null) {
-            System.out.println("Wszystkie pola muszą być wypełnione.");
+            System.out.println("Wszystkie wymagane pola muszą być wypełnione.");
+            errorLabel.setText("Wszystkie wymagane pola muszą być wypełnione.");
             return;  // Przerwij wykonanie, jeśli jakiekolwiek pole jest puste
         }
 
@@ -173,9 +216,16 @@ public class ClientController {
         createClient.setDateOfBirth(birth);
 
         if (!city.isBlank()) createAddress.setCity(city);
+        else createAddress.setCity("Brak");
+
         if (!street.isBlank()) createAddress.setStreet(street);
+        else createAddress.setStreet("Brak");
+
         if (!buildingNumber.isBlank()) createAddress.setBuildingNumber(buildingNumber);
+        else createAddress.setBuildingNumber("Brak");
+
         if (!apartmentNumber.isBlank()) createAddress.setApartmentNumber(apartmentNumber);
+        else createAddress.setApartmentNumber("Brak");
 
         createClient.setAddress(createAddress);
 
@@ -184,9 +234,13 @@ public class ClientController {
             clientService.createClient(createClient);
         } catch (Exception e) {
             System.out.println("Błąd podczas zapisu klienta: " + e.getMessage());
+            errorLabel.setText("Bład podczas zapisu");
         }
+
+        System.out.println("Adres: " + createClient.getAddress());
         updateList();
         cleanTextFields();
+        errorLabel.setText(null);
     }
 
     @FXML
@@ -239,6 +293,7 @@ public class ClientController {
 
         updateList();
         cleanTextFields();
+        errorLabel.setText(null);
     }
 
     @FXML
@@ -250,6 +305,13 @@ public class ClientController {
             clientService.deleteClient(clientID);
             updateList();
         }else return;
+
+        errorLabel.setText(null);
+    }
+
+    @FXML
+    private void clearDatePicker(){
+        datePickerBirth.setValue(null);
     }
 
     private void cleanTextFields(){
@@ -268,11 +330,11 @@ public class ClientController {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = formatter.format(client.getDateOfBirth());
 
-
         labelFirstName.setText("Imie: " + client.getFirstName());
         labelLastName.setText("Nazwisko: " + client.getLastName());
         labelPhone.setText("Telefon: " + client.getPhoneNumber());
         labelDateBirth.setText("Data urodzenia: " + formattedDate);
+
         labelCity.setText("Miasto: " + client.getAddress().getCity());
         labelStreet.setText("Ulica: " + client.getAddress().getStreet());
         labelBuildingNumber.setText("Numer budynku: " + client.getAddress().getBuildingNumber());
@@ -280,7 +342,6 @@ public class ClientController {
     }
 
     private void clearLabels(){
-
         labelFirstName.setText("Imie: ");
         labelLastName.setText("Nazwisko: ");
         labelPhone.setText("Telefon: ");

@@ -27,6 +27,22 @@ public class SpecializationService {
         specializationRepository.save(specialization);
     }
 
+    public void updateSpecialization(Long specID, Specialization updateSpecialization){
+
+        Optional<Specialization> optionalSpecialization = specializationRepository.findById(specID);
+
+        if (optionalSpecialization.isPresent()){
+
+            Specialization specToSave = optionalSpecialization.get();
+
+            if (updateSpecialization.getName() != null || !updateSpecialization.getName().isBlank()){
+
+                specToSave.setName(updateSpecialization.getName());
+            }
+
+            specializationRepository.save(specToSave);
+        }
+    }
     @Transactional
     public void deleteSpecialization(Long specializationId) {
         Optional<Specialization> specializationOptional = specializationRepository.findById(specializationId);

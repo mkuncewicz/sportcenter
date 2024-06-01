@@ -6,34 +6,34 @@ import com.example.sportcenterv1.entity.enums.ContractStatusType;
 import com.example.sportcenterv1.entity.enums.ContractType;
 import com.example.sportcenterv1.service.ContractService;
 import com.example.sportcenterv1.service.EmployeeService;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class ContractController {
 
+    @FXML
+    private AnchorPane mainPane;
+
+    private boolean isDarkMode = false;
     @Autowired
     private ApplicationContext springContext;
 
@@ -73,6 +73,7 @@ public class ContractController {
     @FXML
     private ComboBox<ContractStatusType> comboBoxUpdate;
 
+    private ObservableList<ContractStatusType> contractStatusObservableList = FXCollections.observableArrayList();
     //Labels
     @FXML
     private Label labelSalary;
@@ -89,7 +90,16 @@ public class ContractController {
     @FXML
     private Label labelContractStatusType;
 
+    @FXML
+    private Label errorLabel;
 
+    @FXML
+    private ComboBox<ContractStatusType> comboxstatussearch;
+
+    private ObservableList<ContractStatusType> statusSearchObservableList = FXCollections.observableArrayList();
+
+    @FXML
+    private TextField textfieldsearch;
 
     @FXML
     private void handleBackToMenu(ActionEvent event) throws IOException {
@@ -107,172 +117,438 @@ public class ContractController {
     }
 
     @FXML
-    protected void initialize(){
-        //Pracownicy
-        setListViewEmployees();
-        employeeObservableList.setAll(employeeService.getAllEmployees());
+    private void setDarkMode(){
+        String darkMode = getClass().getResource("/css/DMcontractManager.css").toExternalForm();
 
-        //Typy kontraktow
-        setContractStatusList();
-        comboBoxContractType.setItems(contractTypeObservableList);
-
-
-        //Kontrakty
-        setListViewContracts();
-        listViewContracts.setItems(contractObservableList);
-
-        setListenToEmployeeListView();
-        setListenToContractListView();
-    }
-
-    private void setListViewEmployees(){
-        listViewEmployees.setItems(employeeObservableList);
-
-        listViewEmployees.setCellFactory(employee -> new ListCell<Employee>(){
-
-            @Override
-            protected void updateItem(Employee item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null){
-                    setText(null);
-                }else {
-                    setText(item.getFirstName() + " " + item.getLastName());
-                }
-            }
-        });
-    }
-
-    private void setListViewContracts(){
-
-        listViewContracts.setCellFactory(contract -> new ListCell<Contract>(){
-
-            @Override
-            protected void updateItem(Contract item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null){
-                    setText(null);
-                }else {
-                    setText(item.getDateEnd()+", "+item.getContractStatusType().getDisplayName());
-                }
-            }
-        });
-    }
-
-    private void setContractStatusList(){
-        List<ContractType> list = List.of(ContractType.EMPLOYMENT_CONTRACT,ContractType.MANDATE_CONTRACT,ContractType.SPECIFIC_TASK_CONTRACT,ContractType.INTERNSHIP,ContractType.B2B_CONTRACT);
-
-        contractTypeObservableList.setAll(list);
-    }
-
-    private void setListenToEmployeeListView() {
-
-        listViewEmployees.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Employee>() {
-            @Override
-            public void changed(ObservableValue<? extends Employee> observable, Employee oldValue, Employee newValue) {
-                if (newValue != null) {
-                    List<Contract> contractList = newValue.getContracts().stream().toList();
-                    contractObservableList.setAll(contractList);
-                } else {
-                    contractObservableList.setAll(new ArrayList<>());
-                }
-            }
-        });
-    }
-
-    private void setListenToContractListView(){
-
-        listViewContracts.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Contract>() {
-
-            @Override
-            public void changed(ObservableValue<? extends Contract> observableValue, Contract contract, Contract newValue) {
-                if (newValue != null){
-                    setLabels(newValue);
-                }else {
-                    clearLabels();
-                }
-            }
-        });
-
-    }
-
-    private void setLabels(Contract contract){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        String formattedDateStart = formatter.format(contract.getDateStart());
-        String formattedDateEnd = formatter.format(contract.getDateEnd());
-
-        labelSalary.setText("Wynagrodzenie: " + contract.getSalary() + "zl (brutto)");
-        labelDateStart.setText("Rozpoczęcie: " + formattedDateStart);
-        labelDateEnd.setText("Zakończenie: " + formattedDateEnd);
-        labelContractType.setText("Typ umowy: " + contract.getContractType().getDisplayName());
-        labelContractStatusType.setText("Status: " + contract.getContractStatusType().getDisplayName());
-
-    }
-
-    private void clearLabels(){
-
-        labelSalary.setText("Wynagrodzenie: ");
-        labelDateStart.setText("Rozpoczęcie: ");
-        labelDateEnd.setText("Zakończenie: ");
-        labelContractType.setText("Typ umowy");
-        labelContractStatusType.setText("Status: ");
+        if (isDarkMode){
+            mainPane.getStylesheets().remove(darkMode);
+            isDarkMode = false;
+        }else {
+            mainPane.getStylesheets().add(darkMode);
+            isDarkMode = true;
+        }
     }
     @FXML
+    protected void initialize(){
+        contractService.updateStatus();
+        uploadContractList(-1L);
+        setEmployeeObservableList();
+        setContractView();
+        setContractTypeList();
+        setContractStatus();
+
+        setStatusSearchObservableList();
+        listenerToComboxStatusSearch();
+
+        listenerToTextFieldSearch();
+
+
+        comboxstatussearch.setItems(statusSearchObservableList);
+
+        listViewEmployees.setItems(employeeObservableList);
+        listViewContracts.setItems(contractObservableList);
+        comboBoxContractType.setItems(contractTypeObservableList);
+        comboBoxUpdate.setItems(contractStatusObservableList);
+
+    }
+
+    private void setEmployeeObservableList(){
+        employeeObservableList.setAll(employeeService.getAllEmployees());
+
+        listViewEmployees.setCellFactory(employeeListView -> new ListCell<>(){
+
+            @Override
+            protected void updateItem(Employee employee, boolean b) {
+                super.updateItem(employee, b);
+                if (b || employee == null){
+                    setText(null);
+                }else {
+                    setText(employee.getFirstName() + " " + employee.getLastName());
+                }
+            }
+        });
+    }
+
+    private void setContractView(){
+        listenerToEmployee();
+        listenerToContract();
+
+        listViewContracts.setCellFactory(contract -> new ListCell<>(){
+
+            @Override
+            protected void updateItem(Contract contract, boolean b) {
+                super.updateItem(contract, b);
+
+                if(b || contract == null){
+                    setText(null);
+                }else {
+                    setText(contract.getDateStart() + " - " + contract.getDateEnd() + ", " + contract.getContractStatusType().getDisplayName());
+                }
+            }
+        });
+    }
+
+    private void setContractTypeList(){
+
+        List<ContractType> contractTypeList = List.of(ContractType.EMPLOYMENT_CONTRACT,ContractType.MANDATE_CONTRACT,ContractType.SPECIFIC_TASK_CONTRACT,ContractType.INTERNSHIP,ContractType.B2B_CONTRACT);
+
+        contractTypeObservableList.setAll(contractTypeList);
+    }
+
+    private void setContractStatus(){
+
+        List<ContractStatusType> contractStatusTypeList = List.of(ContractStatusType.PENDING,ContractStatusType.REJECTED,ContractStatusType.CONFIRMED);
+
+        contractStatusObservableList.setAll(contractStatusTypeList);
+    }
+
+    private void setStatusSearchObservableList(){
+
+        List<ContractStatusType> list = new ArrayList<>(Arrays.asList(
+                ContractStatusType.NEW,
+                ContractStatusType.PENDING,
+                ContractStatusType.REJECTED,
+                ContractStatusType.CONFIRMED,
+                ContractStatusType.IN_PROGRESS,
+                ContractStatusType.COMPLETED,
+                ContractStatusType.EXPIRING
+        ));
+
+        list.add(0,null);
+
+        statusSearchObservableList.setAll(list);
+    }
+    private void listenerToEmployee(){
+
+        listViewEmployees.getSelectionModel().selectedItemProperty().addListener((observableValue, employee, t1) -> {
+
+            if (t1 != null){
+                List<Contract> newList = contractService.getAllContractByEmployee(t1);
+                newList.sort(Comparator.comparing(Contract::getDateStart).reversed());
+                contractObservableList.setAll(newList);
+                errorLabel.setText("");
+
+                comboxstatussearch.setPromptText("Wszystkie");
+                comboxstatussearch.setValue(null);
+            }
+        });
+    }
+
+    private void listenerToContract(){
+
+        listViewContracts.getSelectionModel().selectedItemProperty().addListener((observableValue, contract, t1) -> {
+
+            setLabels(t1);
+            errorLabel.setText("");
+        });
+    }
+
+    private void listenerToComboxStatusSearch(){
+
+
+        comboxstatussearch.getSelectionModel().selectedItemProperty().addListener((observableValue, contractStatusType, t1) -> {
+
+            List<Contract> list = contractService.getAllContractByEmployeeAndStatusType(listViewEmployees.getSelectionModel().getSelectedItem(),t1);
+            list.sort(Comparator.comparing(Contract::getDateStart).reversed());
+
+            contractObservableList.setAll(list);
+        });
+    }
+
+    private void listenerToTextFieldSearch(){
+
+        textfieldsearch.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                String searchName = "";
+                searchName = textfieldsearch.getText();
+
+                List<Employee> employeeList = employeeService.getAllEmployeesByName(searchName);
+                employeeObservableList.setAll(employeeList);
+            }
+        });
+    }
+
+    @FXML
     private void createContract(){
+
+        Contract createContract = new Contract();
+
+        double salary = -1;
+
+        try {
+             salary = Double.parseDouble(textFieldSalary.getText());
+        }catch (NumberFormatException e){
+            System.out.println("Zły format liczb");
+            errorLabel.setText("Zły format liczb");
+            return;
+        }
+
+        ContractType contractType = comboBoxContractType.getSelectionModel().getSelectedItem();
+
+        LocalDate startLocalDate = datePickerDateStart.getValue();
+        Date startDate = startLocalDate != null ? Date.from(startLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()) : null;
+
+        LocalDate endLocalDate = datePickerDateEnd.getValue();
+        Date endDate = endLocalDate != null ? Date.from(endLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()) : null;
+
+        if (salary == -1 || salary <= 0 || contractType == null || startDate == null || endDate == null){
+            System.out.println("Nie ustawiono wszystkich pól lub złe dane");
+            errorLabel.setText("Nie ustawiono wszystkich pól lub złe dane");
+            return;
+        }
+
+        if (endDate.getTime() <= startDate.getTime()){
+            System.out.println("Niepoprawnie podana data");
+            errorLabel.setText("Niepoprawnie podana data");
+            return;
+        }
+
+        createContract.setSalary(salary);
+        createContract.setDateStart(startDate);
+        createContract.setDateEnd(endDate);
+        createContract.setContractType(contractType);
+        createContract.setContractStatusType(ContractStatusType.NEW);
+
+        System.out.println(createContract);
+
         Employee employee = listViewEmployees.getSelectionModel().getSelectedItem();
 
-        if (employee != null){
+       if (employee == null){
+           System.out.println("Nie wybrano pracownika");
+           errorLabel.setText("Nie wybrano pracownika");
+           return;
+       }
 
-            Optional<Employee> optionalEmployee = employeeService.getEmployee(employee.getId());
+       employeeService.addContractToEmployee(employee.getId(), createContract);
 
-            if (optionalEmployee.isPresent()){
+        //Pobranie obecnej listy kontaktow dla pracownika
+        uploadContractList(employee.getId());
 
-                Employee curEmployee = optionalEmployee.get();
-                Contract contract = new Contract();
+        //Resetowanie pol
+        resetCreateFields();
+    }
+
+    @FXML
+    private void updateContract(){
+
+        Long contractID;
+
+        try {
+            contractID = listViewContracts.getSelectionModel().getSelectedItem().getId();
+        }catch (Exception e){
+            System.out.println("Nie wybrano kontrakt");
+            errorLabel.setText("Nie wybrano kontraktu");
+            return;
+        }
+
+        Optional<Contract> optionalContract = contractService.getContract(contractID);
+        Contract dbContract = null;
 
 
-            double salary = Double.parseDouble(textFieldSalary.getText());
+        //Sprawdzenie czy kontakt istnieje
+        if (optionalContract.isEmpty()){
+            System.out.println("Kontrakt nie istnieje w bazie danych");
+            errorLabel.setText("Kontrakt nie istnieje w bazie danych");
+            return;
+        }else {
+            dbContract = optionalContract.get();
+        }
 
-            LocalDate localDateStart = datePickerDateStart.getValue();
-            Date start = localDateStart != null ? Date.from(localDateStart.atStartOfDay(ZoneId.systemDefault()).toInstant()) : null;
+        if (dbContract == null){
+            System.out.println("Zle pobrano kontakt");
+            errorLabel.setText("Źle pobrano kontrakt");
+            return;
+        }
 
-            LocalDate localDateEnd = datePickerDateEnd.getValue();
-            Date end = localDateEnd != null ? Date.from(localDateEnd.atStartOfDay(ZoneId.systemDefault()).toInstant()) : null;
 
-            ContractType contractType = comboBoxContractType.getSelectionModel().getSelectedItem();
 
-            if (salary < 0 || start == null || end == null || contractType == null){
-                System.out.println("Zle dane");
-            }else {
-                contract.setSalary(salary);
-                contract.setDateStart(start);
-                contract.setDateEnd(end);
-                contract.setContractType(contractType);
+        if (contractID == null) {
+            System.out.println("Wybierz kontakt");
+            errorLabel.setText("Wybierz kontrakt");
+            return;
+        }
 
-                employeeService.addContractToEmployee(curEmployee.getId(), contract);
-                updateListContracts(curEmployee.getId());
-            }
+        Contract updateContract = new Contract();
+
+        double salary = 0;
+
+        //Sprawdzenie poprawności danych liczbowych
+        if (!textFieldSalary.getText().isBlank()) {
+            try {
+                salary = Double.parseDouble(textFieldSalary.getText());
+            } catch (NumberFormatException e) {
+                System.out.println("Zły format liczb");
+                errorLabel.setText("Zły format liczb");
+                return;
             }
         }
+
+        ContractType contractType = comboBoxContractType.getSelectionModel().getSelectedItem();
+
+        LocalDate startLocalDate = datePickerDateStart.getValue();
+        Date startDate = startLocalDate != null ? Date.from(startLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()) : null;
+
+        LocalDate endLocalDate = datePickerDateEnd.getValue();
+        Date endDate = endLocalDate != null ? Date.from(endLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant()) : null;
+
+        //Sprawdzenie poprawności dat w 3 przypadkach:
+        //(kiedy chcemy zaktualizowac obie daty), (kiedy chcemy zaktualizowac start kontraktu), (kiedy chcemy zaktualizować koniec kontraktu)
+        //Data startu kontraktu nie może być później niż jego koniec.
+        if (startDate != null && endDate != null) {
+            if (endDate.getTime() <= startDate.getTime()) {
+                System.out.println("Niepoprawnie podana data");
+                errorLabel.setText("Niepoprawnie podana data");
+                return;
+            }else {
+                updateContract.setDateStart(startDate);
+                updateContract.setDateEnd(endDate);
+            }
+        } else if (startDate != null && endDate == null){
+
+            if (dbContract.getDateEnd().getTime() <= startDate.getTime()) {
+                System.out.println("Niepoprawnie podana data");
+                errorLabel.setText("Niepoprawnie podana data");
+                return;
+            }else {
+                updateContract.setDateStart(startDate);
+            }
+        } else if (startDate == null && endDate != null){
+            if (endDate.getTime() <= dbContract.getDateStart().getTime()) {
+                System.out.println("Niepoprawnie podana data");
+                errorLabel.setText("Niepoprawnie podana data");
+                return;
+            }else {
+                updateContract.setDateEnd(endDate);
+            }
+        }
+
+        if (salary >= 0 ) updateContract.setSalary(salary);
+
+        if (contractType != null) updateContract.setContractType(contractType);
+
+        contractService.updateContract(contractID, updateContract);
+
+
+        //Pobranie obecnej listy kontaktow dla pracownika
+        Long employeeID = listViewEmployees.getSelectionModel().getSelectedItem().getId();
+        uploadContractList(employeeID);
+
+        //Resetowanie pol
+        resetCreateFields();
     }
 
     @FXML
     private void deleteContract(){
-        Contract contract = listViewContracts.getSelectionModel().getSelectedItem();
+        if (listViewEmployees.getSelectionModel().isEmpty()){
+            System.out.println("Wybierz jeszcze raz pracownika");
+            errorLabel.setText("Wybierz pracownika");
+            return;
+        }
 
-        if (contract != null){
-            Long employeeID = contract.getEmployee().getId();
-            employeeService.removeContract(employeeID,contract.getId());
+        Long employeeID;
+        Long contractID;
 
-            updateListContracts(employeeID);
+        try {
+            employeeID = listViewEmployees.getSelectionModel().getSelectedItem().getId();
+        }catch (Exception e){
+            System.out.println("Wybierz pracownika");
+            errorLabel.setText("Wybierz pracownika");
+            return;
+        }
+
+        try {
+            contractID = listViewContracts.getSelectionModel().getSelectedItem().getId();
+        }catch (Exception e){
+            System.out.println("Wybierz kontrakt");
+            errorLabel.setText("Wybierz kontrakt");
+            return;
+        }
+
+        employeeService.removeContract(employeeID,contractID);
+
+       //Pobranie obecnej listy kontaktow dla pracownika
+       uploadContractList(employeeID);
+    }
+
+    @FXML
+    private void updateStatus(){
+
+
+
+        Long contraID;
+        ContractStatusType contractStatusType = comboBoxUpdate.getSelectionModel().getSelectedItem();
+
+        try {
+            contraID = listViewContracts.getSelectionModel().getSelectedItem().getId();
+        }catch (Exception e){
+            System.out.println("Nie wybrano kontraktu");
+            errorLabel.setText("Nie wybrano kontraktu");
+            return;
+        }
+
+        if (contractStatusType == null){
+            System.out.println("Nie wybrano statusu");
+            errorLabel.setText("Nie wybrano statusu");
+            return;
+        }
+        boolean result = contractService.updateStatus(contraID,contractStatusType);
+
+
+
+        Long employeeID = null;
+        if (listViewEmployees.getSelectionModel().isEmpty()){
+            uploadContractList(null);
+        }else {
+            employeeID = listViewEmployees.getSelectionModel().getSelectedItem().getId();
+            uploadContractList(employeeID);
+        }
+        System.out.println("Wykonało się");
+
+        if (!result){
+            System.out.println("Nie można zaktualizować statusu dla wybranego kontraktu");
+            errorLabel.setText("Nie można zaktualizować statusu dla wybranego kontraktu");
         }
     }
 
-    private void updateListContracts(Long employeeID){
-
+    private void uploadContractList(Long employeeID){
         Optional<Employee> optionalEmployee = employeeService.getEmployee(employeeID);
+        List<Contract> newList;
+
+        //Sprawdzenie czy pracownik jest wybrany, jezeli nie zwraca pusta liste
         if (optionalEmployee.isPresent()) {
-            Employee employee = optionalEmployee.get();
-            contractObservableList.setAll(employee.getContracts());
+            Employee dbEmployee = optionalEmployee.get();
+            newList = contractService.getAllContractByEmployee(dbEmployee);
+        }else {
+            newList = new ArrayList<>();
+        }
+        newList.sort(Comparator.comparing(Contract::getDateStart).reversed());
+        contractObservableList.setAll(newList);
+    }
+
+    private void resetCreateFields(){
+
+        textFieldSalary.setText(null);
+        datePickerDateStart.setValue(null);
+        datePickerDateEnd.setValue(null);
+        comboBoxContractType.getSelectionModel().clearSelection();
+    }
+
+    private void setLabels(Contract contract){
+
+        if (contract == null){
+            labelSalary.setText("Wynagrodzenie: ");
+            labelDateStart.setText("Rozpoczęcie: ");
+            labelDateEnd.setText("Zakończenie: ");
+            labelContractType.setText("Typ umowy: ");
+            labelContractStatusType.setText("Status: ");
+        }else {
+            labelSalary.setText("Wynagrodzenie: " + contract.getSalary() + "zł (brutto)");
+            labelDateStart.setText("Rozpoczęcie: " + contract.getDateStart());
+            labelDateEnd.setText("Zakończenie: " + contract.getDateEnd());
+            labelContractType.setText("Typ umowy: " + contract.getContractType());
+            labelContractStatusType.setText("Status: " + contract.getContractStatusType());
         }
     }
 }

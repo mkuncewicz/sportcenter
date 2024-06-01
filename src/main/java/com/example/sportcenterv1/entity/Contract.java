@@ -38,4 +38,17 @@ public class Contract {
 
     @Enumerated(EnumType.STRING)
     private ContractStatusType contractStatusType = ContractStatusType.NEW;
+
+    @Override
+    public String toString() {
+        return "Contract{" +
+                "id=" + id +
+                ", salary=" + salary +
+                ", dateStart=" + dateStart +
+                ", dateEnd=" + dateEnd +
+                ", contractType=" + contractType +
+                ", employee=" + employee +
+                ", contractStatusType=" + contractStatusType +
+                '}';
+    }
 }

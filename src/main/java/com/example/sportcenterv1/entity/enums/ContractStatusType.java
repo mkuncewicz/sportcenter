@@ -22,8 +22,6 @@ public enum ContractStatusType {
 
     @Override
     public String toString() {
-        return "ContractStatusType{" +
-                "displayName='" + displayName + '\'' +
-                '}';
+        return displayName;
     }
 }

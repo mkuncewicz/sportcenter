@@ -1,11 +1,13 @@
 package com.example.sportcenterv1.entity.employee;
 
+import com.example.sportcenterv1.entity.Address;
 import com.example.sportcenterv1.entity.Contract;
 import com.example.sportcenterv1.entity.Specialization;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,8 +27,14 @@ public class Employee {
     @Column(nullable = false)
     private String lastName;
 
+    @Column
+    private Date dateOfBirth;
+
     @Column(nullable = false)
     private String phoneNumber;
+
+    @Embedded
+    private Address address;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

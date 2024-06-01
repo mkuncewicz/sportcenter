@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="mainPane" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/contractManager.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.ContractController">
+<AnchorPane fx:id="mainPane" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/DMcontractManager.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.ContractController">
    <children>
       <Button layoutX="35.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="75.0" prefWidth="125.0" styleClass="backButton" text="Wróć" />
       <VBox layoutX="35.0" layoutY="150.0" prefHeight="750.0" prefWidth="600.0" styleClass="employee-con">
@@ -78,6 +78,6 @@
             </VBox>
          </children></HBox>
       <Label fx:id="errorLabel" alignment="CENTER" layoutX="425.0" layoutY="101.0" prefHeight="45.0" prefWidth="1000.0" styleClass="errorLabel" />
-      <Button layoutX="1704.0" layoutY="52.0" mnemonicParsing="false" onAction="#setDarkMode" styleClass="buttonDarkMode" text="DarkMode" />
+      <Button layoutX="1694.0" layoutY="42.0" mnemonicParsing="false" styleClass="buttonDarkMode" text="DarkMode" />
    </children>
 </AnchorPane>

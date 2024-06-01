@@ -10,10 +10,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/clientManager.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.ClientController">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/DMclientManager.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.ClientController">
     <children>
         <Button layoutX="35.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="75.0" prefWidth="125.0" styleClass="backButton" text="Wróć" />
-      <VBox layoutX="360.0" layoutY="50.0" prefHeight="950.0" prefWidth="1200.0" styleClass="client-con">
+      <VBox layoutX="360.0" layoutY="80.0" prefHeight="950.0" prefWidth="1200.0" styleClass="client-con">
          <children>
             <Label alignment="CENTER" prefHeight="50.0" prefWidth="1200.0" text="Klienci">
                <font>
@@ -93,6 +93,6 @@
          </children>
       </VBox>
       <Label fx:id="errorLabel" alignment="CENTER" layoutX="460.0" layoutY="25.0" prefHeight="45.0" prefWidth="1000.0" styleClass="errorLabel" textFill="#ff0202" />
-      <Button layoutX="1700.0" layoutY="25.0" mnemonicParsing="false" onAction="#setDarkMode" styleClass="buttonDarkMode" text="DarkMode" />
+      <Button layoutX="1700.0" layoutY="50.0" mnemonicParsing="false" styleClass="buttonDarkMode" text="DarkMode" />
     </children>
 </AnchorPane>

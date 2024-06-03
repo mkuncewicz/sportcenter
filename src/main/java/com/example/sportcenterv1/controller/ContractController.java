@@ -1,5 +1,6 @@
 package com.example.sportcenterv1.controller;
 
+import com.example.sportcenterv1.dm.DarkModeSingleton;
 import com.example.sportcenterv1.entity.Contract;
 import com.example.sportcenterv1.entity.employee.Employee;
 import com.example.sportcenterv1.entity.enums.ContractStatusType;
@@ -30,10 +31,14 @@ import java.util.*;
 @Component
 public class ContractController {
 
+    //DarkMode
     @FXML
     private AnchorPane mainPane;
 
     private boolean isDarkMode = false;
+
+    private DarkModeSingleton darkModeSingleton = DarkModeSingleton.getInstance();
+
     @Autowired
     private ApplicationContext springContext;
 
@@ -122,14 +127,33 @@ public class ContractController {
 
         if (isDarkMode){
             mainPane.getStylesheets().remove(darkMode);
+            darkModeSingleton.setDarkMode(false);
             isDarkMode = false;
         }else {
             mainPane.getStylesheets().add(darkMode);
+            darkModeSingleton.setDarkMode(true);
             isDarkMode = true;
         }
     }
+
+    @FXML
+    private void checkActiveDarkMode(){
+
+        String darkMode = getClass().getResource("/css/DMcontractManager.css").toExternalForm();
+
+        if (isDarkMode){
+            mainPane.getStylesheets().add(darkMode);
+        }else {
+            mainPane.getStylesheets().remove(darkMode);
+        }
+    }
+
     @FXML
     protected void initialize(){
+        //DarkMode
+        isDarkMode = darkModeSingleton.isDarkMode();
+        checkActiveDarkMode();
+
         contractService.updateStatus();
         uploadContractList(-1L);
         setEmployeeObservableList();

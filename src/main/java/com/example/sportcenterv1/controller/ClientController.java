@@ -1,5 +1,6 @@
 package com.example.sportcenterv1.controller;
 
+import com.example.sportcenterv1.dm.DarkModeSingleton;
 import com.example.sportcenterv1.entity.Address;
 import com.example.sportcenterv1.entity.Client;
 import com.example.sportcenterv1.service.ClientService;
@@ -30,6 +31,8 @@ import java.util.List;
 
 @Component
 public class ClientController {
+
+    private DarkModeSingleton darkModeSingleton = DarkModeSingleton.getInstance();
 
     @FXML
     private AnchorPane mainPane;
@@ -122,15 +125,33 @@ public class ClientController {
 
         if (isDarkMode){
             mainPane.getStylesheets().remove(darkMode);
+            darkModeSingleton.setDarkMode(false);
             isDarkMode = false;
         }else {
             mainPane.getStylesheets().add(darkMode);
+            darkModeSingleton.setDarkMode(true);
             isDarkMode = true;
         }
     }
 
     @FXML
+    private void checkActiveDarkMode(){
+
+        String darkMode = getClass().getResource("/css/DMclientManager.css").toExternalForm();
+
+        if (isDarkMode){
+            mainPane.getStylesheets().add(darkMode);
+        }else {
+            mainPane.getStylesheets().remove(darkMode);
+        }
+    }
+
+    @FXML
     protected void initialize(){
+        //DarkMode
+        isDarkMode = darkModeSingleton.isDarkMode();
+        checkActiveDarkMode();
+
         updateList();
         settingListViewClients();
         listViewClient.setItems(clientObservableList);

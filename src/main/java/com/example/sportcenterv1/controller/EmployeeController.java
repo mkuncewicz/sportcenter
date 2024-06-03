@@ -1,5 +1,6 @@
 package com.example.sportcenterv1.controller;
 
+import com.example.sportcenterv1.dm.DarkModeSingleton;
 import com.example.sportcenterv1.entity.Address;
 import com.example.sportcenterv1.entity.employee.Employee;
 import com.example.sportcenterv1.entity.Specialization;
@@ -34,6 +35,8 @@ import java.util.Optional;
 
 @Component
 public class EmployeeController {
+
+    private DarkModeSingleton darkModeSingleton = DarkModeSingleton.getInstance();
 
     @FXML
     private AnchorPane mainPane;
@@ -170,15 +173,32 @@ public class EmployeeController {
 
         if (isDarkMode){
             mainPane.getStylesheets().remove(darkMode);
+            darkModeSingleton.setDarkMode(false);
             isDarkMode = false;
         }else {
             mainPane.getStylesheets().add(darkMode);
+            darkModeSingleton.setDarkMode(true);
             isDarkMode = true;
         }
     }
 
     @FXML
+    private void checkActiveDarkMode(){
+
+        String darkMode = getClass().getResource("/css/DMemployeeManagerStyle.css").toExternalForm();
+
+        if (isDarkMode){
+            mainPane.getStylesheets().add(darkMode);
+        }else {
+            mainPane.getStylesheets().remove(darkMode);
+        }
+    }
+    @FXML
     public void initialize() {
+        //DarkMode
+        isDarkMode = darkModeSingleton.isDarkMode();
+        checkActiveDarkMode();
+
        settingListEmployees();
        settingListSpec();
        settingListSpecOfEmployee();

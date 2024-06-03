@@ -1,5 +1,6 @@
 package com.example.sportcenterv1.controller;
 
+import com.example.sportcenterv1.dm.DarkModeSingleton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,7 +43,16 @@ public class MenuController {
     @Autowired
     private ApplicationContext springContext;
 
-    private boolean isDarkMode = false;
+    private boolean isDarkMode;
+
+    private DarkModeSingleton darkModeSingleton = DarkModeSingleton.getInstance();
+
+    @FXML
+    public void initialize(){
+        isDarkMode = darkModeSingleton.isDarkMode();
+        checkActiveDarkMode();
+
+    }
 
     @FXML
     protected void handleButton(ActionEvent event) throws Exception {
@@ -83,13 +93,26 @@ public class MenuController {
 
         if (isDarkMode){
             mainPane.getStylesheets().remove(darkMode);
+            darkModeSingleton.setDarkMode(false);
             isDarkMode = false;
         }else {
             mainPane.getStylesheets().add(darkMode);
+            darkModeSingleton.setDarkMode(true);
             isDarkMode = true;
         }
     }
 
+    @FXML
+    private void checkActiveDarkMode(){
+
+        String darkMode = getClass().getResource("/css/DMmenuStyle.css").toExternalForm();
+
+        if (isDarkMode){
+            mainPane.getStylesheets().add(darkMode);
+        }else {
+            mainPane.getStylesheets().remove(darkMode);
+        }
+    }
 
 }
 

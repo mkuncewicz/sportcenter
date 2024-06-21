@@ -9,8 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/offerManagerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.OfferController">
+<AnchorPane fx:id="mainPane" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/offerManagerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.OfferController">
    <children>
       <Button layoutX="35.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="75.0" prefWidth="125.0" styleClass="backButton" text="Wróć" />
       <VBox layoutX="153.0" layoutY="130.0" prefHeight="800.0" prefWidth="900.0" styleClass="mainvboxspace">
@@ -20,20 +21,28 @@
                <children>
                   <VBox prefHeight="850.0" prefWidth="500.0">
                      <children>
-                        <ListView prefHeight="400.0" prefWidth="750.0" />
-                        <TextArea prefHeight="250.0" prefWidth="700.0" promptText="Opis" />
-                        <TextField prefHeight="50.0" prefWidth="750.0" promptText="Cena" />
-                        <ComboBox prefHeight="50.0" prefWidth="750.0" />
+                        <ListView fx:id="listViewOffer" prefHeight="332.0" prefWidth="472.0" />
+                        <TextField fx:id="nameTextField" prefHeight="50.0" prefWidth="750.0" promptText="Nazwa" />
+                        <TextArea fx:id="descriptionTextArea" prefHeight="172.0" prefWidth="472.0" promptText="Opis (Max 510 znaków)" />
+                        <TextField fx:id="priceTextField" prefHeight="50.0" prefWidth="750.0" promptText="Cena (zł)" />
+                        <ComboBox prefHeight="53.0" prefWidth="472.0" />
                         <HBox prefHeight="100.0" prefWidth="750.0">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="250.0" text="Stwórz" />
-                              <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="250.0" text="Aktualizuj" />
-                              <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="250.0" text="Usuń" />
+                              <Button mnemonicParsing="false" onAction="#createOffer" prefHeight="100.0" prefWidth="250.0" text="Stwórz" />
+                              <Button mnemonicParsing="false" onAction="#updateOffer" prefHeight="100.0" prefWidth="250.0" text="Aktualizuj" />
+                              <Button mnemonicParsing="false" onAction="#deleteOffer" prefHeight="100.0" prefWidth="250.0" text="Usuń" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox prefHeight="1150.0" prefWidth="450.0" />
+                  <VBox prefHeight="1150.0" prefWidth="450.0">
+                     <children>
+                        <Label fx:id="nameLabel" prefHeight="36.0" prefWidth="424.0" text="Nazwa" />
+                        <TextFlow fx:id="descriptionTextFlow" prefHeight="343.0" prefWidth="422.0" styleClass="opis" />
+                        <Label fx:id="priceLabel" prefHeight="36.0" prefWidth="424.0" text="Cena:" />
+                        <ListView fx:id="listViewSpecOfOffer" prefHeight="300.0" prefWidth="422.0" />
+                        <Button mnemonicParsing="false" onAction="#removeSpecFromOffer" prefHeight="52.0" prefWidth="425.0" text="Usuń" />
+                     </children></VBox>
                </children>
             </HBox>
          </children>
@@ -41,14 +50,16 @@
       <VBox layoutX="1189.0" layoutY="130.0" prefHeight="800.0" prefWidth="500.0" styleClass="mainvboxspace">
          <children>
             <Label alignment="CENTER" prefHeight="50.0" prefWidth="500.0" text="Specjalizacje" />
-            <ListView prefHeight="650.0" prefWidth="500.0" />
+            <ListView fx:id="listViewSpecialization" prefHeight="650.0" prefWidth="500.0" />
             <HBox prefHeight="100.0" prefWidth="500.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="250.0" text="Dodaj" />
-                  <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="250.0" text="Usuń" />
+                  <Button mnemonicParsing="false" onAction="#addSpecToOffer" prefHeight="98.0" prefWidth="495.0" text="Dodaj" />
                </children>
             </HBox>
          </children>
       </VBox>
+      <Button layoutX="1710.0" layoutY="35.0" mnemonicParsing="false" onAction="#setDarkMode" styleClass="buttonDarkMode" text="DarkMode" />
+      <Label fx:id="errorLabel1" alignment="CENTER" layoutX="170.0" layoutY="67.0" prefHeight="36.0" prefWidth="843.0" styleClass="errorLabel" />
+      <Label fx:id="errorLabel2" alignment="CENTER" layoutX="1189.0" layoutY="67.0" prefHeight="36.0" prefWidth="494.0" styleClass="errorLabel" />
    </children>
 </AnchorPane>

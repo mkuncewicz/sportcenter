@@ -9,10 +9,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="mainPane" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/reservationManager.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.ReservationController">
+<AnchorPane fx:id="mainPane" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/DMreservationManager.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.ReservationController">
    <children>
       <Button layoutX="35.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="75.0" prefWidth="125.0" styleClass="backButton" text="Wróć" />
       <Button layoutX="1710.0" layoutY="35.0" mnemonicParsing="false" onAction="#setDarkMode" styleClass="buttonDarkMode" text="DarkMode" />
@@ -25,13 +24,11 @@
                      <children>
                         <HBox prefHeight="50.0" prefWidth="400.0">
                            <children>
-                              <DatePicker fx:id="datePicker" prefHeight="41.0" prefWidth="200.0" promptText="Data rezerwacji" />
-                              <ComboBox fx:id="comboboxhour" prefHeight="50.0" prefWidth="75.0" promptText="HH" />
-                              <ComboBox fx:id="comboboxminute" prefHeight="50.0" prefWidth="75.0" promptText="MM" />
-                              <Button mnemonicParsing="false" onAction="#clearDate" prefHeight="50.0" prefWidth="50.0" styleClass="clearButton" text="X" />
+                              <DatePicker prefHeight="50.0" prefWidth="350.0" promptText="Data rezerwacji" />
+                              <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="clearButton" text="X" />
                            </children>
                         </HBox>
-                        <ComboBox fx:id="comboboxStatusReservation" prefHeight="55.0" prefWidth="400.0" promptText="Status Rezerwacji">
+                        <ComboBox prefHeight="55.0" prefWidth="400.0" promptText="Status Rezerwacji">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -39,17 +36,17 @@
                         <HBox prefHeight="30.0" prefWidth="400.0">
                            <children>
                               <Label prefHeight="30.0" prefWidth="60.0" text="Klient" />
-                              <TextField fx:id="textFieldCSearchClient" prefHeight="30.0" prefWidth="340.0" promptText="Szukaj klienta" />
+                              <TextField prefHeight="30.0" prefWidth="340.0" promptText="Szukaj klienta" />
                            </children>
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
                         </HBox>
-                        <ListView fx:id="listViewClient" prefHeight="200.0" prefWidth="355.0" styleClass="listviewSec" />
+                        <ListView prefHeight="200.0" prefWidth="355.0" />
                         <HBox prefHeight="40.0" prefWidth="400.0">
                            <children>
                               <Label prefHeight="40.0" prefWidth="60.0" text="Oferta" />
-                              <TextField fx:id="textFieldSearchOffer" prefHeight="40.0" prefWidth="340.0" promptText="Szukaj oferty">
+                              <TextField prefHeight="40.0" prefWidth="340.0" promptText="Szukaj oferty">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -59,14 +56,14 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                         </HBox>
-                        <ListView fx:id="listViewOffer" prefHeight="200.0" prefWidth="200.0" styleClass="listviewSec" />
-                        <ComboBox fx:id="comboboxEmployee" disable="true" prefHeight="70.0" prefWidth="400.0" promptText="Pracownik" />
-                        <ComboBox fx:id="comboboxSpace" disable="true" prefHeight="70.0" prefWidth="400.0" promptText="Sala" />
+                        <ListView prefHeight="200.0" prefWidth="200.0" />
+                        <ComboBox prefHeight="70.0" prefWidth="400.0" promptText="Pracownik" />
+                        <ComboBox prefHeight="70.0" prefWidth="400.0" promptText="Sala" />
                         <HBox prefHeight="140.0" prefWidth="400.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#createReservation" prefHeight="120.0" prefWidth="133.0" text="Dodaj" />
-                              <Button mnemonicParsing="false" onAction="#updateReservation" prefHeight="120.0" prefWidth="133.0" text="Aktualizuj" />
-                              <Button mnemonicParsing="false" onAction="#deleteReservation" prefHeight="120.0" prefWidth="133.0" text="Usuń" />
+                              <Button mnemonicParsing="false" prefHeight="120.0" prefWidth="133.0" text="Dodaj" />
+                              <Button mnemonicParsing="false" prefHeight="120.0" prefWidth="133.0" text="Aktualizuj" />
+                              <Button mnemonicParsing="false" prefHeight="120.0" prefWidth="133.0" text="Usuń" />
                            </children>
                            <VBox.margin>
                               <Insets top="10.0" />
@@ -76,8 +73,7 @@
                   </VBox>
                   <VBox prefHeight="770.0" prefWidth="600.0">
                      <children>
-                        <TextField prefHeight="40.0" promptText="Znajdz klienta" />
-                        <ListView fx:id="listViewReservation" prefHeight="730.0" prefWidth="600.0" />
+                        <ListView prefHeight="772.0" prefWidth="600.0" />
                      </children>
                   </VBox>
                   <VBox prefHeight="770.0" prefWidth="400.0">
@@ -95,6 +91,5 @@
             </HBox>
          </children>
       </VBox>
-      <Pane fx:id="testpane" layoutX="35.0" layoutY="194.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

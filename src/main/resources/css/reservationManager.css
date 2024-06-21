@@ -1,8 +1,9 @@
 .root {
-    -fx-background-color: #90beef;
+    -fx-background-color: #90beef; /* Ciemny granat tła */
 }
 
-.contract-con{
+
+.res-con{
     -fx-border-color: black;
     -fx-border-width: 5;
     -fx-border-style: solid;
@@ -10,16 +11,6 @@
     -fx-text-fill: black;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 30, 0, 0, 0);
 }
-
-.employee-con{
-    -fx-border-color: black;
-    -fx-border-width: 5;
-    -fx-border-style: solid;
-    -fx-background-color: whitesmoke;
-    -fx-text-fill: black;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 30, 0, 0, 0);
-}
-
 
 .button{
     -fx-background-color: #1bb0bb; /* Jasnoniebieski kolor przycisków */
@@ -35,16 +26,21 @@
     -fx-background-color: #5d99f8; /* Jasnoniebieski kolor przycisków */
     -fx-font-weight: 700;
 }
-
-.list-view{
-    -fx-font-size: 22px;
-}
-
-.label{
+.urodziny{
     -fx-font-size: 20px;
 }
 
-.biggerText{
+
+
+.list-view{
+    -fx-font-size: 20px;
+}
+
+.listviewSec{
+    -fx-font-size: 14px;
+}
+
+.label{
     -fx-font-size: 20px;
 }
 
@@ -52,12 +48,6 @@
     -fx-font-size: 25px;
     -fx-text-fill: red;
     -fx-font-weight: 700;
-}
-
-.comboxstatussearch{
-    -fx-font-size: 20px;
-    -fx-font-weight: 700;
-    -fx-text-alignment: center;
 }
 
 .textfieldsearch{

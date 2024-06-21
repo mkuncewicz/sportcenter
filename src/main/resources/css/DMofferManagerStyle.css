@@ -2,9 +2,11 @@
     -fx-background-color: #2c3e50; /* Ciemny granat tła */
 }
 
+.button:hover {
+    -fx-background-color: #2980b9; /* Ciemniejszy niebieski kolor przycisków przy najechaniu */
+}
 
 .backButton{
-
     -fx-background-color: #494848; /* Jasnoniebieski kolor przycisków */
     -fx-text-fill: #070000; /* Biały tekst */
     -fx-font-size: 15px; /* Większy rozmiar tekstu dla lepszej widoczności */
@@ -15,14 +17,12 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
 }
 
-
-.client-con{
-    -fx-border-color: black;
-    -fx-border-width: 5;
-    -fx-border-style: solid;
+.mainvboxspace{
     -fx-background-color: #494848;
     -fx-text-fill: white;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 30, 0, 0, 0);
+    -fx-border-color: black; /* Biała ramka przycisków */
+    -fx-border-width: 3px; /* Szerokość ramki */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
 
 .button{
@@ -36,53 +36,64 @@
 }
 
 
-.urodziny{
+.label{
+    -fx-text-fill: white;
+    -fx-font-size: 25px;
+}
+
+.vbox{
+    -fx-background-color: #494848;
+    -fx-text-fill: white;
+}
+
+.text-area{
+    -fx-background-color: #494848;
+    -fx-control-inner-background: #494848;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-wrap-text: true;
+}
+
+.hbox{
+    -fx-background-color: #494848;
+    -fx-text-fill: white;
+}
+
+.text-field{
+    -fx-font-size: 21px;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #212020;
+}
+
+Text{
+    -fx-text-fill: white;
+    -fx-fill: white;
+}
+
+.combo-box{
+    -fx-background-color: #212020;
+    -fx-text-fill: #ffffff;
     -fx-font-size: 20px;
+}
+
+.combo-box-select{
+    -fx-font-size: 18px;
+    -fx-pref-width: 400px;
+    -fx-pref-height: 50px;
 }
 
 .list-view{
     -fx-background-color: #575656;
     -fx-text-fill: white;
+    -fx-font-size: 20px;
     -fx-control-inner-background: #575656;
     -fx-cell-hover-color: #575656;
-    -fx-font-size: 22px;
-}
-
-.label{
-    -fx-font-size: 20px;
-    -fx-text-fill: white;
-}
-
-.text-field{
-    -fx-background-color: #212020;
-    -fx-text-fill: white;
 }
 
 .errorLabel{
     -fx-font-size: 25px;
     -fx-text-fill: red;
     -fx-font-weight: 700;
-}
-
-.textfieldsearch{
-    -fx-font-size: 20px;
-}
-
-.clearButton{
-    -fx-pref-width: 50px;
-    -fx-pref-height: 50px;
-    -fx-font-size: 15px;
-    -fx-font-weight: 700;
-    -fx-background-color: #720808;
-    -fx-border-width: 0px;
-}
-
-.clearButton:hover{
-    -fx-pref-width: 50px;
-    -fx-pref-height: 50px;
-    -fx-font-size: 15px;
-    -fx-font-weight: 700;
-    -fx-background-color: #7a3030;
 }
 
 .buttonDarkMode{

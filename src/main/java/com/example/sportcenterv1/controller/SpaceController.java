@@ -2,6 +2,7 @@ package com.example.sportcenterv1.controller;
 
 import com.example.sportcenterv1.controllerview.SpaceDetails;
 import com.example.sportcenterv1.controllerview.SpaceView;
+import com.example.sportcenterv1.dm.DarkModeSingleton;
 import com.example.sportcenterv1.entity.Specialization;
 import com.example.sportcenterv1.entity.space.Space;
 import com.example.sportcenterv1.service.SpaceService;
@@ -18,6 +19,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -30,6 +32,13 @@ import java.util.List;
 
 @Component
 public class SpaceController {
+
+    private DarkModeSingleton darkModeSingleton = DarkModeSingleton.getInstance();
+
+    @FXML
+    private AnchorPane mainPane;
+
+    private boolean isDarkMode = false;
 
     @Autowired
     private ApplicationContext springContext;
@@ -88,9 +97,39 @@ public class SpaceController {
         window.setScene(menuScene);
     }
 
+    @FXML
+    private void setDarkMode(){
+        String darkMode = getClass().getResource("/css/DMspaceManagerStyle.css").toExternalForm();
+
+        if (isDarkMode){
+            mainPane.getStylesheets().remove(darkMode);
+            darkModeSingleton.setDarkMode(false);
+            isDarkMode = false;
+        }else {
+            mainPane.getStylesheets().add(darkMode);
+            darkModeSingleton.setDarkMode(true);
+            isDarkMode = true;
+        }
+    }
+
+    @FXML
+    private void checkActiveDarkMode(){
+
+        String darkMode = getClass().getResource("/css/DMspaceManagerStyle.css").toExternalForm();
+
+        if (isDarkMode){
+            mainPane.getStylesheets().add(darkMode);
+        }else {
+            mainPane.getStylesheets().remove(darkMode);
+        }
+    }
 
     @FXML
     public void initialize(){
+        //DarkMode
+        isDarkMode = darkModeSingleton.isDarkMode();
+        checkActiveDarkMode();
+
         settingChoice();
         settingSpaceView();
         listenerToComboBox();

@@ -7,8 +7,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +42,18 @@ public class SpaceService {
 
         return result;
     }
+
+    public Set<Space> getAllSpaceBySpecialization(List<Specialization> specializationList) {
+        if (specializationList == null || specializationList.isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        return spaceRepository.findAll().stream()
+                .filter(space -> space.getSpecializations().stream()
+                        .anyMatch(specializationList::contains))
+                .collect(Collectors.toSet());
+    }
+
     //Przeciążenie metody
     public List<Space> getAllSpaces(String spaceType){
         return spaceRepository.findSpacesByType(spaceType);

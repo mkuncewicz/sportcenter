@@ -15,7 +15,7 @@
    <children>
       <Button layoutX="1730.0" layoutY="25.0" mnemonicParsing="false" onAction="#setDarkMode" styleClass="buttonDarkMode" text="DarkMode" />
       <Button layoutX="10.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="75.0" prefWidth="125.0" styleClass="backButton" text="Wróć" />
-      <Label fx:id="errorLabel1" alignment="CENTER" layoutX="204.0" layoutY="45.0" prefHeight="45.0" prefWidth="950.0" styleClass="errorLabel" text="Tutaj będzie bład czy coś" />
+      <Label fx:id="errorLabel1" alignment="CENTER" layoutX="204.0" layoutY="45.0" prefHeight="45.0" prefWidth="950.0" styleClass="errorLabel" />
       <VBox layoutX="88.0" layoutY="95.0" prefHeight="925.0" prefWidth="1150.0" styleClass="mainvboxspace">
          <children>
             <Label prefHeight="35.0" prefWidth="1149.0" style="-fx-alignment: center;" text="Pracownicy" />
@@ -104,6 +104,6 @@
             </VBox>
          </children>
       </VBox>
-      <Label fx:id="errorLabel2" alignment="CENTER" layoutX="1321.0" layoutY="108.0" prefHeight="45.0" prefWidth="500.0" styleClass="errorLabel" text="Tutaj będzie bład czy coś" />
+      <Label fx:id="errorLabel2" alignment="CENTER" layoutX="1321.0" layoutY="108.0" prefHeight="45.0" prefWidth="500.0" styleClass="errorLabel" />
    </children>
 </AnchorPane>

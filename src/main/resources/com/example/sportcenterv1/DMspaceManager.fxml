@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="mainPane" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" styleClass="root" stylesheets="@../../../css/spaceManagerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.SpaceController">
+<AnchorPane fx:id="mainPane" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" styleClass="root" stylesheets="@../../../css/DMspaceManagerStyle2.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.SpaceController">
    <children>
       <Button layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="75.0" prefWidth="125.0" styleClass="backButton" text="Wróć" />
       <VBox layoutX="100.0" layoutY="130.0" prefHeight="800.0" prefWidth="1000.0" styleClass="vbox-main">
@@ -20,7 +20,7 @@
                   <Insets bottom="30.0" />
                </VBox.margin>
             </ComboBox>
-            <HBox fx:id="hboxTest" prefHeight="750.0" prefWidth="1000.0" styleClass="space-con">
+            <HBox fx:id="hboxTest" prefHeight="800.0" prefWidth="990.0" styleClass="space-con">
                <children>
                   <VBox prefHeight="750.0" prefWidth="550.0">
                      <children>
@@ -66,6 +66,6 @@
             </HBox>
          </children>
       </VBox>
-      <Button layoutX="1700.0" layoutY="25.0" mnemonicParsing="false" onAction="#setDarkMode" styleClass="buttonDarkMode" text="DarkMode" />
+      <Button layoutX="1700.0" layoutY="25.0" mnemonicParsing="false" styleClass="buttonDarkMode" text="DarkMode" />
    </children>
 </AnchorPane>

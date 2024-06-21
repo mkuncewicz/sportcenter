@@ -3,27 +3,15 @@
 }
 
 
-.backButton{
-
-    -fx-background-color: #494848; /* Jasnoniebieski kolor przycisków */
-    -fx-text-fill: #070000; /* Biały tekst */
-    -fx-font-size: 15px; /* Większy rozmiar tekstu dla lepszej widoczności */
-    -fx-font-weight: 700;
-    -fx-border-color: #2a2929; /* Biała ramka przycisków */
-    -fx-border-width: 1px; /* Szerokość ramki */
-    -fx-padding: 10px 15px; /* Padding przycisków */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
-}
-
-
-.client-con{
+.res-con{
     -fx-border-color: black;
-    -fx-border-width: 5;
+    -fx-border-width: 5px;
     -fx-border-style: solid;
     -fx-background-color: #494848;
     -fx-text-fill: white;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 30, 0, 0, 0);
 }
+
 
 .button{
     -fx-background-color: #031d1e; /* Jasnoniebieski kolor przycisków */
@@ -33,6 +21,15 @@
     -fx-padding: 10px 15px; /* Padding przycisków */
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
     -fx-font-size: 20px;
+}
+
+.backButton{
+    -fx-font-size: 15px; /* Większy rozmiar tekstu dla lepszej widoczności */
+    -fx-font-weight: 700;
+    -fx-border-color: #2a2929; /* Biała ramka przycisków */
+    -fx-border-width: 1px; /* Szerokość ramki */
+    -fx-padding: 10px 15px; /* Padding przycisków */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
 }
 
 
@@ -45,23 +42,50 @@
     -fx-text-fill: white;
     -fx-control-inner-background: #575656;
     -fx-cell-hover-color: #575656;
-    -fx-font-size: 22px;
+    -fx-font-size: 20px;
+    -fx-border-width: 0.5px;
+    -fx-border-color: black;
 }
+
+.listviewSec{
+    -fx-font-size: 14px;
+}
+
 
 .label{
     -fx-font-size: 20px;
     -fx-text-fill: white;
 }
 
-.text-field{
+.combo-box{
     -fx-background-color: #212020;
-    -fx-text-fill: white;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+}
+
+.combo-box-select{
+    -fx-font-size: 18px;
+    -fx-pref-width: 400px;
+    -fx-pref-height: 50px;
+}
+
+.combo-box .text {
+    -fx-fill: white;
+}
+
+.combo-box .arrow {
+    -fx-background-color: white;
 }
 
 .errorLabel{
     -fx-font-size: 25px;
     -fx-text-fill: red;
     -fx-font-weight: 700;
+}
+
+.text-field{
+    -fx-background-color: #212020;
+    -fx-text-fill: white;
 }
 
 .textfieldsearch{

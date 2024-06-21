@@ -7,6 +7,7 @@ import com.example.sportcenterv1.entity.enums.ContractStatusType;
 import com.example.sportcenterv1.repository.ContractRepository;
 import com.example.sportcenterv1.repository.EmployeeRepository;
 import com.example.sportcenterv1.repository.SpecializationRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +50,17 @@ public class EmployeeService {
         return result;
     }
 
+
+    public Set<Employee> getAllEmployeesBySpecialization(List<Specialization> specializationList) {
+        if (specializationList == null || specializationList.isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        return employeeRepository.findAll().stream()
+                .filter(employee -> employee.getSpecializations().stream()
+                        .anyMatch(specializationList::contains))
+                .collect(Collectors.toSet());
+    }
     public void createEmployee(Employee employee){
 
         if(employee.getFirstName() == null) {

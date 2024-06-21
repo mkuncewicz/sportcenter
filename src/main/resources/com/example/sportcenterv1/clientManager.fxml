@@ -92,7 +92,7 @@
             </HBox>
          </children>
       </VBox>
-      <Label fx:id="errorLabel" alignment="CENTER" layoutX="460.0" layoutY="25.0" prefHeight="45.0" prefWidth="1000.0" styleClass="errorLabel" textFill="#ff0202" />
+      <Label fx:id="errorLabel" alignment="CENTER" layoutX="460.0" prefHeight="45.0" prefWidth="1000.0" styleClass="errorLabel" textFill="#ff0202" />
       <Button layoutX="1700.0" layoutY="25.0" mnemonicParsing="false" onAction="#setDarkMode" styleClass="buttonDarkMode" text="DarkMode" />
     </children>
 </AnchorPane>

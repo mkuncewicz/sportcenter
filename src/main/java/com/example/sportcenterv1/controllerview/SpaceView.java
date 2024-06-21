@@ -42,8 +42,6 @@ public class SpaceView extends VBox {
     public SpaceView(String choice, SpaceService spaceService) {
         this.spaceService = spaceService;
         curChoice = choice;
-        // Ustawiamy styl
-        this.setStyle("-fx-background-color: whitesmoke");
         // Ustawiamy preferowaną szerokość
         this.setPrefWidth(350);
         this.setPrefHeight(750);

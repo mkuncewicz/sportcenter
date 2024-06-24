@@ -276,7 +276,7 @@ public class OfferController {
             return;
         }
 
-        if (price >= 0) {
+        if (price <= 0) {
             errorLabel1.setText("Cena nie moze byc rowna 0 lub mniej");
             return;
         }

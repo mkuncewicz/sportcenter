@@ -10,7 +10,6 @@ import com.example.sportcenterv1.entity.employee.Employee;
 import com.example.sportcenterv1.entity.enums.ReservationStatus;
 import com.example.sportcenterv1.entity.space.Space;
 import com.example.sportcenterv1.service.*;
-import com.jfoenix.controls.JFXTimePicker;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -26,15 +25,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -115,7 +115,10 @@ public class ReservationController {
 
     private final ObjectProperty<Offer> curOffer = new SimpleObjectProperty<>(null);
 
-    private DateGenerator dateGenerator = new DateGenerator(datePicker,comboboxhour,comboboxminute);
+    private DateGenerator dateGenerator;
+
+    @FXML
+    private Label errorLabel;
 
     @FXML
     private void handleBackToMenu(ActionEvent event) throws IOException {
@@ -178,6 +181,8 @@ public class ReservationController {
 
         curClient = null;
         curOffer.set(null);
+
+        dateGenerator = new DateGenerator(datePicker,comboboxhour,comboboxminute);
     }
 
     private void setObservableLists(){
@@ -457,7 +462,6 @@ public class ReservationController {
         curClient = null;
         curOffer.set(null);
 
-
         List<Reservation> reservationList = reservationService.getAllReservation();
         reservationObservableList.setAll(reservationList);
         checkEnableCombobox();
@@ -466,15 +470,123 @@ public class ReservationController {
     @FXML
     private void createReservation(){
 
+        Reservation createReservation = new Reservation();
+
+        LocalDateTime localDateTime = dateGenerator.getLocalDateTime();
+        if (localDateTime == null){
+            errorLabel.setText("Wybierz poprawnie date");
+            return;
+        }
+
+        ReservationStatus reservationStatus = comboboxStatusReservation.getValue();
+
+        if (reservationStatus == null){
+            errorLabel.setText("Wybierz status rezerwacji");
+            return;
+        }
+
+        Long clientId = curClient.getId();
+        Optional<Client> optionalClient = clientService.getClient(clientId);
+        Client client;
+        if (optionalClient.isEmpty()){
+            errorLabel.setText("Wybierz klienta");
+            return;
+        }else {
+            client = optionalClient.get();
+        }
+
+        Long offerId = curOffer.get().getId();
+        Optional<Offer> optionalOffer = offerService.getOffer(offerId);
+        Offer offer;
+        if (optionalOffer.isEmpty()){
+            errorLabel.setText("Wybierz oferte/usługe");
+            return;
+        }else {
+            offer = optionalOffer.get();
+        }
+
+        if (comboboxEmployee.getSelectionModel().getSelectedItem() != null){
+            createReservation.setEmployee(comboboxEmployee.getSelectionModel().getSelectedItem());
+        }else {
+            errorLabel.setText("Wybierz pracownika");
+            return;
+        }
+
+        if (comboboxSpace.getSelectionModel().getSelectedItem() != null){
+            createReservation.setSpace(comboboxSpace.getSelectionModel().getSelectedItem());
+        }else {
+            errorLabel.setText("Wybierz sale/hale");
+            return;
+        }
+
+        createReservation.setReservationStatus(reservationStatus);
+        createReservation.setDate(localDateTime);
+        createReservation.setClient(client);
+        createReservation.setOffer(offer);
+
+        reservationService.createReservation(createReservation);
+
+        errorLabel.setText("");
+        reload();
     }
 
     @FXML
-    private void updateReservation(){
+    private void updateReservation() {
+        Reservation selectedReservation = listViewReservation.getSelectionModel().getSelectedItem();
+        if (selectedReservation == null) {
+            errorLabel.setText("Wybierz rezerwację do aktualizacji");
+            return;
+        }
 
+        // Pobierz wartości, które użytkownik wprowadził (jeśli w ogóle)
+        LocalDateTime localDateTime = dateGenerator.getLocalDateTime();
+        ReservationStatus reservationStatus = comboboxStatusReservation.getValue();
+        Client selectedClient = curClient;
+        Offer selectedOffer = curOffer.get();
+        Employee selectedEmployee = comboboxEmployee.getSelectionModel().getSelectedItem();
+        Space selectedSpace = comboboxSpace.getSelectionModel().getSelectedItem();
+
+
+        // Aktualizuj tylko te pola, które zostały zmienione przez użytkownika
+        if (localDateTime != null) {
+            selectedReservation.setDate(localDateTime);
+        }
+
+        if (reservationStatus != null) {
+            selectedReservation.setReservationStatus(reservationStatus);
+        }
+
+        if (selectedClient != null) {
+            selectedReservation.setClient(selectedClient);
+        }
+
+        if (selectedOffer != null) {
+            selectedReservation.setOffer(selectedOffer);
+        }
+
+        if (selectedEmployee != null) {
+            selectedReservation.setEmployee(selectedEmployee);
+        }
+
+        if (selectedSpace != null) {
+            selectedReservation.setSpace(selectedSpace);
+        }
+
+        reservationService.updateReservation(selectedReservation.getId(), selectedReservation);
+        errorLabel.setText("");
+        reload();
     }
 
     @FXML
-    private void deleteReservation(){
+    private void deleteReservation() {
+        Reservation selectedReservation = listViewReservation.getSelectionModel().getSelectedItem();
+        if (selectedReservation == null) {
+            errorLabel.setText("Wybierz rezerwację do usunięcia");
+            return;
+        }
 
+        reservationService.deleteReservationById(selectedReservation.getId());
+        errorLabel.setText("");
+        reload();
     }
 }

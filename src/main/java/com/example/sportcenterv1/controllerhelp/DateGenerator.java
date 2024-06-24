@@ -5,6 +5,7 @@ import javafx.scene.control.DatePicker;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class DateGenerator {
 
@@ -35,6 +36,23 @@ public class DateGenerator {
 
         }
         return null;
+    }
+
+    public LocalDate getLocalDate(){
+
+        LocalDate result = datePicker.getValue();
+
+        return result;
+    }
+
+    public LocalTime getLocalTime(){
+
+        int hour = comboBoxHour.getValue();
+        int minute = comboBoxMinute.getValue();
+
+        LocalTime result = LocalTime.of(hour, minute);
+
+        return result;
     }
 
 }

@@ -245,7 +245,7 @@ public class SpaceController {
 
     @FXML
     private void createNewSpace(){
-        curSpaceView.createSpace();
+        curSpaceView.   createSpace();
         spaceObservableList.setAll(spaceService.getAllSpaces());
     }
 

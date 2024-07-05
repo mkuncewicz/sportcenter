@@ -34,7 +34,7 @@ public class Employee {
     private String phoneNumber;
 
     @Embedded
-    private Address address;
+    private Address address = new Address();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

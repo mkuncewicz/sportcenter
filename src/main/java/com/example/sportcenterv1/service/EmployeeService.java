@@ -7,7 +7,6 @@ import com.example.sportcenterv1.entity.enums.ContractStatusType;
 import com.example.sportcenterv1.repository.ContractRepository;
 import com.example.sportcenterv1.repository.EmployeeRepository;
 import com.example.sportcenterv1.repository.SpecializationRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,7 +109,7 @@ public class EmployeeService {
                 empDB.getAddress().setBuildingNumber(employeeToSave.getAddress().getBuildingNumber());
             }
             if (employeeToSave.getAddress().getApartmentNumber() != null){
-                empDB.getAddress().setApartmentNumber(employeeToSave.getAddress().getBuildingNumber());
+                empDB.getAddress().setApartmentNumber(employeeToSave.getAddress().getApartmentNumber());
             }
 
             employeeRepository.save(empDB);  //

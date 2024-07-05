@@ -27,6 +27,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -152,6 +153,10 @@ public class EmployeeController {
     @FXML
     private TextField textfieldsearch;
 
+    private Employee curEmployee;
+
+    private Specialization curSpecialization;
+
     @FXML
     private void handleBackToMenu(ActionEvent event) throws IOException {
         // Użyj FXMLLoadera, aby załadować widok menu
@@ -268,6 +273,7 @@ public class EmployeeController {
         });
         listViewSpecialization.setItems(specializationObservableList);
         updateList();
+        listenOnChoiceSpecialization();
     }
 
     private void settingListSpecOfEmployee(){
@@ -294,12 +300,25 @@ public class EmployeeController {
             public void changed(ObservableValue<? extends Employee> observable, Employee oldValue, Employee newValue) {
                 if (newValue != null) {
                     // Wykonaj akcję, gdy wybrano nowego klienta
-                    setLabelsForEmployee(newValue);
+                    curEmployee = newValue;
+                    setLabelsForEmployee(curEmployee);
 
                     List<Specialization> curSpecOfEmployee = newValue.getSpecializations().stream().toList();
                     specOfEmployeeObservableList.setAll(curSpecOfEmployee);
 
                     vboxSpecOfEmployee.setVisible(true);
+                }
+            }
+        });
+    }
+
+    private void listenOnChoiceSpecialization(){
+        listViewSpecialization.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Specialization>() {
+            @Override
+            public void changed(ObservableValue<? extends Specialization> observableValue, Specialization specialization, Specialization newValue) {
+
+                if (newValue != null){
+                    curSpecialization = newValue;
                 }
             }
         });
@@ -337,6 +356,12 @@ public class EmployeeController {
         fieldFirstName.clear();
         fieldLastName.clear();
         fieldPhone.clear();
+        datePickerBirth.setValue(null);
+
+        fieldCity.clear();
+        fieldStreet.clear();
+        textFieldBuildingNumber.clear();
+        textFieldApartmentNumber.clear();
     }
 
     @FXML
@@ -413,7 +438,7 @@ public class EmployeeController {
 
     @FXML
     protected void updateEmployee(){
-        Employee selectedItem = listViewEmployees.getSelectionModel().getSelectedItem();
+        Employee selectedItem = curEmployee;
 
         Employee changeEmployee = new Employee();
 
@@ -445,7 +470,16 @@ public class EmployeeController {
 
         employeeService.updateEmployee(selectedItem.getId(), changeEmployee);
 
+        Optional<Employee> newEmployee = employeeService.getEmployee(selectedItem.getId());
+
+        if (newEmployee.isPresent()) {
+            curEmployee = newEmployee.get();
+        }else {
+            curEmployee = null;
+        }
+
         updateList();
+        setLabelsForEmployee(curEmployee);
         cleanFieldTextEmployee();
     }
 
@@ -455,6 +489,8 @@ public class EmployeeController {
 
         employeeService.deleteEmployee(selectedItem.getId());
         updateList();
+        curEmployee = null;
+        setLabelsForEmployee(null);
     }
 
     @FXML
@@ -563,21 +599,40 @@ public class EmployeeController {
     }
 
     private void setLabelsForEmployee(Employee employee){
-        int curContracts = employeeService.getCountOfContracts(employee);
-        Date dateOfEndActiveContract = employeeService.getDateToLastActiveContract(employee);
 
-        labelEmFirstName.setText("Imie: " + employee.getFirstName());
-        labelEmLastName.setText("Nazwisko: " + employee.getLastName());
-        labelEmBirth.setText("Data urodzenia: " + employee.getDateOfBirth());
-        labelEmPhone.setText("NR TEL: " + employee.getPhoneNumber());
-        labelEmCity.setText("Miasto: " + employee.getAddress().getCity());
-        labelEmStreet.setText("Ulica: " + employee.getAddress().getStreet());
-        labelEmBuildingNumber.setText("Numer budynku: " + employee.getAddress().getBuildingNumber());
-        labelEmApartmentNumber.setText("Numer mieszkania: " + employee.getAddress().getApartmentNumber());
+        if (employee == null){
+            labelEmFirstName.setText("Imie: ");
+            labelEmLastName.setText("Nazwisko: ");
+            labelEmBirth.setText("Data urodzenia: ");
+            labelEmPhone.setText("NR TEL: ");
+            labelEmCity.setText("Miasto: ");
+            labelEmStreet.setText("Ulica: ");
+            labelEmBuildingNumber.setText("Numer budynku: ");
+            labelEmApartmentNumber.setText("Numer mieszkania: ");
 
-        labelEmCurContracts.setText("Aktualne kontrakty: " + curContracts);
-        if (dateOfEndActiveContract != null) labelEmDateOfEndContract2.setText(dateOfEndActiveContract+"");
-        else labelEmDateOfEndContract2.setText("Brak");
+        }else {
+
+            int curContracts = employeeService.getCountOfContracts(employee);
+            Date dateOfEndActiveContract = employeeService.getDateToLastActiveContract(employee);
+
+            Date birthDay = curEmployee.getDateOfBirth();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String formattedDate = formatter.format(birthDay);
+
+            labelEmFirstName.setText("Imie: " + employee.getFirstName());
+            labelEmLastName.setText("Nazwisko: " + employee.getLastName());
+            labelEmBirth.setText("Data urodzenia: " + formattedDate);
+            labelEmPhone.setText("NR TEL: " + employee.getPhoneNumber());
+            labelEmCity.setText("Miasto: " + employee.getAddress().getCity());
+            labelEmStreet.setText("Ulica: " + employee.getAddress().getStreet());
+            labelEmBuildingNumber.setText("Numer budynku: " + employee.getAddress().getBuildingNumber());
+            labelEmApartmentNumber.setText("Numer mieszkania: " + employee.getAddress().getApartmentNumber());
+
+            labelEmCurContracts.setText("Aktualne kontrakty: " + curContracts);
+            if (dateOfEndActiveContract != null) labelEmDateOfEndContract2.setText(dateOfEndActiveContract+"");
+            else labelEmDateOfEndContract2.setText("Brak");
+        }
+
     }
 
     @FXML

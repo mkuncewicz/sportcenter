@@ -28,7 +28,7 @@ public class Client {
     private String phoneNumber;
 
     @Embedded
-    private Address address;
+    private Address address = new Address();
 
     @Override
     public String toString() {

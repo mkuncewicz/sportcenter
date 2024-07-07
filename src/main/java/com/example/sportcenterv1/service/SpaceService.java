@@ -3,7 +3,6 @@ package com.example.sportcenterv1.service;
 import com.example.sportcenterv1.entity.Specialization;
 import com.example.sportcenterv1.entity.space.*;
 import com.example.sportcenterv1.repository.SpaceRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

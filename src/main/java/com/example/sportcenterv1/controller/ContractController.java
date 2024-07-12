@@ -3,7 +3,7 @@ package com.example.sportcenterv1.controller;
 import com.example.sportcenterv1.dm.DarkModeSingleton;
 import com.example.sportcenterv1.entity.Contract;
 import com.example.sportcenterv1.entity.employee.Employee;
-import com.example.sportcenterv1.entity.enums.ContractStatusType;
+import com.example.sportcenterv1.entity.enums.ContractStatus;
 import com.example.sportcenterv1.entity.enums.ContractType;
 import com.example.sportcenterv1.service.ContractService;
 import com.example.sportcenterv1.service.EmployeeService;
@@ -76,9 +76,9 @@ public class ContractController {
     private ObservableList<ContractType> contractTypeObservableList = FXCollections.observableArrayList();
 
     @FXML
-    private ComboBox<ContractStatusType> comboBoxUpdate;
+    private ComboBox<ContractStatus> comboBoxUpdate;
 
-    private ObservableList<ContractStatusType> contractStatusObservableList = FXCollections.observableArrayList();
+    private ObservableList<ContractStatus> contractStatusObservableList = FXCollections.observableArrayList();
     //Labels
     @FXML
     private Label labelSalary;
@@ -99,9 +99,9 @@ public class ContractController {
     private Label errorLabel;
 
     @FXML
-    private ComboBox<ContractStatusType> comboxstatussearch;
+    private ComboBox<ContractStatus> comboxstatussearch;
 
-    private ObservableList<ContractStatusType> statusSearchObservableList = FXCollections.observableArrayList();
+    private ObservableList<ContractStatus> statusSearchObservableList = FXCollections.observableArrayList();
 
     @FXML
     private TextField textfieldsearch;
@@ -206,7 +206,7 @@ public class ContractController {
                 if(b || contract == null){
                     setText(null);
                 }else {
-                    setText(contract.getDateStart() + " - " + contract.getDateEnd() + ", " + contract.getContractStatusType().getDisplayName());
+                    setText(contract.getDateStart() + " - " + contract.getDateEnd() + ", " + contract.getContractStatus().getDisplayName());
                 }
             }
         });
@@ -221,21 +221,21 @@ public class ContractController {
 
     private void setContractStatus(){
 
-        List<ContractStatusType> contractStatusTypeList = List.of(ContractStatusType.PENDING,ContractStatusType.REJECTED,ContractStatusType.CONFIRMED);
+        List<ContractStatus> contractStatusTypeList = List.of(ContractStatus.PENDING, ContractStatus.REJECTED, ContractStatus.CONFIRMED);
 
         contractStatusObservableList.setAll(contractStatusTypeList);
     }
 
     private void setStatusSearchObservableList(){
 
-        List<ContractStatusType> list = new ArrayList<>(Arrays.asList(
-                ContractStatusType.NEW,
-                ContractStatusType.PENDING,
-                ContractStatusType.REJECTED,
-                ContractStatusType.CONFIRMED,
-                ContractStatusType.IN_PROGRESS,
-                ContractStatusType.COMPLETED,
-                ContractStatusType.EXPIRING
+        List<ContractStatus> list = new ArrayList<>(Arrays.asList(
+                ContractStatus.NEW,
+                ContractStatus.PENDING,
+                ContractStatus.REJECTED,
+                ContractStatus.CONFIRMED,
+                ContractStatus.IN_PROGRESS,
+                ContractStatus.COMPLETED,
+                ContractStatus.EXPIRING
         ));
 
         list.add(0,null);
@@ -333,7 +333,7 @@ public class ContractController {
         createContract.setDateStart(startDate);
         createContract.setDateEnd(endDate);
         createContract.setContractType(contractType);
-        createContract.setContractStatusType(ContractStatusType.NEW);
+        createContract.setContractStatus(ContractStatus.NEW);
 
         System.out.println(createContract);
 
@@ -502,7 +502,7 @@ public class ContractController {
 
 
         Long contraID;
-        ContractStatusType contractStatusType = comboBoxUpdate.getSelectionModel().getSelectedItem();
+        ContractStatus contractStatusType = comboBoxUpdate.getSelectionModel().getSelectedItem();
 
         try {
             contraID = listViewContracts.getSelectionModel().getSelectedItem().getId();
@@ -572,7 +572,7 @@ public class ContractController {
             labelDateStart.setText("Rozpoczęcie: " + contract.getDateStart());
             labelDateEnd.setText("Zakończenie: " + contract.getDateEnd());
             labelContractType.setText("Typ umowy: " + contract.getContractType());
-            labelContractStatusType.setText("Status: " + contract.getContractStatusType());
+            labelContractStatusType.setText("Status: " + contract.getContractStatus());
         }
     }
 }

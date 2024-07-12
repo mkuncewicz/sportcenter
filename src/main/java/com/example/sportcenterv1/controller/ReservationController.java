@@ -1,6 +1,7 @@
 package com.example.sportcenterv1.controller;
 
 import com.example.sportcenterv1.controllerhelp.DateGenerator;
+import com.example.sportcenterv1.controllerhelp.ReservationComponent;
 import com.example.sportcenterv1.dm.DarkModeSingleton;
 import com.example.sportcenterv1.entity.Client;
 import com.example.sportcenterv1.entity.Offer;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +70,9 @@ public class ReservationController {
     private TextField textFieldSearchOffer;
 
     @FXML
+    private TextField textFieldSearchReservation;
+
+    @FXML
     private ListView<Reservation> listViewReservation;
 
     @FXML
@@ -85,6 +90,9 @@ public class ReservationController {
     @FXML
     private ComboBox<Space> comboboxSpace;
 
+    @FXML
+    private ComboBox<Specialization> comboboxSpecForOffer;
+
     @Autowired
     private ReservationService reservationService;
 
@@ -100,6 +108,9 @@ public class ReservationController {
     @Autowired
     private SpaceService spaceService;
 
+    @Autowired
+    private SpecializationService specializationService;
+
     private ObservableList<Reservation> reservationObservableList = FXCollections.observableArrayList();
 
     private ObservableList<Client> clientObservableList = FXCollections.observableArrayList();
@@ -112,6 +123,10 @@ public class ReservationController {
 
     private ObservableList<ReservationStatus> reservationStatusObservableList = FXCollections.observableArrayList();
 
+    private ObservableList<Specialization> specializationObservableList = FXCollections.observableArrayList();
+
+    private final ObjectProperty<Reservation> curReservation = new SimpleObjectProperty<>(null);
+
     private Client curClient  = null;
 
     private final ObjectProperty<Offer> curOffer = new SimpleObjectProperty<>(null);
@@ -120,6 +135,28 @@ public class ReservationController {
 
     @FXML
     private Label errorLabel;
+
+    @FXML
+    private Label labelClient;
+
+    @FXML
+    private Label labelOffer;
+
+    @FXML
+    private Label labelDate;
+
+    @FXML
+    private Label labelEmployee;
+
+    @FXML
+    private Label labelSpace;
+
+    @FXML
+    private Label labelStatus;
+
+
+
+    private ReservationComponent reservationComponent;
 
     @FXML
     private void handleBackToMenu(ActionEvent event) throws IOException {
@@ -168,22 +205,32 @@ public class ReservationController {
         isDarkMode = darkModeSingleton.isDarkMode();
         checkActiveDarkMode();
 
+        //Komponent do obslugi tworzenia rezerwacji
+        dateGenerator = new DateGenerator(datePicker,comboboxhour,comboboxminute);
+
+        reservationComponent = new ReservationComponent(reservationService,errorLabel,clientService,offerService,dateGenerator,comboboxStatusReservation,
+                comboboxEmployee,comboboxSpace);
+
         //Domyslne ustawienia dla elementow
         setObservableLists();
         setAllListView();
         setCombobox();
         setTime();
-
+        setLabelsForReservation();
 
         checkEnableCombobox();
 
         curOfferListener();
 
+        //Ustawienie listy dla specjalizacji
+        List<Specialization> specializationList = specializationService.getAllSpecializations();
+        specializationList.add(0,null);
+        specializationObservableList.setAll(specializationList);
 
+        curReservation.set(null);
         curClient = null;
         curOffer.set(null);
 
-        dateGenerator = new DateGenerator(datePicker,comboboxhour,comboboxminute);
     }
 
     private void setObservableLists(){
@@ -211,9 +258,12 @@ public class ReservationController {
 
         listenerToClientListView();
         listenerToOfferListView();
+        listenerListViewReservation();
 
         listenerToSearchClient();
         listenerToSearchOffer();
+        listenerToSearchReservation();
+        listenerToComboboxSpecForOffer();
     }
 
     private void settingReservationListView(){
@@ -326,11 +376,53 @@ public class ReservationController {
         });
     }
 
+    private void listenerToSearchReservation(){
+
+        textFieldSearchReservation.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String searchName = "";
+                searchName = textFieldSearchReservation.getText();
+
+                List<Reservation> reservationList = reservationService.getAllReservationByName(searchName);
+                reservationObservableList.setAll(reservationList);
+            }
+        });
+    }
+
+    private void listenerListViewReservation(){
+
+        listViewReservation.getSelectionModel().selectedItemProperty().addListener((observableValue, reservation, t1) -> {
+
+            curReservation.set(t1);
+            setLabelsForReservation();
+        });
+    }
+
+    private void listenerToComboboxSpecForOffer() {
+        comboboxSpecForOffer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Specialization specialization = comboboxSpecForOffer.getValue();
+                List<Offer> offerList;
+
+                if (specialization == null || specialization.getId() == null) {
+                    offerList = offerService.getAllOffers();
+                } else {
+                    offerList = offerService.getAllOffersBySpecialization(specialization);
+                }
+
+                offerObservableList.setAll(offerList);
+            }
+        });
+    }
+
     private void setCombobox(){
 
         settingComboboxStatusReservation();
         settingComboboxEmployee();
         settingComboboxSpace();
+        setComboboxSpecForOffer();
     }
 
     private void settingComboboxStatusReservation() {
@@ -377,6 +469,18 @@ public class ReservationController {
                 }
             }
         });
+
+        comboboxEmployee.setButtonCell(new ListCell<Employee>() {
+            @Override
+            protected void updateItem(Employee employee, boolean empty) {
+                super.updateItem(employee, empty);
+                if (employee == null || empty) {
+                    setText(null);
+                } else {
+                    setText(employee.getFirstName() + " " + employee.getLastName());
+                }
+            }
+        });
     }
 
     private void settingComboboxSpace(){
@@ -391,6 +495,48 @@ public class ReservationController {
                     setText(null);
                 }else{
                     setText(space.getName());
+                }
+            }
+        });
+
+        comboboxSpace.setButtonCell(new ListCell<Space>(){
+            @Override
+            protected void updateItem(Space space, boolean b) {
+                super.updateItem(space, b);
+                if (space == null || b){
+                    setText(null);
+                }else{
+                    setText(space.getName());
+                }
+            }
+        });
+    }
+
+    private void setComboboxSpecForOffer(){
+
+        comboboxSpecForOffer.setItems(specializationObservableList);
+        comboboxSpecForOffer.setCellFactory(param -> new ListCell<Specialization>(){
+
+            @Override
+            protected void updateItem(Specialization specialization, boolean b) {
+                super.updateItem(specialization, b);
+                if (specialization == null || b){
+                    setText("Wszystkie");
+                }else {
+                    setText(specialization.getName());
+                }
+            }
+        });
+
+        comboboxSpecForOffer.setButtonCell(new ListCell<Specialization>(){
+
+            @Override
+            protected void updateItem(Specialization specialization, boolean b) {
+                super.updateItem(specialization, b);
+                if(specialization == null || b){
+                    setText("Wszystkie");
+                }else {
+                    setText(specialization.getName());
                 }
             }
         });
@@ -482,67 +628,51 @@ public class ReservationController {
         checkEnableCombobox();
     }
 
+    private void setLabelsForReservation() {
+        boolean isSelected = curReservation.get() != null;
+
+        if (isSelected) {
+            Reservation reservation = curReservation.get();
+            OfferType offerType = reservation.getOffer().getOfferType();
+
+            // Formatowanie daty
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm");
+
+            labelClient.setText("Klient: " + reservation.getClient().getFirstName() + " " + reservation.getClient().getLastName());
+            labelOffer.setText("Oferta: " + reservation.getOffer().getName());
+            labelDate.setText("Data: " + reservation.getDate().format(formatter));
+
+            if (offerType == OfferType.ONE_TIME) {
+                labelEmployee.setText("Pracownik: " + reservation.getEmployee().getFirstName() + " " + reservation.getEmployee().getLastName());
+                labelSpace.setText("Miejsce: " + reservation.getSpace().getName());
+            } else {
+                labelEmployee.setText("Pracownik: ");
+                labelSpace.setText("Miejsce: ");
+            }
+            labelStatus.setText("Status: " + reservation.getReservationStatus());
+        } else {
+            labelClient.setText("Klient: ");
+            labelOffer.setText("Oferta: ");
+            labelDate.setText("Data: ");
+            labelEmployee.setText("Pracownik: ");
+            labelSpace.setText("Miejsce: ");
+            labelStatus.setText("Status: ");
+        }
+    }
+
     @FXML
     private void createReservation(){
 
-        Reservation createReservation = new Reservation();
+        Client client = curClient;
+        Offer offer = curOffer.get();
+        OfferType offerType = offer.getOfferType();
 
-        LocalDateTime localDateTime = dateGenerator.getLocalDateTime();
-        if (localDateTime == null){
-            errorLabel.setText("Wybierz poprawnie date");
-            return;
-        }
+        boolean isCreated = reservationComponent.createReservation(offerType,client,offer);
 
-        ReservationStatus reservationStatus = comboboxStatusReservation.getValue();
-
-        if (reservationStatus == null){
-            errorLabel.setText("Wybierz status rezerwacji");
-            return;
-        }
-
-        Long clientId = curClient.getId();
-        Optional<Client> optionalClient = clientService.getClient(clientId);
-        Client client;
-        if (optionalClient.isEmpty()){
-            errorLabel.setText("Wybierz klienta");
-            return;
-        }else {
-            client = optionalClient.get();
-        }
-
-        Long offerId = curOffer.get().getId();
-        Optional<Offer> optionalOffer = offerService.getOffer(offerId);
-        Offer offer;
-        if (optionalOffer.isEmpty()){
-            errorLabel.setText("Wybierz oferte/usługe");
-            return;
-        }else {
-            offer = optionalOffer.get();
-        }
-
-        if (comboboxEmployee.getSelectionModel().getSelectedItem() != null){
-            createReservation.setEmployee(comboboxEmployee.getSelectionModel().getSelectedItem());
-        }else {
-            errorLabel.setText("Wybierz pracownika");
-            return;
-        }
-
-        if (comboboxSpace.getSelectionModel().getSelectedItem() != null){
-            createReservation.setSpace(comboboxSpace.getSelectionModel().getSelectedItem());
-        }else {
-            errorLabel.setText("Wybierz sale/hale");
-            return;
-        }
-
-        createReservation.setReservationStatus(reservationStatus);
-        createReservation.setDate(localDateTime);
-        createReservation.setClient(client);
-        createReservation.setOffer(offer);
-
-        reservationService.createReservation(createReservation);
-
-        errorLabel.setText("");
-        reload();
+       if (isCreated) {
+           errorLabel.setText("");
+           reload();
+       }
     }
 
     @FXML
@@ -553,43 +683,16 @@ public class ReservationController {
             return;
         }
 
-        // Pobierz wartości, które użytkownik wprowadził (jeśli w ogóle)
-        LocalDateTime localDateTime = dateGenerator.getLocalDateTime();
-        ReservationStatus reservationStatus = comboboxStatusReservation.getValue();
-        Client selectedClient = curClient;
-        Offer selectedOffer = curOffer.get();
-        Employee selectedEmployee = comboboxEmployee.getSelectionModel().getSelectedItem();
-        Space selectedSpace = comboboxSpace.getSelectionModel().getSelectedItem();
 
+        Client client = curClient;
+        Offer offer = curOffer.get();
 
-        // Aktualizuj tylko te pola, które zostały zmienione przez użytkownika
-        if (localDateTime != null) {
-            selectedReservation.setDate(localDateTime);
+       boolean isUpdated = reservationComponent.updateReservation(selectedReservation,client,offer);
+
+        if (isUpdated) {
+            errorLabel.setText("");
+            reload();
         }
-
-        if (reservationStatus != null) {
-            selectedReservation.setReservationStatus(reservationStatus);
-        }
-
-        if (selectedClient != null) {
-            selectedReservation.setClient(selectedClient);
-        }
-
-        if (selectedOffer != null) {
-            selectedReservation.setOffer(selectedOffer);
-        }
-
-        if (selectedEmployee != null) {
-            selectedReservation.setEmployee(selectedEmployee);
-        }
-
-        if (selectedSpace != null) {
-            selectedReservation.setSpace(selectedSpace);
-        }
-
-        reservationService.updateReservation(selectedReservation.getId(), selectedReservation);
-        errorLabel.setText("");
-        reload();
     }
 
     @FXML

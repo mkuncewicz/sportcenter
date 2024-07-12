@@ -525,12 +525,12 @@ public class EmployeeController {
         Specialization saveSpecialization = new Specialization();
         String name = fieldSpecName.getText();
 
-        if(name == null){
-           if (name.isBlank()){
+
+        if (name.isBlank()){
             errorLabel2.setText("Podaj nazwe dla specializacji");
             return;
         }
-        }
+
 
         saveSpecialization.setName(name);
 
@@ -554,7 +554,7 @@ public class EmployeeController {
         String name = fieldSpecName.getText();
 
         if (name.isBlank() || name == null){
-            System.out.println("Wpisz nazwe do zmiany");
+            errorLabel2.setText("Wpisz nazwe do zmiany");
             return;
         }
         updateSpec.setName(name);

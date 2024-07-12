@@ -389,6 +389,8 @@ public class OfferController {
         createOffer.setOfferType(offerType);
 
         offerService.createOffer(createOffer);
+
+
         updateLists();
         clearTextField();
         clearErrorLabels();

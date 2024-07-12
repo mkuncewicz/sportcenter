@@ -3,6 +3,8 @@ package com.example.sportcenterv1.controller;
 import com.example.sportcenterv1.dm.DarkModeSingleton;
 import com.example.sportcenterv1.entity.Offer;
 import com.example.sportcenterv1.entity.Specialization;
+import com.example.sportcenterv1.entity.employee.Employee;
+import com.example.sportcenterv1.entity.enums.OfferType;
 import com.example.sportcenterv1.service.OfferService;
 import com.example.sportcenterv1.service.SpecializationService;
 import javafx.beans.value.ChangeListener;
@@ -10,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -20,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -61,10 +65,22 @@ public class OfferController {
     private Offer curOffer = null;
 
     @FXML
+    private TextField textfieldsearch;
+
+    @FXML
+    private ComboBox<Specialization> comboboxSpec;
+
+    @FXML
+    private ObservableList<Specialization> specializationToSearchObservableList = FXCollections.observableArrayList();
+
+    @FXML
     private Label nameLabel;
 
     @FXML
     private TextFlow descriptionTextFlow;
+
+    @FXML
+    private Label offerTypeLabel;
 
     @FXML
     private Label priceLabel;
@@ -83,6 +99,9 @@ public class OfferController {
 
     @FXML
     private Label errorLabel2;
+
+    @FXML
+    private ComboBox<OfferType> comboboxOfferType;
 
     @FXML
     private void handleBackToMenu(ActionEvent event) throws IOException {
@@ -132,12 +151,37 @@ public class OfferController {
         isDarkMode = darkModeSingleton.isDarkMode();
         checkActiveDarkMode();
 
+        comboboxSpec.setItems(specializationToSearchObservableList);
+
         updateLists();
         setAllListView();
         setCurOfferListener();
         textFormatter();
+        setComboboxOfferType();
+        listenerToTextFieldSearch();
+
+        setComboboxSpecToSearch();
+        listenerToComboboxSpecSearch();
     }
 
+    private void setComboboxOfferType(){
+
+        // Inicjalizacja ComboBox z wartościami enum OfferType oraz null
+        List<OfferType> offerTypes = new ArrayList<>(Arrays.asList(OfferType.values()));
+        offerTypes.add(null); // Dodanie null jako opcja
+        comboboxOfferType.setItems(FXCollections.observableArrayList(offerTypes));
+        comboboxOfferType.setConverter(new StringConverter<OfferType>() {
+            @Override
+            public String toString(OfferType offerType) {
+                return offerType == null ? "Typ usługi" : offerType.toString();
+            }
+
+            @Override
+            public OfferType fromString(String s) {
+                return OfferType.valueOf(s);
+            }
+        });
+    }
 
     private void textFormatter(){
         descriptionTextArea.setTextFormatter(new TextFormatter<String>(change -> {
@@ -156,6 +200,8 @@ public class OfferController {
 
         offerObservableList.setAll(offerList);
         specializationObservableList.setAll(specializationList);
+
+        setComboboxSpecToSearch();
     }
 
     private void setAllListView(){
@@ -225,14 +271,15 @@ public class OfferController {
         if (offer == null) {
             nameLabel.setText("Nazwa: ");
             descriptionTextFlow.getChildren().clear();
-            priceLabel.setText("Cena: ");
+            offerTypeLabel.setText("Typ oferty: ");
+            priceLabel.setText("Cena: ");;
         } else {
             nameLabel.setText("Nazwa: " + offer.getName());
 
             Text text = new Text("Opis: " + offer.getDescription());
             descriptionTextFlow.getChildren().clear();
             descriptionTextFlow.getChildren().add(text);
-
+            offerTypeLabel.setText("Typ oferty: " + offer.getOfferType());
             priceLabel.setText("Cena: " + offer.getPrice() + "zł");
         }
     }
@@ -242,18 +289,67 @@ public class OfferController {
         nameTextField.clear();
         descriptionTextArea.clear();
         priceTextField.clear();
+        comboboxOfferType.setValue(null);
     }
 
     private void clearErrorLabels(){
         errorLabel1.setText("");
         errorLabel2.setText("");
     }
+
+    private void listenerToTextFieldSearch(){
+
+        textfieldsearch.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                String searchName = "";
+                searchName = textfieldsearch.getText();
+
+                List<Offer> offerList = offerService.getAllOffersByName(searchName);
+
+                offerObservableList.setAll(offerList);
+            }
+        });
+    }
+
+    private void setComboboxSpecToSearch() {
+        List<Specialization> specializations = new ArrayList<>(specializationObservableList);
+
+        Specialization allOption = new Specialization();
+        allOption.setId(null);
+        allOption.setName("Wszystkie");
+
+        specializations.add(0, allOption);
+
+        specializationToSearchObservableList.setAll(specializations);
+    }
+
+    private void listenerToComboboxSpecSearch() {
+        comboboxSpec.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Specialization specialization = comboboxSpec.getValue();
+                List<Offer> offerList;
+
+                if (specialization == null || specialization.getId() == null) {
+                    offerList = offerService.getAllOffers();
+                } else {
+                    offerList = offerService.getAllOffersBySpecialization(specialization);
+                }
+
+                offerObservableList.setAll(offerList);
+            }
+        });
+    }
+
     @FXML
     private void createOffer(){
 
         String name;
         String description;
         double price;
+        OfferType offerType;
 
         Offer createOffer = new Offer();
 
@@ -281,9 +377,16 @@ public class OfferController {
             return;
         }
 
+        offerType = comboboxOfferType.getValue();
+        if (offerType == null){
+            errorLabel1.setText("Wybierz typ oferty");
+            return;
+        }
+
         createOffer.setName(name);
         createOffer.setDescription(description);
         createOffer.setPrice(price);
+        createOffer.setOfferType(offerType);
 
         offerService.createOffer(createOffer);
         updateLists();
@@ -314,6 +417,7 @@ public class OfferController {
 
         name = nameTextField.getText();
         description = descriptionTextArea.getText();
+        OfferType offerType = comboboxOfferType.getValue();
         try {
             price = Double.parseDouble(priceTextField.getText());
         }catch (NumberFormatException e){
@@ -330,6 +434,10 @@ public class OfferController {
 
         if (price > 0){
             updateOffer.setPrice(price);
+        }
+
+        if (offerType != null){
+            updateOffer.setOfferType(offerType);
         }
 
         offerService.updateOffer(offerId,updateOffer);

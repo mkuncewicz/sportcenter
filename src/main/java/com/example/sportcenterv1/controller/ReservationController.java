@@ -7,6 +7,7 @@ import com.example.sportcenterv1.entity.Offer;
 import com.example.sportcenterv1.entity.Reservation;
 import com.example.sportcenterv1.entity.Specialization;
 import com.example.sportcenterv1.entity.employee.Employee;
+import com.example.sportcenterv1.entity.enums.OfferType;
 import com.example.sportcenterv1.entity.enums.ReservationStatus;
 import com.example.sportcenterv1.entity.space.Space;
 import com.example.sportcenterv1.service.*;
@@ -401,9 +402,23 @@ public class ReservationController {
         if (offerSelect == null){
             comboboxEmployee.setDisable(true);
             comboboxSpace.setDisable(true);
+
+            comboboxhour.setDisable(true);
+            comboboxminute.setDisable(true);
         }else {
-            comboboxEmployee.setDisable(false);
-            comboboxSpace.setDisable(false);
+            if (offerSelect.getOfferType() == OfferType.ONE_TIME) {
+                comboboxEmployee.setDisable(false);
+                comboboxSpace.setDisable(false);
+
+                comboboxhour.setDisable(false);
+                comboboxminute.setDisable(false);
+            }else {
+                comboboxEmployee.setDisable(true);
+                comboboxSpace.setDisable(true);
+
+                comboboxhour.setDisable(true);
+                comboboxminute.setDisable(true);
+            }
         }
     }
 

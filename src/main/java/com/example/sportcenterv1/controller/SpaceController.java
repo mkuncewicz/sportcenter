@@ -99,7 +99,7 @@ public class SpaceController {
 
     @FXML
     private void setDarkMode(){
-        String darkMode = getClass().getResource("/css/DMspaceManagerStyle.css").toExternalForm();
+        String darkMode = getClass().getResource("/css/DMspaceManagerStyle2.css").toExternalForm();
 
         if (isDarkMode){
             mainPane.getStylesheets().remove(darkMode);
@@ -115,7 +115,7 @@ public class SpaceController {
     @FXML
     private void checkActiveDarkMode(){
 
-        String darkMode = getClass().getResource("/css/DMspaceManagerStyle.css").toExternalForm();
+        String darkMode = getClass().getResource("/css/DMspaceManagerStyle2.css").toExternalForm();
 
         if (isDarkMode){
             mainPane.getStylesheets().add(darkMode);

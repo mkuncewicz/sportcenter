@@ -1,11 +1,11 @@
 package com.example.sportcenterv1.entity;
 
+import com.example.sportcenterv1.entity.enums.OfferType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,6 +26,9 @@ public class Offer {
 
     @Column(nullable = false)
     private double price;
+
+    @Enumerated(EnumType.STRING)
+    private OfferType offerType;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

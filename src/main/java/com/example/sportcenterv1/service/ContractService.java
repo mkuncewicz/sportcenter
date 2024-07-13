@@ -2,11 +2,12 @@ package com.example.sportcenterv1.service;
 
 import com.example.sportcenterv1.entity.Contract;
 import com.example.sportcenterv1.entity.employee.Employee;
-import com.example.sportcenterv1.entity.enums.ContractStatusType;
+import com.example.sportcenterv1.entity.enums.ContractStatus;
 import com.example.sportcenterv1.repository.ContractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -30,11 +31,11 @@ public class ContractService {
         return result;
     }
 
-    public List<Contract> getAllContractByEmployeeAndStatusType(Employee employee, ContractStatusType contractStatusType){
+    public List<Contract> getAllContractByEmployeeAndStatusType(Employee employee, ContractStatus contractStatusType){
         List<Contract> result = contractRepository.findAll().stream().filter(e -> e.getEmployee().getId() == employee.getId()).collect(Collectors.toList());
 
         if (contractStatusType != null) {
-            result = result.stream().filter(contract -> contract.getContractStatusType() == contractStatusType).collect(Collectors.toList());
+            result = result.stream().filter(contract -> contract.getContractStatus() == contractStatusType).collect(Collectors.toList());
         }
 
         return result;
@@ -65,20 +66,20 @@ public class ContractService {
     }
 
     //Przeciążenie metody
-    public boolean updateStatus(Long contractID, ContractStatusType statusUpdate){
+    public boolean updateStatus(Long contractID, ContractStatus statusUpdate){
         Optional<Contract> optionalContract = contractRepository.findById(contractID);
 
         if (optionalContract.isPresent()){
             Contract saveContract = optionalContract.get();
 
             //Recznie mozna aktualizowac tylko kiedy kontrakt jest w odpowiednim statusie, np. kiedy bedzie w trakcie nie mozna aktualizowac jego statusu
-            if (saveContract.getContractStatusType() == ContractStatusType.NEW ||
-                saveContract.getContractStatusType() == ContractStatusType.PENDING ||
-                    saveContract.getContractStatusType() == ContractStatusType.REJECTED ||
-                    saveContract.getContractStatusType() == ContractStatusType.CONFIRMED
+            if (saveContract.getContractStatus() == ContractStatus.NEW ||
+                saveContract.getContractStatus() == ContractStatus.PENDING ||
+                    saveContract.getContractStatus() == ContractStatus.REJECTED ||
+                    saveContract.getContractStatus() == ContractStatus.CONFIRMED
             ) {
 
-                saveContract.setContractStatusType(statusUpdate);
+                saveContract.setContractStatus(statusUpdate);
 
                 contractRepository.save(saveContract);
                 return true;
@@ -93,9 +94,9 @@ public class ContractService {
 
             for (Contract contract : list){
             Date nowDate = new Date();
-            if (contract.getContractStatusType() == ContractStatusType.CONFIRMED ||
-            contract.getContractStatusType() == ContractStatusType.IN_PROGRESS ||
-            contract.getContractStatusType() == ContractStatusType.EXPIRING)
+            if (contract.getContractStatus() == ContractStatus.CONFIRMED ||
+            contract.getContractStatus() == ContractStatus.IN_PROGRESS ||
+            contract.getContractStatus() == ContractStatus.EXPIRING)
             {
                 Date dateStart = contract.getDateStart();
                 Date dateEnd = contract.getDateEnd();
@@ -104,13 +105,13 @@ public class ContractService {
                 long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
                 if (dateStart.before(nowDate)) {
-                    contract.setContractStatusType(ContractStatusType.IN_PROGRESS);
+                    contract.setContractStatus(ContractStatus.IN_PROGRESS);
                 }
                 if (diffInDays < 30) {
-                    contract.setContractStatusType(ContractStatusType.EXPIRING);
+                    contract.setContractStatus(ContractStatus.EXPIRING);
                 }
                 if (dateEnd.before(nowDate)) {
-                    contract.setContractStatusType(ContractStatusType.COMPLETED);
+                    contract.setContractStatus(ContractStatus.COMPLETED);
                 }
                 contractRepository.save(contract);
             }
@@ -123,9 +124,9 @@ public class ContractService {
         if (optionalContract.isPresent()){
             Date nowDate = new Date();
             Contract contract = optionalContract.get();
-            if (contract.getContractStatusType() == ContractStatusType.CONFIRMED ||
-                    contract.getContractStatusType() == ContractStatusType.IN_PROGRESS ||
-                    contract.getContractStatusType() == ContractStatusType.EXPIRING)
+            if (contract.getContractStatus() == ContractStatus.CONFIRMED ||
+                    contract.getContractStatus() == ContractStatus.IN_PROGRESS ||
+                    contract.getContractStatus() == ContractStatus.EXPIRING)
             {
                 Date dateStart = contract.getDateStart();
                 Date dateEnd = contract.getDateEnd();
@@ -134,13 +135,13 @@ public class ContractService {
                 long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
                 if (dateEnd.after(nowDate)) {
-                    contract.setContractStatusType(ContractStatusType.IN_PROGRESS);
+                    contract.setContractStatus(ContractStatus.IN_PROGRESS);
                 }
                 if (diffInDays < 30) {
-                    contract.setContractStatusType(ContractStatusType.PENDING);
+                    contract.setContractStatus(ContractStatus.PENDING);
                 }
                 if (dateEnd.before(nowDate)) {
-                    contract.setContractStatusType(ContractStatusType.COMPLETED);
+                    contract.setContractStatus(ContractStatus.COMPLETED);
                 }
             }
         }

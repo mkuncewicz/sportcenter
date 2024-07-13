@@ -1,7 +1,7 @@
 package com.example.sportcenterv1.entity;
 
 import com.example.sportcenterv1.entity.employee.Employee;
-import com.example.sportcenterv1.entity.enums.ContractStatusType;
+import com.example.sportcenterv1.entity.enums.ContractStatus;
 import com.example.sportcenterv1.entity.enums.ContractType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -37,7 +37,7 @@ public class Contract {
     private Employee employee;
 
     @Enumerated(EnumType.STRING)
-    private ContractStatusType contractStatusType = ContractStatusType.NEW;
+    private ContractStatus contractStatus = ContractStatus.NEW;
 
     @Override
     public String toString() {
@@ -48,7 +48,7 @@ public class Contract {
                 ", dateEnd=" + dateEnd +
                 ", contractType=" + contractType +
                 ", employee=" + employee +
-                ", contractStatusType=" + contractStatusType +
+                ", contractStatusType=" + contractStatus +
                 '}';
     }
 }

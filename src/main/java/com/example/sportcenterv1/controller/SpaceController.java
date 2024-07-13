@@ -8,27 +8,30 @@ import com.example.sportcenterv1.entity.space.Space;
 import com.example.sportcenterv1.service.SpaceService;
 import com.example.sportcenterv1.service.SpaceSpecializationService;
 import com.example.sportcenterv1.service.SpecializationService;
-import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class SpaceController {
@@ -62,7 +65,7 @@ public class SpaceController {
 
     @FXML
     private VBox vboxFieldsMod;
-    private SpaceView curSpaceView = new SpaceView("",spaceService);
+    private SpaceView curSpaceView;
 
     @FXML
     private VBox spaceDetails;
@@ -81,6 +84,19 @@ public class SpaceController {
     private ObservableList<Specialization> specOfSpaceObservableList = FXCollections.observableArrayList();
 
 
+    private ObjectProperty<Space> curSpace = new SimpleObjectProperty<>(null);
+
+    //ErrorLabels
+    @FXML
+    private Label errorLabel1;
+
+    @FXML
+    private Label errorLabel2;
+
+    @FXML
+    private ComboBox<Specialization> comboboxspec;
+
+    private ObservableList<Specialization> specializationForSearchObservableList = FXCollections.observableArrayList();
 
     @FXML
     private void handleBackToMenu(ActionEvent event) throws IOException {
@@ -131,13 +147,14 @@ public class SpaceController {
         checkActiveDarkMode();
 
         settingChoice();
-        settingSpaceView();
         listenerToComboBox();
         settingListViewSpace();
         spaceObservableList.setAll(spaceService.getAllSpaces());
-        listenerToListViewItem();
+        listenerToListViewSpace();
+        listenerToCurSpace();
+        settingComboboxspec();
 
-        //Spec list test
+        //Spec list
         specializationObservableList.setAll(specializationService.getAllSpecializations());
         settingSpecList();
 
@@ -150,22 +167,64 @@ public class SpaceController {
 
     }
 
-    private void settingSpaceView(){
-        SpaceView newView = new SpaceView("", spaceService);
-        vboxFieldsMod.getChildren().clear(); // Wyczyść zawartość HBox, jeśli chcesz podmienić widok
-        vboxFieldsMod.getChildren().add(newView); // Dodaj nowy widok
-    }
-
     private void settingChoice(){
-        List<String> stringList = List.of("","Koszykówka","Sztuki walki","Piłka nożna","Basen","Medyczne");
+        List<String> stringList = List.of("Wszystkie","Sale/Pomieszczenia","Koszykówka","Sztuki walki","Piłka nożna","Basen","Medyczne");
         ObservableList<String> listOfTypeSpaces = FXCollections.observableArrayList();
         listOfTypeSpaces.setAll(stringList);
         comboCat.setItems(listOfTypeSpaces);
     }
+
+    private void settingComboboxspec(){
+        List<Specialization> specializationList = specializationService.getAllSpecializations();
+        specializationList.add(0, null);
+        specializationForSearchObservableList.setAll(specializationList);
+
+        comboboxspec.setItems(specializationForSearchObservableList);
+        comboboxspec.setCellFactory(param -> new ListCell<Specialization>() {
+            @Override
+            protected void updateItem(Specialization specialization, boolean empty) {
+                super.updateItem(specialization, empty);
+                if (empty || specialization == null) {
+                    setText("Wszystkie");
+                } else {
+                    setText(specialization.getName());
+                }
+            }
+        });
+
+
+        comboboxspec.setButtonCell(new ListCell<Specialization>(){
+
+            @Override
+            protected void updateItem(Specialization specialization, boolean b) {
+                super.updateItem(specialization, b);
+                if (b || specialization == null){
+                    setText("Wszystkie");
+                }else{
+                    setText(specialization.getName());
+                }
+            }
+        });
+
+        listenerToComboboxSpec();
+    }
+
+    private void listenerToComboboxSpec(){
+
+        comboboxspec.getSelectionModel().selectedItemProperty().addListener((observableValue, specialization, t1) -> {
+            comboCat.getSelectionModel().select(0);
+
+            List<Space> spaceList = spaceService.getAllSpaces(t1);
+            spaceObservableList.setAll(spaceList);
+
+
+        });
+    }
+
     private void listenerToComboBox(){
         comboCat.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
 
-            SpaceView newView = new SpaceView(t1, spaceService);
+            SpaceView newView = new SpaceView(t1, spaceService,errorLabel1);
 
             curSpaceView = newView;
 
@@ -175,10 +234,11 @@ public class SpaceController {
         });
     }
 
-    private void listenerToListViewItem(){
+    private void listenerToListViewSpace(){
 
         listViewSpaces.getSelectionModel().selectedItemProperty().addListener((observableValue, space, t1) -> {
 
+            curSpace.set(t1);
 
             List<Label> listLabel = details.getDetailsLabelsForSpace(t1);
             spaceDetails.getChildren().clear();
@@ -186,7 +246,7 @@ public class SpaceController {
 
             String type = spaceService.getSpaceType(t1.getId());
 
-            SpaceView newView = new SpaceView(type, spaceService);
+            SpaceView newView = new SpaceView(type, spaceService,errorLabel1);
 
             curSpaceView = newView;
 
@@ -198,9 +258,30 @@ public class SpaceController {
         });
     }
 
-    private void setCurSpaceList(String choice){
+    private void listenerToCurSpace(){
 
-        if (choice.equalsIgnoreCase("")){
+        curSpace.addListener(new ChangeListener<Space>() {
+            @Override
+            public void changed(ObservableValue<? extends Space> observableValue, Space space, Space t1) {
+
+                if (t1 == null){
+                    //Jezeli obiekt nie jest wybrany, czyscimy widok specjalizacji/kategorii ostatniego wybranego obiektu
+                    List<Specialization> emptyList = new ArrayList<>();
+                    specOfSpaceObservableList.setAll(emptyList);
+                }else {
+                    List<Specialization> specializationList = new ArrayList<>(t1.getSpecializations());
+                    specOfSpaceObservableList.setAll(specializationList);
+                }
+            }
+        });
+    }
+
+    private void setCurSpaceList(String choice) {
+
+
+        if (choice == null) {
+
+        }else if (choice.equalsIgnoreCase("Wszystkie")){
             List<Space> spaceList = spaceService.getAllSpaces();
             spaceObservableList.setAll(spaceList);
 
@@ -214,6 +295,10 @@ public class SpaceController {
 
         }else if(choice.equalsIgnoreCase("Piłka nożna")){
             List<Space> spaceList = spaceService.getAllSpaces("SOCCER_FIELD");
+            spaceObservableList.setAll(spaceList);
+
+        }else if (choice.equalsIgnoreCase("Sale/Pomieszczenia")){
+            List<Space> spaceList = spaceService.getAllSpaces("ROOM");
             spaceObservableList.setAll(spaceList);
 
         }else if(choice.equalsIgnoreCase("Basen")){
@@ -243,10 +328,47 @@ public class SpaceController {
         listViewSpaces.setItems(spaceObservableList);
     }
 
+    private void reloadSpaceList(){
+        String curChoice;
+
+        if (comboCat.getSelectionModel().getSelectedItem() != null) curChoice = comboCat.getSelectionModel().getSelectedItem();
+        else  curChoice = "Wszystkie";
+        setCurSpaceList(curChoice);
+    }
+
+    private void reloadSpecializationsList(){
+
+        Space space = curSpace.get();
+
+        if (space == null){
+            //Jezeli obiekt nie jest wybrany, czyscimy widok specjalizacji/kategorii ostatniego wybranego obiektu
+            List<Specialization> emptyList = new ArrayList<>();
+            specOfSpaceObservableList.setAll(emptyList);
+        }else {
+
+            Optional<Space> updateSpace = spaceService.getSpace(space.getId());
+            if (updateSpace.isPresent()){
+
+            space = updateSpace.get();
+            List<Specialization> specializationList = new ArrayList<>(space.getSpecializations());
+            specOfSpaceObservableList.setAll(specializationList);
+
+        }}
+    }
+
+
+
     @FXML
     private void createNewSpace(){
+
+        String selectedItem = comboCat.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) selectedItem = "Wszystkie";
+        curSpaceView.setCurChoice(selectedItem);
+
         curSpaceView.createSpace();
         spaceObservableList.setAll(spaceService.getAllSpaces());
+
+        reloadSpaceList();
     }
 
     @FXML
@@ -255,12 +377,16 @@ public class SpaceController {
         Space space = listViewSpaces.getSelectionModel().getSelectedItem();
         spaceService.deleteSpace(space.getId());
         spaceObservableList.setAll(spaceService.getAllSpaces());
+
+        reloadSpaceList();
     }
 
     @FXML
     private void updateSpace(){
         Long spaceID = listViewSpaces.getSelectionModel().getSelectedItem().getId();
         curSpaceView.updateSpace(spaceID);
+
+        reloadSpaceList();
     }
 
     private void settingSpecList(){
@@ -290,7 +416,7 @@ public class SpaceController {
         specOfSpaceObservableList.setAll(space.getSpecializations());
         listViewSpecOfSpace.setItems(specOfSpaceObservableList);
 
-
+        reloadSpecializationsList();
     }
 
     @FXML
@@ -299,6 +425,7 @@ public class SpaceController {
         Specialization specialization = listViewSpecOfSpace.getSelectionModel().getSelectedItem();
 
         spaceSpecializationService.deleteSpaceFromSpecialization(space.getId(), specialization.getId());
+        reloadSpecializationsList();
     }
 }
 

@@ -27,6 +27,8 @@ public class ClientService {
 
         List<Client> clientList = clientRepository.findAll();
 
+        if (name.isBlank()) return  clientList;
+
         List<Client> result = new ArrayList<>();
 
         for(Client client : clientList){

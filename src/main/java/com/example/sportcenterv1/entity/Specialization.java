@@ -22,9 +22,6 @@ public class Specialization {
     @Column(nullable = false)
     private String name;
 
-    @Column
-    private String level;
-
     @ManyToMany(mappedBy = "specializations", fetch = FetchType.LAZY)
     private Set<Employee> employees;
 
@@ -34,22 +31,23 @@ public class Specialization {
     @ManyToMany(mappedBy = "specializations", fetch = FetchType.LAZY)
     private Set<Offer> offers;
 
+
     @Override
     public String toString() {
         return name;
-    }
 
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Specialization that = (Specialization) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(level, that.level);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, level);
+        return Objects.hash(id, name);
     }
 }

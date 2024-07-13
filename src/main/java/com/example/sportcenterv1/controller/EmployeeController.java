@@ -553,7 +553,7 @@ public class EmployeeController {
 
         String name = fieldSpecName.getText();
 
-        if (name.isBlank() || name == null){
+        if (name.isBlank()){
             errorLabel2.setText("Wpisz nazwe do zmiany");
             return;
         }

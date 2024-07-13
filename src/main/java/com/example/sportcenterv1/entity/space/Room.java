@@ -9,6 +9,7 @@ import lombok.Setter;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "space_type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("ROOM")
 @Getter
 @Setter
 public class Room extends Space{

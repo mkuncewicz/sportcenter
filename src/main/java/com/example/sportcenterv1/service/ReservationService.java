@@ -1,6 +1,9 @@
 package com.example.sportcenterv1.service;
 
+import com.example.sportcenterv1.entity.Client;
+import com.example.sportcenterv1.entity.Offer;
 import com.example.sportcenterv1.entity.Reservation;
+import com.example.sportcenterv1.entity.employee.Employee;
 import com.example.sportcenterv1.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,9 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ReservationService {
@@ -22,6 +23,33 @@ public class ReservationService {
     public List<Reservation> getAllReservation(){
 
         return reservationRepository.findAll();
+    }
+
+    public List<Reservation> getAllReservationByName(String name){
+
+        List<Reservation> reservationList = reservationRepository.findAll();
+
+        if (name.isBlank()) return reservationList;
+
+        Set<Reservation> result = new HashSet<>();
+
+        for(Reservation reservation : reservationList){
+
+            Client client = reservation.getClient();
+            Offer offer = reservation.getOffer();
+
+
+            String nameOfEmployee = client.getFirstName() + " " + client.getLastName();
+            String lowerClientName = nameOfEmployee.toLowerCase();
+
+            String nameOfOffer = offer.getName();
+            String lowerOfferName = nameOfOffer.toLowerCase();
+
+            if (lowerClientName.contains(name.toLowerCase())) result.add(reservation);
+            if (lowerOfferName.contains(name.toLowerCase())) result.add(reservation);
+        }
+
+        return new ArrayList<>(result);
     }
 
     public Optional<Reservation> getReservationById(Long reservationID){

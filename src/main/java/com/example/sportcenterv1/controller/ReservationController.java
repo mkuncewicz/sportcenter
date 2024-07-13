@@ -277,8 +277,10 @@ public class ReservationController {
                 if (reservation == null || b){
                     setText(null);
                 }else {
+                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm");
+
                     String clientName = reservation.getClient().getFirstName() + " " + reservation.getClient().getLastName();
-                    setText(clientName + ", " + reservation.getOffer().getName() + ", " + reservation.getDate());
+                    setText(clientName + ", " + reservation.getOffer().getName() + ", " + dateTimeFormatter.format(reservation.getDate()));
                 }
             }
         });

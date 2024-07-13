@@ -3,7 +3,7 @@ package com.example.sportcenterv1.service;
 import com.example.sportcenterv1.entity.Contract;
 import com.example.sportcenterv1.entity.Specialization;
 import com.example.sportcenterv1.entity.employee.Employee;
-import com.example.sportcenterv1.entity.enums.ContractStatusType;
+import com.example.sportcenterv1.entity.enums.ContractStatus;
 import com.example.sportcenterv1.repository.ContractRepository;
 import com.example.sportcenterv1.repository.EmployeeRepository;
 import com.example.sportcenterv1.repository.SpecializationRepository;
@@ -36,6 +36,7 @@ public class EmployeeService {
     public List<Employee> getAllEmployeesByName(String name){
 
         List<Employee> list = employeeRepository.findAll();
+        if (name.isBlank()) return  list;
 
         List<Employee> result = new ArrayList<>();
 
@@ -156,9 +157,9 @@ public class EmployeeService {
             Employee employee = optionalEmployee.get();
             Contract contract = optionalContract.get();
 
-            if (contract.getContractStatusType() == ContractStatusType.IN_PROGRESS ||
-                    contract.getContractStatusType() == ContractStatusType.EXPIRING ||
-                    contract.getContractStatusType() == ContractStatusType.CONFIRMED)
+            if (contract.getContractStatus() == ContractStatus.IN_PROGRESS ||
+                    contract.getContractStatus() == ContractStatus.EXPIRING ||
+                    contract.getContractStatus() == ContractStatus.CONFIRMED)
             {
                 System.out.println("Nie dozwolony status");
                 return;
@@ -179,8 +180,8 @@ public class EmployeeService {
 
             Employee employee = optionalEmployee.get();
 
-            List<Contract> activeContracts = employee.getContracts().stream().filter(x -> x.getContractStatusType() == ContractStatusType.EXPIRING ||
-                    x.getContractStatusType() == ContractStatusType.CONFIRMED || x.getContractStatusType() == ContractStatusType.IN_PROGRESS).toList();
+            List<Contract> activeContracts = employee.getContracts().stream().filter(x -> x.getContractStatus() == ContractStatus.EXPIRING ||
+                    x.getContractStatus() == ContractStatus.CONFIRMED || x.getContractStatus() == ContractStatus.IN_PROGRESS).toList();
 
             return activeContracts.size();
 
@@ -191,8 +192,8 @@ public class EmployeeService {
 
     public int getCountOfContracts(Employee employee){
 
-        List<Contract> activeContracts = employee.getContracts().stream().filter(x -> x.getContractStatusType() == ContractStatusType.EXPIRING ||
-                x.getContractStatusType() == ContractStatusType.CONFIRMED || x.getContractStatusType() == ContractStatusType.IN_PROGRESS).toList();
+        List<Contract> activeContracts = employee.getContracts().stream().filter(x -> x.getContractStatus() == ContractStatus.EXPIRING ||
+                x.getContractStatus() == ContractStatus.CONFIRMED || x.getContractStatus() == ContractStatus.IN_PROGRESS).toList();
 
         return activeContracts.size();
     }
@@ -202,8 +203,8 @@ public class EmployeeService {
 
         List<Date>  listOfDate;
 
-        listOfDate = employee.getContracts().stream().filter(x -> x.getContractStatusType() == ContractStatusType.EXPIRING ||
-                x.getContractStatusType() == ContractStatusType.CONFIRMED || x.getContractStatusType() == ContractStatusType.IN_PROGRESS)
+        listOfDate = employee.getContracts().stream().filter(x -> x.getContractStatus() == ContractStatus.EXPIRING ||
+                x.getContractStatus() == ContractStatus.CONFIRMED || x.getContractStatus() == ContractStatus.IN_PROGRESS)
                 .map(Contract::getDateEnd)
                 .sorted(Comparator.reverseOrder())
                 .collect(Collectors.toList());
@@ -223,8 +224,8 @@ public class EmployeeService {
             Employee employee = optionalEmployee.get();
             List<Date> listOfDate;
 
-            listOfDate = employee.getContracts().stream().filter(x -> x.getContractStatusType() == ContractStatusType.EXPIRING ||
-                            x.getContractStatusType() == ContractStatusType.CONFIRMED || x.getContractStatusType() == ContractStatusType.IN_PROGRESS)
+            listOfDate = employee.getContracts().stream().filter(x -> x.getContractStatus() == ContractStatus.EXPIRING ||
+                            x.getContractStatus() == ContractStatus.CONFIRMED || x.getContractStatus() == ContractStatus.IN_PROGRESS)
                     .map(Contract::getDateEnd)
                     .sorted(Comparator.reverseOrder())
                     .collect(Collectors.toList());

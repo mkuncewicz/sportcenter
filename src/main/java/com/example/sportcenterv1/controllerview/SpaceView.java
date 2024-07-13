@@ -9,10 +9,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +39,20 @@ public class SpaceView extends VBox {
     private ListView<Specialization> listOfSpec;
 
     @Getter
+    @Setter
     private String curChoice;
 
-    public SpaceView(String choice, SpaceService spaceService) {
+    private final Label errorLabel;
+
+
+    public SpaceView(String choice, SpaceService spaceService, Label errorLabel) {
         this.spaceService = spaceService;
         curChoice = choice;
         // Ustawiamy preferowaną szerokość
         this.setPrefWidth(350);
         this.setPrefHeight(750);
+
+        this.errorLabel = errorLabel;
 
         choiceSetting(choice);
 
@@ -53,7 +61,7 @@ public class SpaceView extends VBox {
     private void  choiceSetting(String choice){
         settingForEnum();
         this.getChildren().clear();
-        if (choice.equalsIgnoreCase("") || choice.equalsIgnoreCase("Room")){
+        if (choice.equalsIgnoreCase("") || choice.equalsIgnoreCase("Sale/Pomieszczenia") ||choice.equalsIgnoreCase("ROOM")){
             textFieldForBasicRoom();
         } else if (choice.equalsIgnoreCase("Koszykówka") || choice.equalsIgnoreCase("BASKETBALL_ROOM")) {
             textFieldForBasketball();
@@ -131,7 +139,6 @@ public class SpaceView extends VBox {
         this.getChildren().add(comboCat);
     }
 
-
     private void textFieldForSwimmingPool(){
         tex1.setPromptText("Nazwa");
         tex2.setPromptText("Długość basenu");
@@ -164,7 +171,8 @@ public class SpaceView extends VBox {
     }
 
     public void createSpace(){
-        if (curChoice.equalsIgnoreCase("")){
+
+        if (curChoice.equalsIgnoreCase("") || curChoice.equalsIgnoreCase("Sale/Pomieszczenia") || curChoice.equalsIgnoreCase("Wszystkie")){
             createRoom();
         } else if (curChoice.equalsIgnoreCase("Koszykówka")) {
             createBasketballRoom();
@@ -182,23 +190,73 @@ public class SpaceView extends VBox {
     private void createBasketballRoom() {
         // Inicjalizacja domyślnych wartości
         BasketballRoom saveBasket = new BasketballRoom();
-        String name = "Brak nazwy";
-        int capacity = 10;
-        double squareFootage = 10;
-        int hoopCount = 2;
-        CourtType courtType = null;
+        String name;
+        int capacity;
+        double squareFootage;
+        int hoopCount;
+        CourtType courtType;
 
         // Pobieranie wartości z pól tekstowych
-        if (!tex1.getText().isBlank()) name = tex1.getText();
-        if (!tex2.getText().isBlank()) capacity = Integer.parseInt(tex2.getText());
-        if (!tex3.getText().isBlank()) squareFootage = Double.parseDouble(tex3.getText());
-        if (!tex4.getText().isBlank()) hoopCount = Integer.parseInt(tex4.getText());
+        if (tex1.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole nazwy");
+            return;
+        }
+        name = tex1.getText();
+
+        if (tex2.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole pojemności");
+            return;
+        }
+        try {
+            capacity = Integer.parseInt(tex2.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+        if (capacity <= 0){
+            errorLabel.setText("Liczba musi być większa od zera");
+            return;
+        }
+
+        if (tex3.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole metrów kwadratowych pomieszczenia");
+            return;
+        }
+        try {
+            squareFootage = Integer.parseInt(tex3.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+        if (squareFootage <= 0){
+            errorLabel.setText("Liczba musi być większa od zera");
+            return;
+        }
+
+        if (tex4.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole liczba zamontowanych koszy/obręczy");
+            return;
+        }
+        try {
+            hoopCount = Integer.parseInt(tex4.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+
+        if (hoopCount < 0){
+            errorLabel.setText("Liczba nie może być ujemna");
+            return;
+        }
 
         // Pobieranie wyboru z ComboBoxa
         CourtType choiceCourtType = courtTypeComboBox.getSelectionModel().getSelectedItem();
-        if (choiceCourtType != null) courtType = choiceCourtType;
+        if (choiceCourtType == null){
+            errorLabel.setText("Wybierz typ nawierzchni");
+            return;
+        }
+        courtType = choiceCourtType;
 
-        // Ustawianie wartości w obiekcie
         saveBasket.setName(name);
         saveBasket.setCapacity(capacity);
         saveBasket.setSquareFootage(squareFootage);
@@ -211,275 +269,701 @@ public class SpaceView extends VBox {
         } catch (Exception e) {
             System.out.println("Wystąpił błąd podczas zapisu do bazy danych: " + e.getMessage());
         }
+        errorLabel.setText("");
     }
     private void createMartialArtsRoom(){
         MartialArtsRoom saveMartialArts = new MartialArtsRoom();
-        String name = "Brak nazwy";
-        int capacity = 10;
-        double squareFootage = 10;
-        int matCount = 1;
+        String name;
+        int capacity;
+        double squareFootage;
+        int matCount;
 
-        if (!tex1.getText().isBlank()) name = tex1.getText();
-        if (!tex2.getText().isBlank()) capacity = Integer.parseInt(tex2.getText());
-        if (!tex3.getText().isBlank()) squareFootage = Double.parseDouble(tex3.getText());
-        if (!tex4.getText().isBlank()) matCount = Integer.parseInt(tex4.getText());
+        // Pobieranie wartości z pól tekstowych
+        if (tex1.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole nazwy");
+            return;
+        }
+        name = tex1.getText();
+
+        if (tex2.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole pojemności");
+            return;
+        }
+        try {
+            capacity = Integer.parseInt(tex2.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+        if (capacity <= 0){
+            errorLabel.setText("Liczba musi być większa od zera");
+            return;
+        }
+
+        if (tex3.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole metrów kwadratowych pomieszczenia");
+            return;
+        }
+        try {
+            squareFootage = Integer.parseInt(tex3.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+        if (squareFootage <= 0){
+            errorLabel.setText("Liczba musi być większa od zera");
+            return;
+        }
+
+        if (tex4.getText().isBlank()){
+            errorLabel.setText("Uzupelnij liczbe mat w sali");
+            return;
+        }
+        try {
+            matCount = Integer.parseInt(tex4.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+
+        if (matCount < 0){
+            errorLabel.setText("Liczba nie może być ujemna");
+            return;
+        }
 
         saveMartialArts.setName(name);
         saveMartialArts.setCapacity(capacity);
         saveMartialArts.setSquareFootage(squareFootage);
         saveMartialArts.setMatCount(matCount);
 
-        spaceService.createSpace(saveMartialArts);
+        // Próba zapisu do bazy danych
+        try {
+            spaceService.createSpace(saveMartialArts);
+        } catch (Exception e) {
+            System.out.println("Wystąpił błąd podczas zapisu do bazy danych: " + e.getMessage());
+        }
+        errorLabel.setText("");
     }
     private void createMedicalRoom(){
         MedicalRoom saveMedical = new MedicalRoom();
 
-        String name = "Brak nazwy";
-        int capacity = 10;
-        double squareFootage = 10;
-        boolean choice = false;
+        String name;
+        int capacity;
+        double squareFootage;
+        boolean choice;
+
+        // Pobieranie wartości z pól tekstowych
+        if (tex1.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole nazwy");
+            return;
+        }
+        name = tex1.getText();
+
+        if (tex2.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole pojemności");
+            return;
+        }
+        try {
+            capacity = Integer.parseInt(tex2.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+        if (capacity <= 0){
+            errorLabel.setText("Liczba musi być większa od zera");
+            return;
+        }
+
+        if (tex3.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole metrów kwadratowych pomieszczenia");
+            return;
+        }
+        try {
+            squareFootage = Integer.parseInt(tex3.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+        if (squareFootage <= 0){
+            errorLabel.setText("Liczba musi być większa od zera");
+            return;
+        }
 
         String select = comboCat.getSelectionModel().getSelectedItem();
-
-        if (!tex1.getText().isBlank()) name = tex1.getText();
-        if (!tex2.getText().isBlank()) capacity = Integer.parseInt(tex2.getText());
-        if (!tex3.getText().isBlank()) squareFootage = Double.parseDouble(tex3.getText());
         if (select.equalsIgnoreCase("Tak")) choice = true;
+        else choice = false;
 
         saveMedical.setName(name);
         saveMedical.setCapacity(capacity);
         saveMedical.setSquareFootage(squareFootage);
         saveMedical.setSterile(choice);
 
-        spaceService.createSpace(saveMedical);
+        // Próba zapisu do bazy danych
+        try {
+            spaceService.createSpace(saveMedical);
+        } catch (Exception e) {
+            System.out.println("Wystąpił błąd podczas zapisu do bazy danych: " + e.getMessage());
+        }
+        errorLabel.setText("");
     }
     private void createRoom(){
         Room saveRoom = new Room();
-        String name = "Brak nazwy";
-        int capacity = 10;
-        double squareFootage = 10;
+        String name;
+        int capacity;
+        double squareFootage;
 
-        if (!tex1.getText().isBlank()) name = tex1.getText();
-        if (!tex2.getText().isBlank()) capacity = Integer.parseInt(tex2.getText());
-        if (!tex3.getText().isBlank()) squareFootage = Double.parseDouble(tex3.getText());
+        // Pobieranie wartości z pól tekstowych
+        if (tex1.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole nazwy");
+            return;
+        }
+        name = tex1.getText();
+
+        if (tex2.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole pojemności");
+            return;
+        }
+        try {
+            capacity = Integer.parseInt(tex2.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+        if (capacity <= 0){
+            errorLabel.setText("Liczba musi być większa od zera");
+            return;
+        }
+
+        if (tex3.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole metrów kwadratowych pomieszczenia");
+            return;
+        }
+        try {
+            squareFootage = Integer.parseInt(tex3.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+        if (squareFootage <= 0){
+            errorLabel.setText("Liczba musi być większa od zera");
+            return;
+        }
 
         saveRoom.setName(name);
         saveRoom.setCapacity(capacity);
         saveRoom.setSquareFootage(squareFootage);
 
-        spaceService.createSpace(saveRoom);
+        // Próba zapisu do bazy danych
+        try {
+            spaceService.createSpace(saveRoom);
+        } catch (Exception e) {
+            System.out.println("Wystąpił błąd podczas zapisu do bazy danych: " + e.getMessage());
+        }
+        errorLabel.setText("");
     }
     private void createSoccerField(){
         SoccerField saveSoccer = new SoccerField();
 
-        String name = "Brak nazwy";
-        double squareFootage = 7140;
-        int goalCount = 2;
-        TurfType turfType = TurfType.ARTIFICIAL;
+        String name;
+        double squareFootage;
+        int goalCount;
+        TurfType turfType;
+
+
+        if (tex1.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole nazwy");
+            return;
+        }
+        name = tex1.getText();
+
+        if (tex2.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole metrów kwadratowych boiska");
+            return;
+        }
+        try {
+            squareFootage = Double.parseDouble(tex2.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+
+        if (squareFootage <= 0){
+            errorLabel.setText("Pole metrow kwadratowych boiska musi byc wieksza od 0");
+            return;
+        }
+
+        if (tex3.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole bramek wbudowanych na stałe");
+            return;
+        }
+        try {
+            goalCount = Integer.parseInt(tex3.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+        if (goalCount < 0){
+            errorLabel.setText("Liczba bramek nie może być mniejsza od 0");
+        }
 
 
         TurfType choiceTurf = turfTypeComboBox.getSelectionModel().getSelectedItem();
-
-        if (!tex1.getText().isBlank()) name = tex1.getText();
-        if (!tex2.getText().isBlank()) squareFootage = Double.parseDouble(tex2.getText());
-        if (!tex3.getText().isBlank()) goalCount = Integer.parseInt(tex3.getText());
-        if (choiceTurf != null) turfType = choiceTurf;
+        if (choiceTurf == null){
+            errorLabel.setText("Wybierz typ nawierzchni");
+            return;
+        }
+        turfType = choiceTurf;
 
         saveSoccer.setName(name);
         saveSoccer.setSquareFootage(squareFootage);
         saveSoccer.setGoalCount(goalCount);
         saveSoccer.setTurfType(turfType);
 
-        spaceService.createSpace(saveSoccer);
+        // Próba zapisu do bazy danych
+        try {
+            spaceService.createSpace(saveSoccer);
+        } catch (Exception e) {
+            System.out.println("Wystąpił błąd podczas zapisu do bazy danych: " + e.getMessage());
+        }
+        errorLabel.setText("");
     }
     private void createSwimmingPool(){
-        SwimmingPool swimmingPool = new SwimmingPool();
+        SwimmingPool saveSwimmingPool = new SwimmingPool();
 
-        String name = "Brak nazwy";
-        double poolLength = 50;
-        double poolDepth = 2;
+        String name;
+        double poolLength;
+        double poolDepth;
         int laneCount = 10;
 
-        if (!tex1.getText().isBlank()) name = tex1.getText();
-        if (!tex2.getText().isBlank()) poolLength = Double.parseDouble(tex2.getText());
-        if (!tex3.getText().isBlank()) poolDepth = Double.parseDouble(tex3.getText());
-        if (!tex4.getText().isBlank()) laneCount = Integer.parseInt(tex4.getText());
+        if (tex1.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole nazwy");
+            return;
+        }
+        name = tex1.getText();
 
-        swimmingPool.setName(name);
-        swimmingPool.setPoolLength(poolLength);
-        swimmingPool.setPoolDepth(poolDepth);
-        swimmingPool.setLaneCount(laneCount);
+        if (tex2.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole długość basenu");
+            return;
+        }
+        try {
+            poolLength = Double.parseDouble(tex2.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
 
-        spaceService.createSpace(swimmingPool);
+        if (poolLength <= 0){
+            errorLabel.setText("Długośc basenu musi być większa od 0");
+            return;
+        }
+
+        if (tex3.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole głębokośc basenu");
+            return;
+        }
+        try {
+            poolDepth = Double.parseDouble(tex3.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+
+        if (poolDepth <= 0){
+            errorLabel.setText("Głebokość basenu musi być większa od 0");
+            return;
+        }
+
+
+        if (tex4.getText().isBlank()){
+            errorLabel.setText("Uzupelnij pole ilość torów");
+            return;
+        }
+        try {
+            laneCount = Integer.parseInt(tex4.getText());
+        }catch (NumberFormatException e){
+            errorLabel.setText("Nie poprawna liczba");
+            return;
+        }
+
+        if (laneCount < 0){
+            errorLabel.setText("Liczba torów nie może być mniejsza od 0");
+            return;
+        }
+
+        saveSwimmingPool.setName(name);
+        saveSwimmingPool.setPoolLength(poolLength);
+        saveSwimmingPool.setPoolDepth(poolDepth);
+        saveSwimmingPool.setLaneCount(laneCount);
+
+        // Próba zapisu do bazy danych
+        try {
+            spaceService.createSpace(saveSwimmingPool);
+        } catch (Exception e) {
+            System.out.println("Wystąpił błąd podczas zapisu do bazy danych: " + e.getMessage());
+        }
+        errorLabel.setText("");
     }
 
     public void updateSpace(Long spaceID){
-        if (curChoice.equalsIgnoreCase("") || curChoice.equalsIgnoreCase("Room")){
-            updateRoom(spaceID);
-        } else if (curChoice.equalsIgnoreCase("Koszykówka") || curChoice.equalsIgnoreCase("BASKETBALL_ROOM")) {
-            updateBasketballRoom(spaceID);
-        } else if (curChoice.equalsIgnoreCase("Sztuki walki") || curChoice.equalsIgnoreCase("MARTIAL_ARTS_ROOM")) {
-            updateMariatlArtsRoom(spaceID);
-        } else if (curChoice.equalsIgnoreCase("Piłka nożna") || curChoice.equalsIgnoreCase("SOCCER_FIELD")) {
-            updateSoccerField(spaceID);
-        } else if (curChoice.equalsIgnoreCase("Basen") || curChoice.equalsIgnoreCase("SWIMMING_POOL")) {
-            updateSwimmingPool(spaceID);
-        } else if (curChoice.equalsIgnoreCase("Medyczne") || curChoice.equalsIgnoreCase("MEDICAL_ROOM")) {
-            updateMedicalRoom(spaceID);
-        }
+        Optional<Space> optionalSpace = spaceService.getSpace(spaceID);
+        if (optionalSpace.isEmpty()) return;
+
+        Space updateSpace = optionalSpace.get();
+
+       if (updateSpace instanceof BasketballRoom){
+           updateBasketballRoom(updateSpace.getId());
+       }else if (updateSpace instanceof MartialArtsRoom){
+           updateMariatlArtsRoom(updateSpace.getId());
+       } else if (updateSpace instanceof MedicalRoom) {
+           updateMedicalRoom(updateSpace.getId());
+       } else if (updateSpace instanceof Room) {
+           updateRoom(updateSpace.getId());
+       } else if (updateSpace instanceof SoccerField) {
+           updateSoccerField(updateSpace.getId());
+       } else if (updateSpace instanceof SwimmingPool) {
+           updateSwimmingPool(updateSpace.getId());
+       }
     }
 
     private void updateRoom(Long spaceID){
         Room updateRoom = new Room();
 
-        if (!tex1.getText().isBlank())updateRoom.setName(tex1.getText());
+        int capacity;
+        double squareFootage;
 
-        try {
-            updateRoom.setCapacity(Integer.parseInt(tex2.getText()));
-        } catch (NumberFormatException e) {
-            System.err.println("Niepoprawny format liczby w polu pojemność: " + tex2.getText());
+        if (!tex1.getText().isBlank()){
+            updateRoom.setName(tex1.getText());
         }
 
-        try {
-            updateRoom.setSquareFootage(Double.parseDouble(tex3.getText()));
-        } catch (NumberFormatException e) {
-            System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex3.getText());
+        if (!tex2.getText().isBlank()){
+
+            try {
+                capacity = Integer.parseInt(tex2.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba w polu pojemnosci");
+                return;
+            }
+            if (capacity <= 0){
+                errorLabel.setText("Liczba pojemnosci musi byc wieksza od 0");
+                return;
+            }
+            updateRoom.setCapacity(capacity);
+        }
+
+        if (!tex3.getText().isBlank()){
+
+            try {
+                squareFootage = Double.parseDouble(tex3.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba metrow kwadratowych");
+                return;
+            }
+            if (squareFootage <= 0){
+                errorLabel.setText("Liczba metrow kwadratowych pomieszczenia musi byc wieksza od 0");
+                return;
+            }
+            updateRoom.setSquareFootage(squareFootage);
         }
 
         spaceService.updateSpace(spaceID,updateRoom);
+
+        errorLabel.setText("");
     }
     public void updateBasketballRoom(Long spaceID) {
 
         BasketballRoom updateBasketball = new BasketballRoom();
+        int capacity;
+        double squareFootage;
+        int hoopCount;
 
-        if (!tex1.getText().isBlank())updateBasketball.setName(tex1.getText());
 
-        try {
-            updateBasketball.setCapacity(Integer.parseInt(tex2.getText()));
-        } catch (NumberFormatException e) {
-            System.err.println("Niepoprawny format liczby w polu pojemność: " + tex2.getText());
+        if (!tex1.getText().isBlank()){
+            updateBasketball.setName(tex1.getText());
         }
 
-        try {
-            updateBasketball.setSquareFootage(Double.parseDouble(tex3.getText()));
-        } catch (NumberFormatException e) {
-            System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex3.getText());
+        if (!tex2.getText().isBlank()){
+
+            try {
+                capacity = Integer.parseInt(tex2.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba w polu pojemnosci");
+                return;
+            }
+            if (capacity <= 0){
+                errorLabel.setText("Liczba pojemnosci musi byc wieksza od 0");
+                return;
+            }
+            updateBasketball.setCapacity(capacity);
         }
 
-        try {
-            updateBasketball.setHoopCount(Integer.parseInt(tex4.getText()));
-        } catch (NumberFormatException e) {
-            System.err.println("Niepoprawny format liczby w polu liczba koszy: " + tex4.getText());
+        if (!tex3.getText().isBlank()){
+
+            try {
+                squareFootage = Double.parseDouble(tex3.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba metrow kwadratowych");
+                return;
+            }
+            if (squareFootage <= 0){
+                errorLabel.setText("Liczba metrow kwadratowych pomieszczenia musi byc wieksza od 0");
+                return;
+            }
+            updateBasketball.setSquareFootage(squareFootage);
+        }
+
+
+        if (!tex4.getText().isBlank()){
+
+            try {
+                hoopCount = Integer.parseInt(tex4.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba w liczbie koszy");
+                return;
+            }
+            if (hoopCount < 0){
+                errorLabel.setText("Liczba koszy nie może być ujemna");
+                return;
+            }
+            updateBasketball.setHoopCount(hoopCount);
         }
 
         spaceService.updateSpace(spaceID,updateBasketball);
+
+        errorLabel.setText("");
     }
     private void updateMariatlArtsRoom(Long spaceID){
 
         MartialArtsRoom updateMartialArts = new MartialArtsRoom();
 
-        if (!tex1.getText().isBlank())updateMartialArts.setName(tex1.getText());
+        int capacity;
+        double squareFootage;
+        int matCount;
 
-        try {
-            updateMartialArts.setCapacity(Integer.parseInt(tex2.getText()));
-        }catch (NumberFormatException e){
-            System.err.println("Niepoprawny format liczby w polu pojemność: " + tex2.getText());
+
+        if (!tex1.getText().isBlank()){
+            updateMartialArts.setName(tex1.getText());
         }
 
-        try {
-            updateMartialArts.setSquareFootage(Double.parseDouble(tex3.getText()));
-        }catch (NumberFormatException e){
-            System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex3.getText());
+        if (!tex2.getText().isBlank()){
+
+            try {
+                capacity = Integer.parseInt(tex2.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba w polu pojemnosci");
+                return;
+            }
+            if (capacity <= 0){
+                errorLabel.setText("Liczba pojemnosci musi byc wieksza od 0");
+                return;
+            }
+            updateMartialArts.setCapacity(capacity);
         }
 
-        try {
-            updateMartialArts.setMatCount(Integer.parseInt(tex4.getText()));
-        }catch (NumberFormatException e){
-            System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex4.getText());
+        if (!tex3.getText().isBlank()){
+
+            try {
+                squareFootage = Double.parseDouble(tex3.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba metrow kwadratowych");
+                return;
+            }
+            if (squareFootage <= 0){
+                errorLabel.setText("Liczba metrow kwadratowych pomieszczenia musi byc wieksza od 0");
+                return;
+            }
+            updateMartialArts.setSquareFootage(squareFootage);
+        }
+
+
+        if (!tex4.getText().isBlank()){
+
+            try {
+                matCount = Integer.parseInt(tex4.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba w liczbie mat");
+                return;
+            }
+            if (matCount < 0){
+                errorLabel.setText("Liczba mat nie może być ujemna");
+                return;
+            }
+            updateMartialArts.setMatCount(matCount);
         }
 
         spaceService.updateSpace(spaceID,updateMartialArts);
+
+        errorLabel.setText("");
     }
     private void updateSoccerField(Long spaceID){
 
         SoccerField updateSoccerField = new SoccerField();
 
-        if (!tex1.getText().isBlank()) updateSoccerField.setName(tex1.getText());
+        double squareFootage;
+        int goalCount;
+        TurfType turfType;
 
-        try {
-            updateSoccerField.setSquareFootage(Double.parseDouble(tex2.getText()));
-        }catch (NumberFormatException e){
-            System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex2.getText());
+
+        if (!tex1.getText().isBlank()){
+            updateSoccerField.setName(tex1.getText());
         }
 
-        try {
-            updateSoccerField.setGoalCount(Integer.parseInt(tex3.getText()));
-        }catch (NumberFormatException e){
-            System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex3.getText());
+        if (!tex2.getText().isBlank()){
+
+            try {
+                squareFootage = Double.parseDouble(tex2.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba w metrach kwadratowych boiska");
+                return;
+            }
+            if (squareFootage <= 0){
+                errorLabel.setText("Liczba metrow kwadratowych musi byc wieksza od 0");
+                return;
+            }
+            updateSoccerField.setSquareFootage(squareFootage);
         }
 
+        if (!tex3.getText().isBlank()){
 
-        updateSoccerField.setTurfType(turfTypeComboBox.getSelectionModel().getSelectedItem());
+            try {
+                goalCount = Integer.parseInt(tex3.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba w bramkach");
+                return;
+            }
+            if (goalCount < 0){
+                errorLabel.setText("Liczba bramek nie moze byc ujemna");
+                return;
+            }
+
+            updateSoccerField.setGoalCount(goalCount);
+        }
+
+        if (!turfTypeComboBox.getSelectionModel().isEmpty()){
+            turfType = turfTypeComboBox.getSelectionModel().getSelectedItem();
+            updateSoccerField.setTurfType(turfType);
+        }
+
 
         spaceService.updateSpace(spaceID,updateSoccerField);
+
+        errorLabel.setText("");
     }
     private void updateSwimmingPool(Long spaceID){
 
         SwimmingPool updateSwimmingPool = new SwimmingPool();
 
-        if (!tex1.getText().isBlank()) updateSwimmingPool.setName(tex1.getText());
+        double poolLength;
+        double poolDepth;
+        int laneCount;
 
-        try {
-            updateSwimmingPool.setPoolLength(Double.parseDouble(tex2.getText()));
-        }catch (NumberFormatException e){
-            System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex2.getText());
+        if (!tex1.getText().isBlank()){
+            updateSwimmingPool.setName(tex1.getText());
         }
 
-        try {
-            updateSwimmingPool.setPoolDepth(Double.parseDouble(tex3.getText()));
-        }catch (NumberFormatException e){
-            System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex3.getText());
+        if (!tex2.getText().isBlank()){
+
+            try {
+                poolLength = Double.parseDouble(tex2.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba w długości basenu");
+                return;
+            }
+            if (poolLength <= 0){
+                errorLabel.setText("Długośc basenu musi być większa od 0");
+                return;
+            }
+            updateSwimmingPool.setPoolLength(poolLength);
         }
 
-        try {
-            updateSwimmingPool.setLaneCount(Integer.parseInt(tex4.getText()));
-        }catch (NumberFormatException e){
-            System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex4.getText());
+        if (!tex3.getText().isBlank()){
+
+            try {
+                poolDepth = Double.parseDouble(tex3.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba w głębokości basenu");
+                return;
+            }
+            if (poolDepth <= 0){
+                errorLabel.setText("Głębokość basenu musi byc wieksza od 0");
+                return;
+            }
+            updateSwimmingPool.setPoolDepth(poolDepth);
+        }
+
+        if (!tex4.getText().isBlank()){
+
+            try {
+                laneCount = Integer.parseInt(tex4.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba w torach basenu");
+                return;
+            }
+            if (laneCount < 0){
+                errorLabel.setText("Liczba torów basenu nie może być ujemna");
+                return;
+            }
+            updateSwimmingPool.setLaneCount(laneCount);
         }
 
 
         spaceService.updateSpace(spaceID,updateSwimmingPool);
+
+        errorLabel.setText("");
     }
     private void updateMedicalRoom(Long spaceID){
 
-        Optional<Space> optionalSpace = spaceService.getSpace(spaceID);
-        MedicalRoom space = (MedicalRoom) optionalSpace.get();
-
-
         MedicalRoom updateMedical = new MedicalRoom();
 
-        if (tex1.getText().isBlank()) updateMedical.setName(tex1.getText());
+        int capacity;
+        double squareFootage;
 
-        try {
-            updateMedical.setCapacity(Integer.parseInt(tex2.getText()));
-        }catch (NumberFormatException e){
-            System.err.println("Niepoprawny format liczby w polu przestrzeń: " + tex2.getText());
+        if (!tex1.getText().isBlank()){
+            updateMedical.setName(tex1.getText());
         }
 
-        try {
-            updateMedical.setSquareFootage(Double.parseDouble(tex3.getText()));
-        }catch (NumberFormatException e){
-            updateMedical.setCapacity(Integer.parseInt(tex3.getText()));
+        if (!tex2.getText().isBlank()){
+
+            try {
+                capacity = Integer.parseInt(tex2.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba w polu pojemnosci");
+                return;
+            }
+            if (capacity <= 0){
+                errorLabel.setText("Liczba pojemnosci musi byc wieksza od 0");
+                return;
+            }
+            updateMedical.setCapacity(capacity);
         }
 
-        if (comboCat.getSelectionModel().getSelectedItem().equalsIgnoreCase( "Tak")){
-            updateMedical.setSterile(true);
-        } else if (comboCat.getSelectionModel().getSelectedItem().equalsIgnoreCase("Nie")) {
-            updateMedical.setSterile(false);
-        }else {
-            updateMedical.setSterile(space.isSterile());
+        if (!tex3.getText().isBlank()){
+
+            try {
+                squareFootage = Double.parseDouble(tex3.getText());
+            }catch (NumberFormatException e){
+                errorLabel.setText("Niepoprawna liczba metrow kwadratowych");
+                return;
+            }
+            if (squareFootage <= 0){
+                errorLabel.setText("Liczba metrow kwadratowych pomieszczenia musi byc wieksza od 0");
+                return;
+            }
+            updateMedical.setSquareFootage(squareFootage);
         }
+
+
+      if (!comboCat.getSelectionModel().isEmpty()){
+          String isSterile = comboCat.getSelectionModel().getSelectedItem();
+
+          if(isSterile.equalsIgnoreCase("Tak")){
+              updateMedical.setSterile(true);
+          }else {
+              updateMedical.setSterile(false);
+          }
+      }
 
         spaceService.updateSpace(spaceID,updateMedical);
+
+      errorLabel.setText("");
     }
 }

@@ -8,9 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OfferService {
@@ -32,6 +30,8 @@ public class OfferService {
 
         List<Offer> result = new ArrayList<>();
 
+        if (name.isBlank()) return  offerList;
+
         for (Offer offer : offerList){
 
             String offerNameLower = offer.getName().toLowerCase();
@@ -40,6 +40,22 @@ public class OfferService {
         }
 
         return result;
+    }
+
+    public List<Offer> getAllOffersBySpecialization(Specialization specialization){
+
+        List<Offer> offerList = offerRepository.findAll();
+
+        Set<Offer> resut = new HashSet<>();
+
+        if (specialization == null) return offerList;
+
+        for (Offer offer : offerList){
+
+            if (offer.getSpecializations().contains(specialization)) resut.add(offer);
+        }
+
+        return new ArrayList<>(resut);
     }
 
     public Optional<Offer> getOffer(Long offerID){
@@ -62,6 +78,7 @@ public class OfferService {
             if (!updateOffer.getName().isBlank()) saveOffer.setName(updateOffer.getName());
             if (!updateOffer.getDescription().isBlank()) saveOffer.setDescription(updateOffer.getDescription());
             if (updateOffer.getPrice() > 0) saveOffer.setPrice(updateOffer.getPrice());
+            if (updateOffer.getOfferType() != null) saveOffer.setOfferType(updateOffer.getOfferType());
 
             offerRepository.save(saveOffer);
         }

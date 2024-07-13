@@ -37,6 +37,8 @@ public class SpaceService {
     //Przeciążenie metody
     public List<Space> getAllSpaces(Specialization specialization){
 
+        if (specialization == null) return spaceRepository.findAll();
+
         List<Space> result = spaceRepository.findAll().stream()
                 .filter(space -> space.getSpecializations().contains(specialization)).collect(Collectors.toList());
 

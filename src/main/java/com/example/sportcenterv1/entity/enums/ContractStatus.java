@@ -1,6 +1,6 @@
 package com.example.sportcenterv1.entity.enums;
 
-public enum ContractStatusType {
+public enum ContractStatus {
 
     NEW("Nowy"),
     PENDING("Oczekujący"),
@@ -12,7 +12,7 @@ public enum ContractStatusType {
 
     private final String displayName;
 
-    ContractStatusType(String displayName){
+    ContractStatus(String displayName){
         this.displayName = displayName;
     }
 

@@ -3,7 +3,6 @@ package com.example.sportcenterv1.service;
 import com.example.sportcenterv1.entity.Client;
 import com.example.sportcenterv1.entity.Offer;
 import com.example.sportcenterv1.entity.Reservation;
-import com.example.sportcenterv1.entity.employee.Employee;
 import com.example.sportcenterv1.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReservationService {

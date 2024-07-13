@@ -58,7 +58,7 @@ public class SpaceView extends VBox {
 
     }
 
-    private void  choiceSetting(String choice){
+    protected void  choiceSetting(String choice){
         settingForEnum();
         this.getChildren().clear();
         if (choice.equalsIgnoreCase("") || choice.equalsIgnoreCase("Sale/Pomieszczenia") ||choice.equalsIgnoreCase("ROOM")){

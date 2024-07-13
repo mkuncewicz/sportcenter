@@ -48,11 +48,12 @@
                         <HBox prefHeight="40.0" prefWidth="400.0">
                            <children>
                               <Label prefHeight="40.0" prefWidth="60.0" text="Oferta" />
-                              <TextField fx:id="textFieldSearchOffer" prefHeight="40.0" prefWidth="340.0" promptText="Szukaj oferty">
+                              <TextField fx:id="textFieldSearchOffer" prefHeight="30.0" prefWidth="187.0" promptText="Szukaj oferty">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                               </TextField>
+                              <ComboBox fx:id="comboboxSpecForOffer" prefHeight="30.0" prefWidth="150.0" />
                            </children>
                            <VBox.margin>
                               <Insets top="10.0" />
@@ -75,25 +76,25 @@
                   </VBox>
                   <VBox prefHeight="770.0" prefWidth="600.0">
                      <children>
-                        <TextField prefHeight="40.0" promptText="Znajdz klienta" />
+                        <TextField fx:id="textFieldSearchReservation" prefHeight="40.0" promptText="Znajdz klienta" styleClass="textfieldsearch" />
                         <ListView fx:id="listViewReservation" prefHeight="730.0" prefWidth="600.0" />
                      </children>
                   </VBox>
                   <VBox prefHeight="770.0" prefWidth="400.0">
                      <children>
                         <Label alignment="CENTER" prefHeight="30.0" prefWidth="400.0" text="Informacje" />
-                        <Label prefWidth="400.0" text="Klient" />
-                        <Label prefWidth="400.0" text="Oferta" />
-                        <Label prefWidth="400.0" text="Data" />
-                        <Label prefWidth="400.0" text="Pracownik" />
-                        <Label prefWidth="400.0" text="Sala" />
-                        <Label prefWidth="400.0" text="Status" />
+                        <Label fx:id="labelClient" prefWidth="400.0" text="Klient" />
+                        <Label fx:id="labelOffer" prefWidth="400.0" text="Oferta" />
+                        <Label fx:id="labelDate" prefWidth="400.0" text="Data" />
+                        <Label fx:id="labelEmployee" prefWidth="400.0" text="Pracownik" />
+                        <Label fx:id="labelSpace" prefWidth="400.0" text="Sala" />
+                        <Label fx:id="labelStatus" prefWidth="400.0" text="Status" />
                      </children>
                   </VBox>
                </children>
             </HBox>
          </children>
       </VBox>
-      <Label fx:id="errorLabel" alignment="CENTER" layoutX="400.0" layoutY="102.0" prefHeight="30.0" prefWidth="1200.0" styleClass="errorLabel" text="Label" />
+      <Label fx:id="errorLabel" alignment="CENTER" layoutX="400.0" layoutY="85.0" prefHeight="30.0" prefWidth="1200.0" styleClass="errorLabel" />
    </children>
 </AnchorPane>

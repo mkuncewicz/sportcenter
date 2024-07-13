@@ -9,12 +9,7 @@
 }
 
 .button{
-    -fx-font-size: 18px; /* Większy rozmiar tekstu dla lepszej widoczności */
-}
-
-
-.button{
-    -fx-background-color: #17cdd5; /* Jasnoniebieski kolor przycisków */
+    -fx-background-color: linear-gradient(to bottom, #17cdd5, #0cb9cb);
     -fx-text-fill: white; /* Biały tekst */
     -fx-border-color: white; /* Biała ramka przycisków */
     -fx-border-width: 1px; /* Szerokość ramki */
@@ -24,7 +19,7 @@
 }
 
 .buttonEmployeeOption{
-    -fx-background-color: #0cb9cb; /* Jasnoniebieski kolor przycisków */
+    -fx-background-color: linear-gradient(to bottom, #0cb9cb, #06a5af);
     -fx-text-fill: white; /* Biały tekst */
     -fx-border-color: white; /* Biała ramka przycisków */
     -fx-border-width: 1px; /* Szerokość ramki */
@@ -33,7 +28,7 @@
 }
 
 .buttonSpecOfEmployee{
-    -fx-background-color: #06a5af; /* Jasnoniebieski kolor przycisków */
+    -fx-background-color: linear-gradient(to bottom, #06a5af, #048e99);
     -fx-text-fill: white; /* Biały tekst */
     -fx-border-color: white; /* Biała ramka przycisków */
     -fx-border-width: 1px; /* Szerokość ramki */
@@ -42,7 +37,7 @@
 }
 
 .buttonSpecializationOption{
-    -fx-background-color: #1bb0bb; /* Jasnoniebieski kolor przycisków */
+    -fx-background-color: linear-gradient(to bottom, #1bb0bb, #148387);
     -fx-text-fill: white; /* Biały tekst */
     -fx-border-color: white; /* Biała ramka przycisków */
     -fx-border-width: 1px; /* Szerokość ramki */
@@ -55,7 +50,7 @@
 }
 
 .backButton{
-    -fx-background-color: #5d99f8;
+    -fx-background-color: linear-gradient(to bottom, #5d99f8, #3a6fb3);
     -fx-font-weight: 700;
 
 }
@@ -113,20 +108,16 @@
     -fx-pref-height: 50px;
     -fx-font-size: 15px;
     -fx-font-weight: 700;
-    -fx-background-color: #cc1f1f;
+    -fx-background-color: linear-gradient(to bottom, #cc1f1f, #991515);
     -fx-border-width: 0px;
 }
 
 .clearButton:hover{
-    -fx-pref-width: 50px;
-    -fx-pref-height: 50px;
-    -fx-font-size: 15px;
-    -fx-font-weight: 700;
     -fx-background-color: #a23131;
 }
 
 .buttonDarkMode{
-    -fx-background-color: #bdb3b3;
+    -fx-background-color: linear-gradient(to bottom, #bdb3b3, #8a8989);
     -fx-pref-height: 50px;
     -fx-pref-width: 175px;
     -fx-font-size: 27px;

@@ -14,18 +14,24 @@
 <AnchorPane fx:id="mainPane" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/offerManagerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.OfferController">
    <children>
       <Button layoutX="35.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="75.0" prefWidth="125.0" styleClass="backButton" text="Wróć" />
-      <VBox layoutX="153.0" layoutY="130.0" prefHeight="800.0" prefWidth="900.0" styleClass="mainvboxspace">
+      <VBox layoutX="153.0" layoutY="130.0" prefHeight="850.0" prefWidth="985.0" styleClass="mainvboxspace">
          <children>
             <Label alignment="CENTER" prefHeight="50.0" prefWidth="900.0" text="Usługi" />
+            <HBox prefHeight="150.0" prefWidth="900.0">
+               <children>
+                  <TextField fx:id="textfieldsearch" prefHeight="54.0" prefWidth="266.0" promptText="Znajdz oferte" />
+                  <ComboBox fx:id="comboboxSpec" prefHeight="54.0" prefWidth="237.0" />
+               </children>
+            </HBox>
             <HBox prefHeight="850.0" prefWidth="900.0">
                <children>
-                  <VBox prefHeight="850.0" prefWidth="500.0">
+                  <VBox prefHeight="754.0" prefWidth="504.0">
                      <children>
                         <ListView fx:id="listViewOffer" prefHeight="332.0" prefWidth="472.0" />
                         <TextField fx:id="nameTextField" prefHeight="50.0" prefWidth="750.0" promptText="Nazwa" />
                         <TextArea fx:id="descriptionTextArea" prefHeight="172.0" prefWidth="472.0" promptText="Opis (Max 510 znaków)" />
                         <TextField fx:id="priceTextField" prefHeight="50.0" prefWidth="750.0" promptText="Cena (zł)" />
-                        <ComboBox prefHeight="53.0" prefWidth="472.0" />
+                        <ComboBox fx:id="comboboxOfferType" prefHeight="53.0" prefWidth="504.0" />
                         <HBox prefHeight="100.0" prefWidth="750.0">
                            <children>
                               <Button mnemonicParsing="false" onAction="#createOffer" prefHeight="100.0" prefWidth="250.0" text="Stwórz" />
@@ -35,19 +41,20 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox prefHeight="1150.0" prefWidth="450.0">
+                  <VBox prefHeight="754.0" prefWidth="475.0">
                      <children>
                         <Label fx:id="nameLabel" prefHeight="36.0" prefWidth="424.0" text="Nazwa" />
                         <TextFlow fx:id="descriptionTextFlow" prefHeight="343.0" prefWidth="422.0" styleClass="opis" />
+                        <Label fx:id="offerTypeLabel" prefHeight="36.0" prefWidth="424.0" text="Typ oferty:" />
                         <Label fx:id="priceLabel" prefHeight="36.0" prefWidth="424.0" text="Cena:" />
                         <ListView fx:id="listViewSpecOfOffer" prefHeight="300.0" prefWidth="422.0" />
-                        <Button mnemonicParsing="false" onAction="#removeSpecFromOffer" prefHeight="52.0" prefWidth="425.0" text="Usuń" />
+                        <Button mnemonicParsing="false" onAction="#removeSpecFromOffer" prefHeight="52.0" prefWidth="477.0" text="Usuń" />
                      </children></VBox>
                </children>
             </HBox>
          </children>
       </VBox>
-      <VBox layoutX="1189.0" layoutY="130.0" prefHeight="800.0" prefWidth="500.0" styleClass="mainvboxspace">
+      <VBox layoutX="1244.0" layoutY="130.0" prefHeight="800.0" prefWidth="500.0" styleClass="mainvboxspace">
          <children>
             <Label alignment="CENTER" prefHeight="50.0" prefWidth="500.0" text="Specjalizacje" />
             <ListView fx:id="listViewSpecialization" prefHeight="650.0" prefWidth="500.0" />

@@ -13,7 +13,7 @@
 }
 
 .button{
-    -fx-background-color: #1bb0bb; /* Jasnoniebieski kolor przycisków */
+    -fx-background-color: linear-gradient(to bottom, #1bb0bb, #148387);
     -fx-text-fill: white; /* Biały tekst */
     -fx-border-color: white; /* Biała ramka przycisków */
     -fx-border-width: 1px; /* Szerokość ramki */
@@ -23,7 +23,7 @@
 }
 
 .backButton{
-    -fx-background-color: #5d99f8; /* Jasnoniebieski kolor przycisków */
+    -fx-background-color: linear-gradient(to bottom, #5d99f8, #3a6fb3);
     -fx-font-weight: 700;
 }
 
@@ -55,7 +55,7 @@
     -fx-pref-height: 50px;
     -fx-font-size: 15px;
     -fx-font-weight: 700;
-    -fx-background-color: #720808;
+    -fx-background-color: linear-gradient(to bottom, #cc1f1f, #991515);
     -fx-border-width: 0px;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .buttonDarkMode{
-    -fx-background-color: #bdb3b3;
+    -fx-background-color: linear-gradient(to bottom, #bdb3b3, #8a8989);
     -fx-pref-height: 50px;
     -fx-pref-width: 175px;
     -fx-font-size: 27px;

@@ -9,7 +9,7 @@
       <Button layoutX="1700.0" layoutY="25.0" mnemonicParsing="false" onAction="#setDarkMode" styleClass="buttonDarkMode" text="DarkMode" />
       <VBox alignment="CENTER" layoutX="413.0" layoutY="105.0" spacing="20">
          <children>
-            <Button fx:id="buttonEmployee" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Pracownicy" />
+            <Button fx:id="buttonEmployee" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Pracownicy/Specjalizacje" />
             <Button fx:id="buttonSpace" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Obiekty" />
             <Button fx:id="buttonContracts" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Kontrakty" />
             <Button fx:id="buttonFinances" mnemonicParsing="false" onAction="#handleButton" prefHeight="100.0" prefWidth="300.0" styleClass="button" text="Finanse" />

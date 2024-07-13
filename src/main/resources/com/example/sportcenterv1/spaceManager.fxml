@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -15,11 +14,12 @@
       <VBox layoutX="100.0" layoutY="130.0" prefHeight="800.0" prefWidth="1000.0" styleClass="vbox-main">
          <children>
             <Label alignment="CENTER" prefHeight="50.0" prefWidth="1000.0" styleClass="label-space" text="Obiekty" />
-            <ComboBox fx:id="comboCat" prefHeight="47.0" prefWidth="300.0" styleClass="combo-box-select">
-               <VBox.margin>
-                  <Insets bottom="30.0" />
-               </VBox.margin>
-            </ComboBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ComboBox fx:id="comboCat" prefHeight="50.0" prefWidth="300.0" promptText="Wybierz typ obiektu" styleClass="combo-box-select" />
+                  <ComboBox fx:id="comboboxspec" prefWidth="150.0" promptText="Szukaj po specjalizacjach" />
+               </children>
+            </HBox>
             <HBox fx:id="hboxTest" prefHeight="750.0" prefWidth="1000.0" styleClass="space-con">
                <children>
                   <VBox prefHeight="750.0" prefWidth="550.0">
@@ -35,7 +35,7 @@
                         <HBox prefHeight="100.0" prefWidth="550.0">
                            <children>
                               <Button mnemonicParsing="false" onAction="#deleteSpace" prefHeight="100.0" prefWidth="275.0" text="Usuń" />
-                              <Button mnemonicParsing="false" onAction="#removeSpecializationFromSpace" prefHeight="100.0" prefWidth="275.0" text="Usuń spec" />
+                              <Button mnemonicParsing="false" onAction="#removeSpecializationFromSpace" prefHeight="100.0" prefWidth="275.0" text="Usuń specjalizacje" />
                            </children>
                         </HBox>
                      </children>
@@ -49,13 +49,7 @@
             </HBox>
          </children>
       </VBox>
-      <VBox layoutX="1175.0" layoutY="70.0" prefHeight="450.0" prefWidth="500.0" styleClass="vbox-spec">
-         <children>
-            <Label alignment="CENTER" prefHeight="50.0" prefWidth="500.0" styleClass="label-spec" text="Pracownicy" />
-            <ListView prefHeight="400.0" prefWidth="500.0" />
-         </children>
-      </VBox>
-      <VBox layoutX="1175.0" layoutY="540.0" prefHeight="450.0" prefWidth="500.0" styleClass="vbox-spec">
+      <VBox layoutX="1181.0" layoutY="235.0" prefHeight="450.0" prefWidth="500.0" styleClass="vbox-spec">
          <children>
             <Label alignment="CENTER" prefHeight="50.0" prefWidth="500.0" styleClass="label-spec" text="Specialiazacje" />
             <ListView fx:id="listOfSpec" prefHeight="350.0" prefWidth="500.0" styleClass="listOfSpec" />
@@ -67,5 +61,7 @@
          </children>
       </VBox>
       <Button layoutX="1700.0" layoutY="25.0" mnemonicParsing="false" onAction="#setDarkMode" styleClass="buttonDarkMode" text="DarkMode" />
+      <Label fx:id="errorLabel1" alignment="CENTER" layoutX="185.0" layoutY="70.0" prefHeight="30.0" prefWidth="797.0" styleClass="errorLabel" />
+      <Label fx:id="errorLabel2" alignment="CENTER" layoutX="1186.0" layoutY="173.0" prefHeight="30.0" prefWidth="490.0" styleClass="errorLabel" />
    </children>
 </AnchorPane>

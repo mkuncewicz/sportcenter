@@ -14,9 +14,9 @@
 <AnchorPane fx:id="mainPane" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../css/employeeManagerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sportcenterv1.controller.EmployeeController">
    <children>
       <Button layoutX="1730.0" layoutY="25.0" mnemonicParsing="false" onAction="#setDarkMode" styleClass="buttonDarkMode" text="DarkMode" />
-      <Button layoutX="10.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="75.0" prefWidth="125.0" styleClass="backButton" text="Wróć" />
-      <Label fx:id="errorLabel1" alignment="CENTER" layoutX="204.0" layoutY="45.0" prefHeight="45.0" prefWidth="950.0" styleClass="errorLabel" />
-      <VBox layoutX="88.0" layoutY="95.0" prefHeight="925.0" prefWidth="1150.0" styleClass="mainvboxspace">
+      <Button layoutX="35.0" layoutY="35.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="75.0" prefWidth="125.0" styleClass="backButton" text="Wróć" />
+      <Label fx:id="errorLabel1" alignment="CENTER" layoutX="204.0" layoutY="25.0" prefHeight="45.0" prefWidth="950.0" styleClass="errorLabel" />
+      <VBox layoutX="175.0" layoutY="80.0" prefHeight="925.0" prefWidth="1150.0" styleClass="mainvboxspace">
          <children>
             <Label prefHeight="35.0" prefWidth="1149.0" style="-fx-alignment: center;" text="Pracownicy" />
             <HBox prefHeight="50.0" prefWidth="802.0">
@@ -84,14 +84,13 @@
             </HBox>
          </children>
       </VBox>
-      <VBox layoutX="1321.0" layoutY="176.0" prefHeight="800.0" prefWidth="500.0" styleClass="specvboxmain">
+      <VBox layoutX="1375.0" layoutY="160.0" prefHeight="800.0" prefWidth="500.0" styleClass="specvboxmain">
          <children>
             <Label prefHeight="35.0" prefWidth="500.0" style="-fx-alignment: center;" text="Specjalizacje" />
             <VBox prefHeight="760.0" prefWidth="500.0">
                <children>
-                  <ListView fx:id="listViewSpecialization" prefHeight="575.0" prefWidth="500.0" />
+                  <ListView fx:id="listViewSpecialization" prefHeight="625.0" prefWidth="500.0" />
                   <TextField fx:id="fieldSpecName" prefHeight="50.0" prefWidth="500.0" promptText="nazwa" />
-                  <ComboBox prefHeight="50.0" prefWidth="500.0" />
                   <HBox prefHeight="50.0" prefWidth="500.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#addNewSpecialization" prefHeight="49.0" prefWidth="250.0" styleClass="buttonSpecializationOption" text="Stwórz" />
@@ -104,6 +103,6 @@
             </VBox>
          </children>
       </VBox>
-      <Label fx:id="errorLabel2" alignment="CENTER" layoutX="1321.0" layoutY="108.0" prefHeight="45.0" prefWidth="500.0" styleClass="errorLabel" />
+      <Label fx:id="errorLabel2" alignment="CENTER" layoutX="1375.0" layoutY="108.0" prefHeight="45.0" prefWidth="500.0" styleClass="errorLabel" />
    </children>
 </AnchorPane>

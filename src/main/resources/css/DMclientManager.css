@@ -5,13 +5,9 @@
 
 .backButton{
 
-    -fx-background-color: #494848; /* Jasnoniebieski kolor przycisków */
+    -fx-background-color: linear-gradient(to bottom, #494848, #333333);
     -fx-text-fill: #070000; /* Biały tekst */
-    -fx-font-size: 15px; /* Większy rozmiar tekstu dla lepszej widoczności */
-    -fx-font-weight: 700;
     -fx-border-color: #2a2929; /* Biała ramka przycisków */
-    -fx-border-width: 1px; /* Szerokość ramki */
-    -fx-padding: 10px 15px; /* Padding przycisków */
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
 }
 
@@ -26,18 +22,10 @@
 }
 
 .button{
-    -fx-background-color: #031d1e; /* Jasnoniebieski kolor przycisków */
+    -fx-background-color: linear-gradient(to bottom, #031d1e, #021212);
     -fx-text-fill: white; /* Biały tekst */
     -fx-border-color: #1f1d1d; /* Biała ramka przycisków */
-    -fx-border-width: 1px; /* Szerokość ramki */
-    -fx-padding: 10px 15px; /* Padding przycisków */
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
-    -fx-font-size: 20px;
-}
-
-
-.urodziny{
-    -fx-font-size: 20px;
 }
 
 .list-view{
@@ -45,16 +33,14 @@
     -fx-text-fill: white;
     -fx-control-inner-background: #575656;
     -fx-cell-hover-color: #575656;
-    -fx-font-size: 22px;
 }
 
 .label{
-    -fx-font-size: 20px;
     -fx-text-fill: white;
 }
 
 .text-field{
-    -fx-background-color: #212020;
+    -fx-background-color: linear-gradient(to bottom, #212020, #171717);
     -fx-text-fill: white;
 }
 
@@ -73,7 +59,7 @@
     -fx-pref-height: 50px;
     -fx-font-size: 15px;
     -fx-font-weight: 700;
-    -fx-background-color: #720808;
+    -fx-background-color: linear-gradient(to bottom, #cc1f1f, #991515);
     -fx-border-width: 0px;
 }
 
@@ -86,12 +72,89 @@
 }
 
 .buttonDarkMode{
-    -fx-background-color: #3d3939;
-    -fx-pref-height: 50px;
-    -fx-pref-width: 175px;
-    -fx-font-size: 27px;
+    -fx-background-color: linear-gradient(to bottom, #3d3939, #2c2a2a);
 }
 
 .buttonDarkMode:hover{
     -fx-background-color: #beb8b8;
+}
+
+
+/* DatePicker CSS */
+.date-picker {
+    -fx-background-color: linear-gradient(to bottom, #212020, #171717); /* Gradient od ciemniejszego do jaśniejszego szarego */
+    -fx-text-fill: #ffffff; /* Biały tekst */
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: linear-gradient(to bottom, #3d3939, #2c2a2a); /* Gradient dla przycisków nawigacji */
+    -fx-text-fill: #ffffff; /* Biały tekst */
+}
+
+.date-picker .calendar-pane .top-label {
+    -fx-background-color: linear-gradient(to bottom, #3d3939, #2c2a2a); /* Gradient dla nagłówka kalendarza */
+    -fx-text-fill: #ffffff; /* Biały tekst */
+}
+
+.date-picker .calendar-pane .month-label,
+.date-picker .calendar-pane .year-label {
+    -fx-background-color: linear-gradient(to bottom, #3d3939, #2c2a2a); /* Gradient dla etykiet miesiąca i roku */
+    -fx-text-fill: #000000; /* Czarny tekst */
+    -fx-font-size: 16px; /* Rozmiar tekstu */
+    -fx-font-weight: bold; /* Pogrubienie tekstu */
+}
+
+.date-picker .calendar-pane .spinner-label {
+    -fx-text-fill: #000000; /* Czarny tekst */
+    -fx-font-size: 16px; /* Rozmiar tekstu */
+    -fx-font-weight: bold; /* Pogrubienie tekstu */
+}
+
+.date-picker .calendar-pane .day-cell {
+    -fx-background-color: linear-gradient(to bottom, #212020, #171717); /* Gradient dla komórek dni */
+    -fx-text-fill: #ffffff; /* Biały tekst */
+}
+
+.date-picker .calendar-pane .day-cell:hover {
+    -fx-background-color: linear-gradient(to bottom, #3d3939, #2c2a2a); /* Gradient dla komórek dni przy najechaniu */
+    -fx-text-fill: #ffffff; /* Biały tekst */
+}
+
+.date-picker .calendar-pane .selected {
+    -fx-background-color: linear-gradient(to bottom, #5d99f8, #3a6fb3); /* Gradient dla wybranej daty */
+    -fx-text-fill: #ffffff; /* Biały tekst */
+}
+
+.date-picker .label{
+    -fx-text-fill: black;
+}
+
+
+/* Pasek do scrolowania */
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: #494848;
+    -fx-background-radius: 2px;
+    -fx-border-color: #2a2929;
+    -fx-border-width: 1px;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: #494848;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #3a3a3a;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #bdb3b3;
+    -fx-background-radius: 2px;
+    -fx-border-color: #2a2929;
+    -fx-border-width: 1px;
 }

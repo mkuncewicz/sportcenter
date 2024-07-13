@@ -3,10 +3,8 @@
     -fx-background-color: #90beef;
 }
 
-
-
-.button{
-    -fx-background-color: #1bb0bb; /* Jasnoniebieski kolor przycisków */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #1bb0bb, #148387);
     -fx-text-fill: white; /* Biały tekst */
     -fx-border-color: white; /* Biała ramka przycisków */
     -fx-border-width: 1px; /* Szerokość ramki */
@@ -15,11 +13,10 @@
     -fx-font-size: 20px;
 }
 
-.backButton{
-    -fx-background-color: #5d99f8; /* Jasnoniebieski kolor przycisków */
+.backButton {
+    -fx-background-color: linear-gradient(to bottom, #5d99f8, #3a6fb3);
     -fx-font-weight: 700;
 }
-
 
 
 
@@ -27,45 +24,36 @@
     -fx-background-color: #2980b9; /* Ciemniejszy niebieski kolor przycisków przy najechaniu */
 }
 
-.label{
+.label {
     -fx-text-fill: black;
     -fx-font-size: 20px;
 }
 
-/*.space-con{*/
-/*    -fx-border-color: black;*/
-/*    -fx-border-width: 5;*/
-/*    -fx-border-style: solid;*/
-/*    -fx-background-color: whitesmoke;*/
-/*    -fx-text-fill: black;*/
-/*    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 30, 0, 0, 0);*/
-/*}*/
-
-.text-field{
+.text-field {
     -fx-font-size: 20px;
 }
 
-.combo-box{
+.combo-box {
     -fx-font-size: 20px;
     -fx-pref-width: 350px;
     -fx-pref-height: 50px;
 }
 
-.combo-box-select{
+.combo-box-select {
     -fx-font-size: 18px;
     -fx-pref-width: 400px;
     -fx-pref-height: 50px;
 }
 
-.label-space{
+.label-space {
     -fx-font-size: 30px;
 }
 
-.label-spec{
+.label-spec {
     -fx-font-size: 25px;
 }
 
-.vbox-main{
+.vbox-main {
     -fx-border-color: black;
     -fx-border-width: 5;
     -fx-border-style: solid;
@@ -74,7 +62,7 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 30, 0, 0, 0);
 }
 
-.vbox-spec{
+.vbox-spec {
     -fx-border-color: black;
     -fx-border-width: 5;
     -fx-border-style: solid;
@@ -83,20 +71,26 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 30, 0, 0, 0);
 }
 
-.listViewSpaces{
+.listViewSpaces {
     -fx-font-size: 18px;
 }
 
-.listOfSpec{
+.listOfSpec {
     -fx-font-size: 18px;
 }
 
-.listViewSpecOfSpace{
+.listViewSpecOfSpace {
     -fx-font-size: 18px;
+}
+
+.errorLabel {
+    -fx-font-size: 25px;
+    -fx-text-fill: red;
+    -fx-font-weight: 700;
 }
 
 .buttonDarkMode{
-    -fx-background-color: #bdb3b3;
+    -fx-background-color: linear-gradient(to bottom, #bdb3b3, #8a8989);
     -fx-pref-height: 50px;
     -fx-pref-width: 175px;
     -fx-font-size: 27px;

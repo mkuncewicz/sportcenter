@@ -7,13 +7,10 @@
 }
 
 .backButton{
-    -fx-background-color: #494848; /* Jasnoniebieski kolor przycisków */
+    -fx-background-color: linear-gradient(to bottom, #494848, #333333);
     -fx-text-fill: #070000; /* Biały tekst */
-    -fx-font-size: 15px; /* Większy rozmiar tekstu dla lepszej widoczności */
     -fx-font-weight: 700;
     -fx-border-color: #2a2929; /* Biała ramka przycisków */
-    -fx-border-width: 1px; /* Szerokość ramki */
-    -fx-padding: 10px 15px; /* Padding przycisków */
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
 }
 
@@ -21,18 +18,14 @@
     -fx-background-color: #494848;
     -fx-text-fill: white;
     -fx-border-color: black; /* Biała ramka przycisków */
-    -fx-border-width: 3px; /* Szerokość ramki */
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
 
 .button{
-    -fx-background-color: #031d1e; /* Jasnoniebieski kolor przycisków */
+    -fx-background-color: linear-gradient(to bottom, #031d1e, #021212);
     -fx-text-fill: white; /* Biały tekst */
     -fx-border-color: #1f1d1d; /* Biała ramka przycisków */
-    -fx-border-width: 1px; /* Szerokość ramki */
-    -fx-padding: 10px 15px; /* Padding przycisków */
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
-    -fx-font-size: 20px;
 }
 
 
@@ -62,7 +55,7 @@
 .text-field{
     -fx-font-size: 21px;
     -fx-text-fill: #ffffff;
-    -fx-background-color: #212020;
+    -fx-background-color: linear-gradient(to bottom, #212020, #3a3a3a);
 }
 
 Text{
@@ -71,16 +64,15 @@ Text{
 }
 
 .combo-box{
-    -fx-background-color: #212020;
+    -fx-background-color: linear-gradient(to bottom, #212020, #3a3a3a);
     -fx-text-fill: #ffffff;
     -fx-font-size: 20px;
 }
 
-.combo-box-select{
-    -fx-font-size: 18px;
-    -fx-pref-width: 400px;
-    -fx-pref-height: 50px;
+.combo-box .list-cell {
+    -fx-text-fill: white;
 }
+
 
 .list-view{
     -fx-background-color: #575656;
@@ -97,10 +89,7 @@ Text{
 }
 
 .buttonDarkMode{
-    -fx-background-color: #3d3939;
-    -fx-pref-height: 50px;
-    -fx-pref-width: 175px;
-    -fx-font-size: 27px;
+    -fx-background-color: linear-gradient(to bottom, #3d3939, #2c2a2a);
 }
 
 .buttonDarkMode:hover{

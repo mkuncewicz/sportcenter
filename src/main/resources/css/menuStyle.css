@@ -4,9 +4,9 @@
 }
 
 .button {
-    -fx-background-color: #48a7ea; /* Jasnoniebieski kolor przycisków */
-    -fx-text-fill: #000000; /* Biały tekst */
-    -fx-border-color: #000000; /* Biała ramka przycisków */
+    -fx-background-color: linear-gradient(to bottom, #48a7ea, #2e5673); /* Gradient od jasnoniebieskiego do ciemniejszego niebieskiego */
+    -fx-text-fill: #000000; /* Czarny tekst */
+    -fx-border-color: #000000; /* Czarna ramka przycisków */
     -fx-border-width: 2px; /* Szerokość ramki */
     -fx-padding: 15px 30px; /* Padding przycisków */
     -fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.8), 10, 0, 0, 0); /* Cień dla przycisków */
@@ -20,10 +20,14 @@
 }
 
 .buttonDarkMode{
-    -fx-background-color: #bdb3b3;
+    -fx-background-color: linear-gradient(to bottom, #bdb3b3, #8a8989);
     -fx-pref-height: 50px;
     -fx-pref-width: 200px;
-    -fx-font-size: 27px;
+    -fx-font-size: 25px;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 10, 0, 0, 0); /* Cień dla przycisków */
 }
 
 .buttonDarkMode:hover{

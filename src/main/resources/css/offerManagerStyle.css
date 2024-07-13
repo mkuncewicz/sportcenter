@@ -14,7 +14,7 @@
 }
 
 .button{
-    -fx-background-color: #17cdd5; /* Jasnoniebieski kolor przycisków */
+    -fx-background-color: linear-gradient(to bottom, #1bb0bb, #148387);
     -fx-text-fill: white; /* Biały tekst */
     -fx-border-color: white; /* Biała ramka przycisków */
     -fx-border-width: 1px; /* Szerokość ramki */
@@ -24,7 +24,7 @@
 }
 
 .backButton{
-    -fx-background-color: #5d99f8;
+    -fx-background-color: linear-gradient(to bottom, #5d99f8, #3a6fb3);
     -fx-font-weight: 700;
 
 }
@@ -42,6 +42,17 @@ Text{
     -fx-font-size: 18px; /* Upewnij się, że nie ma literówki */
 }
 
+.combo-box{
+    -fx-font-size: 20px;
+}
+
+.combo-box-select{
+    -fx-font-size: 18px;
+    -fx-pref-width: 400px;
+    -fx-pref-height: 50px;
+}
+
+
 .text-field{
     -fx-font-size: 20px;
 }
@@ -57,7 +68,7 @@ Text{
 }
 
 .buttonDarkMode{
-    -fx-background-color: #bdb3b3;
+    -fx-background-color: linear-gradient(to bottom, #bdb3b3, #8a8989);
     -fx-pref-height: 50px;
     -fx-pref-width: 175px;
     -fx-font-size: 27px;

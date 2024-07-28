@@ -1,0 +1,138 @@
+/* menuStyle.css */
+.root {
+    -fx-background-color: #90beef; /* Ciemny granat tła */
+}
+
+
+.text-field{
+    -fx-font-size: 18px;
+}
+
+.button{
+    -fx-background-color: linear-gradient(to bottom, #17cdd5, #0cb9cb);
+    -fx-text-fill: white; /* Biały tekst */
+    -fx-border-color: white; /* Biała ramka przycisków */
+    -fx-border-width: 1px; /* Szerokość ramki */
+    -fx-padding: 10px 15px; /* Padding przycisków */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
+    -fx-font-size: 20px;
+}
+
+
+.button:hover {
+    -fx-background-color: #2980b9; /* Ciemniejszy niebieski kolor przycisków przy najechaniu */
+}
+
+.backButton{
+    -fx-background-color: linear-gradient(to bottom, #5d99f8, #3a6fb3);
+    -fx-font-weight: 700;
+
+}
+
+
+.label{
+    -fx-text-fill: #070000;
+    -fx-font-size: 25px;
+}
+
+.labelEmployee{
+    -fx-text-fill: black;
+}
+
+.dataOfEmployee{
+    -fx-border-color: black;
+    -fx-border-width: 5;
+    -fx-border-style: solid;
+    -fx-background-color: whitesmoke;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 30, 0, 0, 0);
+}
+
+.list-view{
+    -fx-font-size: 18px;
+}
+
+.combo-box{
+    -fx-font-size: 20px;
+}
+
+.mainvboxspace{
+    -fx-background-color: #ffffff;
+    -fx-border-color: black; /* Biała ramka przycisków */
+    -fx-border-width: 3px; /* Szerokość ramki */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.specvboxmain{
+    -fx-background-color: #ffffff;
+    -fx-border-color: black;
+    -fx-border-width: 3px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.errorLabel{
+    -fx-font-size: 25px;
+    -fx-text-fill: #f60404;
+    -fx-font-weight: 700;
+}
+
+.clearButton{
+    -fx-text-fill: white;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-background-color: linear-gradient(to bottom, #cc1f1f, #991515);
+    -fx-border-width: 0px;
+}
+
+.clearButton:hover{
+    -fx-background-color: #a23131;
+}
+
+.buttonDarkMode{
+    -fx-background-color: linear-gradient(to bottom, #bdb3b3, #8a8989);
+    -fx-pref-height: 50px;
+    -fx-pref-width: 175px;
+    -fx-font-size: 27px;
+}
+
+.buttonDarkMode:hover{
+    -fx-background-color: #262626;
+}
+
+/* barchar */
+
+.chart-bar {
+    -fx-bar-width: 50px;
+}
+
+.default-color0.chart-bar {
+    -fx-bar-fill: green;
+}
+
+.default-color1.chart-bar {
+    -fx-bar-fill: red;
+}
+
+.chart-legend {
+    -fx-background-color: #d5d4d4; /* Background color of the legend */
+    -fx-text-fill: #000000;       /* Text color of the legend */
+    -fx-padding: 10px;          /* Padding around the legend */
+    -fx-border-color: #2c2626;     /* Border color of the legend */
+    -fx-border-width: 2px;      /* Border width of the legend */
+    -fx-border-radius: 5px;     /* Rounded corners of the legend */
+    -fx-background-radius: 5px; /* Background rounded corners */
+}
+
+.chart-legend-item-symbol {
+    -fx-background-color: #00ff00, #ff0000; /* Custom colors for legend symbols */
+}
+
+.chart-legend-item {
+    -fx-text-fill: #000000; /* Text color for legend items */
+}
+
+.chart-legend-item .label {
+    -fx-font-size: 14px;  /* Font size for legend item labels */
+}

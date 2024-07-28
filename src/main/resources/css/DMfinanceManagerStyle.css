@@ -1,0 +1,101 @@
+.root {
+    -fx-background-color: #2c3e50; /* Ciemny granat tła */
+}
+
+.button:hover {
+    -fx-background-color: #2980b9; /* Ciemniejszy niebieski kolor przycisków przy najechaniu */
+}
+
+.backButton{
+    -fx-background-color: linear-gradient(to bottom, #494848, #333333);
+    -fx-text-fill: #070000; /* Biały tekst */
+    -fx-font-weight: 700;
+    -fx-border-color: #2a2929; /* Biała ramka przycisków */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
+}
+
+.button{
+    -fx-background-color: linear-gradient(to bottom, #031d1e, #021212);
+    -fx-text-fill: white; /* Biały tekst */
+    -fx-border-color: #1f1d1d; /* Biała ramka przycisków */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Cień dla przycisków */
+}
+
+.label{
+    -fx-text-fill: white;
+    -fx-font-size: 25px;
+}
+
+Text{
+    -fx-text-fill: white;
+    -fx-fill: white;
+}
+
+.combo-box{
+    -fx-background-color: linear-gradient(to bottom, #212020, #3a3a3a);
+    -fx-text-fill: #ffffff;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: black;
+}
+
+.combo-box-base {
+    -fx-background-color: linear-gradient(to bottom, #212020, #3a3a3a);
+    -fx-text-fill: white;
+}
+
+.combo-box-base .arrow-button {
+    -fx-background-color: linear-gradient(to bottom, #212020, #3a3a3a);
+}
+
+.combo-box-base .arrow {
+    -fx-background-color: linear-gradient(to bottom, #212020, #3a3a3a);
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected,
+.combo-box-popup .list-view .list-cell:filled:hover {
+    -fx-background-color: darkgray;
+    -fx-text-fill: black;
+}
+
+.buttonDarkMode{
+    -fx-background-color: linear-gradient(to bottom, #3d3939, #2c2a2a);
+}
+
+.buttonDarkMode:hover{
+    -fx-background-color: #beb8b8;
+}
+
+/* barChar */
+
+.chart-legend {
+    -fx-background-color: #444; /* Background color of the legend */
+    -fx-text-fill: white;       /* Text color of the legend */
+    -fx-padding: 10px;          /* Padding around the legend */
+    -fx-border-color: #888;     /* Border color of the legend */
+    -fx-border-width: 2px;      /* Border width of the legend */
+    -fx-border-radius: 5px;     /* Rounded corners of the legend */
+    -fx-background-radius: 5px; /* Background rounded corners */
+}
+
+.chart-legend-item-symbol {
+    -fx-background-color: #00ff00, #ff0000; /* Custom colors for legend symbols */
+}
+
+.chart-legend-item {
+    -fx-text-fill: white; /* Text color for legend items */
+}
+
+.chart-legend-item .label {
+    -fx-font-size: 14px;  /* Font size for legend item labels */
+}

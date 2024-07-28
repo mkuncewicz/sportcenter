@@ -3,6 +3,7 @@ package com.example.sportcenterv1.service;
 import com.example.sportcenterv1.entity.Client;
 import com.example.sportcenterv1.entity.Offer;
 import com.example.sportcenterv1.entity.Reservation;
+import com.example.sportcenterv1.entity.employee.Employee;
 import com.example.sportcenterv1.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,14 +39,23 @@ public class ReservationService {
             Offer offer = reservation.getOffer();
 
 
-            String nameOfEmployee = client.getFirstName() + " " + client.getLastName();
-            String lowerClientName = nameOfEmployee.toLowerCase();
+            String nameOfClient = client.getFirstName() + " " + client.getLastName();
+            String lowerClientName = nameOfClient.toLowerCase();
 
             String nameOfOffer = offer.getName();
             String lowerOfferName = nameOfOffer.toLowerCase();
 
             if (lowerClientName.contains(name.toLowerCase())) result.add(reservation);
             if (lowerOfferName.contains(name.toLowerCase())) result.add(reservation);
+
+            if (reservation.getEmployee() != null){
+                Employee employee = reservation.getEmployee();
+
+                String nameOfEmployee = employee.getFirstName() + " " + employee.getLastName();
+                String lowerEmployeeName = nameOfEmployee.toLowerCase();
+
+                if (lowerEmployeeName.contains(name.toLowerCase())) result.add(reservation);
+            }
         }
 
         return new ArrayList<>(result);

@@ -154,8 +154,6 @@ public class ReservationController {
     @FXML
     private Label labelStatus;
 
-
-
     private ReservationComponent reservationComponent;
 
     @FXML
@@ -241,6 +239,10 @@ public class ReservationController {
 
         List<ReservationStatus> reservationStatusList = Arrays.asList(null, ReservationStatus.PENDING, ReservationStatus.PAID);
 
+        //Sortowanie wedlug daty
+        reservationList = reservationList.stream()
+                .sorted((r1, r2) -> r2.getDate().compareTo(r1.getDate()))
+                .toList();
 
         reservationObservableList.setAll(reservationList);
         clientObservableList.setAll(clientList);
@@ -387,6 +389,11 @@ public class ReservationController {
                 searchName = textFieldSearchReservation.getText();
 
                 List<Reservation> reservationList = reservationService.getAllReservationByName(searchName);
+
+                reservationList = reservationList.stream()
+                        .sorted((r1, r2) -> r2.getDate().compareTo(r1.getDate()))
+                        .toList();
+
                 reservationObservableList.setAll(reservationList);
             }
         });
@@ -626,6 +633,11 @@ public class ReservationController {
         curOffer.set(null);
 
         List<Reservation> reservationList = reservationService.getAllReservation();
+
+        reservationList = reservationList.stream()
+                .sorted((r1, r2) -> r2.getDate().compareTo(r1.getDate()))
+                .toList();
+
         reservationObservableList.setAll(reservationList);
         checkEnableCombobox();
     }

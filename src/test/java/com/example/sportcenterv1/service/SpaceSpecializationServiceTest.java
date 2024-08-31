@@ -34,11 +34,10 @@ class SpaceSpecializationServiceTest {
     @BeforeEach
     void setUp() {
         space = new Space() {
-            {
-                setId(1L);
-                setName("Space 1");
-            }
+            // Anonimowa klasa Space
         };
+        space.setId(1L);
+        space.setName("Space 1");
 
         specialization = new Specialization();
         specialization.setId(1L);
@@ -74,5 +73,49 @@ class SpaceSpecializationServiceTest {
 
         verify(spaceRepository, times(1)).save(space);
         verify(specializationRepository, times(1)).save(specialization);
+    }
+
+    @Test
+    void testAddSpaceToSpecialization_SpaceNotFound() {
+        when(spaceRepository.findById(1L)).thenReturn(Optional.empty());
+        when(specializationRepository.findById(1L)).thenReturn(Optional.of(specialization));
+
+        spaceSpecializationService.addSpaceToSpecialization(1L, 1L);
+
+        verify(spaceRepository, never()).save(any(Space.class));
+        verify(specializationRepository, never()).save(any(Specialization.class));
+    }
+
+    @Test
+    void testAddSpaceToSpecialization_SpecializationNotFound() {
+        when(spaceRepository.findById(1L)).thenReturn(Optional.of(space));
+        when(specializationRepository.findById(1L)).thenReturn(Optional.empty());
+
+        spaceSpecializationService.addSpaceToSpecialization(1L, 1L);
+
+        verify(spaceRepository, never()).save(any(Space.class));
+        verify(specializationRepository, never()).save(any(Specialization.class));
+    }
+
+    @Test
+    void testDeleteSpaceFromSpecialization_SpaceNotFound() {
+        when(spaceRepository.findById(1L)).thenReturn(Optional.empty());
+        when(specializationRepository.findById(1L)).thenReturn(Optional.of(specialization));
+
+        spaceSpecializationService.deleteSpaceFromSpecialization(1L, 1L);
+
+        verify(spaceRepository, never()).save(any(Space.class));
+        verify(specializationRepository, never()).save(any(Specialization.class));
+    }
+
+    @Test
+    void testDeleteSpaceFromSpecialization_SpecializationNotFound() {
+        when(spaceRepository.findById(1L)).thenReturn(Optional.of(space));
+        when(specializationRepository.findById(1L)).thenReturn(Optional.empty());
+
+        spaceSpecializationService.deleteSpaceFromSpecialization(1L, 1L);
+
+        verify(spaceRepository, never()).save(any(Space.class));
+        verify(specializationRepository, never()).save(any(Specialization.class));
     }
 }

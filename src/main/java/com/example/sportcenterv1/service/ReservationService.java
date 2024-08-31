@@ -66,6 +66,24 @@ public class ReservationService {
         return reservationRepository.findById(reservationID);
     }
 
+
+    public boolean canMakeReservation(Long employeeId, LocalDateTime reservationStartTime, int durationMinutes) {
+        LocalDateTime reservationEndTime = reservationStartTime.plusMinutes(durationMinutes);
+
+        List<Reservation> existingReservations = reservationRepository.findByEmployeeId(employeeId);
+
+        for (Reservation existingReservation : existingReservations) {
+            LocalDateTime existingReservationStartTime = existingReservation.getDate();
+            LocalDateTime existingReservationEndTime = existingReservationStartTime.plusMinutes(durationMinutes);
+
+            if (reservationStartTime.isBefore(existingReservationEndTime) && reservationEndTime.isAfter(existingReservationStartTime)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     public void createReservation(Reservation reservation){
 
         reservationRepository.save(reservation);

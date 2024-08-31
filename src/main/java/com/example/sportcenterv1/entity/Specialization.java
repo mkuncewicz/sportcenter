@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -23,13 +24,13 @@ public class Specialization {
     private String name;
 
     @ManyToMany(mappedBy = "specializations", fetch = FetchType.LAZY)
-    private Set<Employee> employees;
+    private Set<Employee> employees = new HashSet<>();
 
     @ManyToMany(mappedBy = "specializations", fetch = FetchType.LAZY)
-    private Set<Space> spaces;
+    private Set<Space> spaces = new HashSet<>();
 
     @ManyToMany(mappedBy = "specializations", fetch = FetchType.LAZY)
-    private Set<Offer> offers;
+    private Set<Offer> offers = new HashSet<>();
 
 
     @Override

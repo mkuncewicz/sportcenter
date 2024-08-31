@@ -10,7 +10,6 @@ import com.example.sportcenterv1.entity.space.Space;
 import com.example.sportcenterv1.service.ClientService;
 import com.example.sportcenterv1.service.OfferService;
 import com.example.sportcenterv1.service.ReservationService;
-import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 

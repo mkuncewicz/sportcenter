@@ -40,7 +40,7 @@ class EmployeeSpecializationServiceTest {
 
         specialization = new Specialization();
         specialization.setId(1L);
-        specialization.setName("Specialization 1");
+        specialization.setName("Java");
     }
 
     @Test
@@ -52,7 +52,6 @@ class EmployeeSpecializationServiceTest {
 
         assertTrue(employee.getSpecializations().contains(specialization));
         assertTrue(specialization.getEmployees().contains(employee));
-
         verify(employeeRepository, times(1)).save(employee);
         verify(specializationRepository, times(1)).save(specialization);
     }
@@ -69,7 +68,6 @@ class EmployeeSpecializationServiceTest {
 
         assertFalse(employee.getSpecializations().contains(specialization));
         assertFalse(specialization.getEmployees().contains(employee));
-
         verify(employeeRepository, times(1)).save(employee);
         verify(specializationRepository, times(1)).save(specialization);
     }

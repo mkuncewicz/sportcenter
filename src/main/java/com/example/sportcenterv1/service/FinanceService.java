@@ -21,9 +21,6 @@ public class FinanceService {
     @Autowired
     private ReservationRepository reservationRepository;
 
-    @Autowired
-    private OfferRepository offerRepository;
-
     public double getCostFromAllContractsByMonth(LocalDate localDate){
 
         Double totalCosts = contractRepository.findTotalSalaryByMonth(localDate);

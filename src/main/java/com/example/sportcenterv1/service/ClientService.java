@@ -2,7 +2,6 @@ package com.example.sportcenterv1.service;
 
 import com.example.sportcenterv1.entity.Address;
 import com.example.sportcenterv1.entity.Client;
-import com.example.sportcenterv1.entity.employee.Employee;
 import com.example.sportcenterv1.repository.ClientRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,28 +54,53 @@ public class ClientService {
         clientRepository.save(client);
     }
 
-    public void updateClient(Long clientID, Client updateClient){
 
+    public void updateClient(Long clientID, Client updateClient) {
         Optional<Client> optionalClient = clientRepository.findById(clientID);
-
-        if (optionalClient.isPresent()){
+        if (optionalClient.isPresent()) {
             Client saveClient = optionalClient.get();
+            boolean hasChanges = false;
 
-            if (updateClient.getFirstName() != null) saveClient.setFirstName(updateClient.getFirstName());
-            if (updateClient.getLastName() != null) saveClient.setLastName(updateClient.getLastName());
-            if (updateClient.getPhoneNumber() != null) saveClient.setPhoneNumber(updateClient.getPhoneNumber());
-            if (updateClient.getDateOfBirth() != null) saveClient.setDateOfBirth(updateClient.getDateOfBirth());
+            if (updateClient.getFirstName() != null && !updateClient.getFirstName().equals(saveClient.getFirstName())) {
+                saveClient.setFirstName(updateClient.getFirstName());
+                hasChanges = true;
+            }
+            if (updateClient.getLastName() != null && !updateClient.getLastName().equals(saveClient.getLastName())) {
+                saveClient.setLastName(updateClient.getLastName());
+                hasChanges = true;
+            }
+            if (updateClient.getPhoneNumber() != null && !updateClient.getPhoneNumber().equals(saveClient.getPhoneNumber())) {
+                saveClient.setPhoneNumber(updateClient.getPhoneNumber());
+                hasChanges = true;
+            }
+            if (updateClient.getDateOfBirth() != null && !updateClient.getDateOfBirth().equals(saveClient.getDateOfBirth())) {
+                saveClient.setDateOfBirth(updateClient.getDateOfBirth());
+                hasChanges = true;
+            }
             if (updateClient.getAddress() != null) {
                 Address addressToSave = saveClient.getAddress();
-                if (updateClient.getAddress().getCity() != null) addressToSave.setCity(updateClient.getAddress().getCity());
-                if (updateClient.getAddress().getStreet() != null) addressToSave.setStreet(updateClient.getAddress().getStreet());
-                if (updateClient.getAddress().getBuildingNumber() != null) addressToSave.setBuildingNumber(updateClient.getAddress().getBuildingNumber());
-                if (updateClient.getAddress().getApartmentNumber() != null) addressToSave.setApartmentNumber(updateClient.getAddress().getApartmentNumber());
-
+                if (updateClient.getAddress().getCity() != null && !updateClient.getAddress().getCity().equals(addressToSave.getCity())) {
+                    addressToSave.setCity(updateClient.getAddress().getCity());
+                    hasChanges = true;
+                }
+                if (updateClient.getAddress().getStreet() != null && !updateClient.getAddress().getStreet().equals(addressToSave.getStreet())) {
+                    addressToSave.setStreet(updateClient.getAddress().getStreet());
+                    hasChanges = true;
+                }
+                if (updateClient.getAddress().getBuildingNumber() != null && !updateClient.getAddress().getBuildingNumber().equals(addressToSave.getBuildingNumber())) {
+                    addressToSave.setBuildingNumber(updateClient.getAddress().getBuildingNumber());
+                    hasChanges = true;
+                }
+                if (updateClient.getAddress().getApartmentNumber() != null && !updateClient.getAddress().getApartmentNumber().equals(addressToSave.getApartmentNumber())) {
+                    addressToSave.setApartmentNumber(updateClient.getAddress().getApartmentNumber());
+                    hasChanges = true;
+                }
                 saveClient.setAddress(addressToSave);
             }
 
-            clientRepository.save(saveClient);
+            if (hasChanges) {
+                clientRepository.save(saveClient);
+            }
         }
     }
 

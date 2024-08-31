@@ -34,22 +34,24 @@ class OfferServiceTest {
 
     @BeforeEach
     void setUp() {
-        specialization = new Specialization();
-        specialization.setId(1L);
-        specialization.setName("Specialization 1");
-
         offer1 = new Offer();
         offer1.setId(1L);
         offer1.setName("Offer 1");
         offer1.setDescription("Description 1");
         offer1.setPrice(100.0);
-        offer1.getSpecializations().add(specialization);
 
         offer2 = new Offer();
         offer2.setId(2L);
         offer2.setName("Offer 2");
         offer2.setDescription("Description 2");
         offer2.setPrice(200.0);
+
+        specialization = new Specialization();
+        specialization.setId(1L);
+        specialization.setName("Java");
+
+        offer1.getSpecializations().add(specialization);
+        specialization.getOffers().add(offer1);
     }
 
     @Test
@@ -71,6 +73,22 @@ class OfferServiceTest {
         List<Offer> result = offerService.getAllOffersByName("offer 1");
         assertEquals(1, result.size());
         assertEquals("Offer 1", result.get(0).getName());
+
+        result = offerService.getAllOffersByName(" ");
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void testGetAllOffersBySpecialization() {
+        List<Offer> offers = Arrays.asList(offer1, offer2);
+        when(offerRepository.findAll()).thenReturn(offers);
+
+        List<Offer> result = offerService.getAllOffersBySpecialization(specialization);
+        assertEquals(1, result.size());
+        assertEquals("Offer 1", result.get(0).getName());
+
+        result = offerService.getAllOffersBySpecialization(null);
+        assertEquals(2, result.size());
     }
 
     @Test
@@ -96,6 +114,7 @@ class OfferServiceTest {
         updatedOffer.setPrice(150.0);
 
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
+
         offerService.updateOffer(1L, updatedOffer);
 
         assertEquals("Updated Offer 1", offer1.getName());
@@ -112,23 +131,23 @@ class OfferServiceTest {
 
     @Test
     void testAddSpecializationToOffer() {
-        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
-        when(specializationRepository.findById(1L)).thenReturn(Optional.of(specialization));
+        Specialization specialization = new Specialization();
+        specialization.setId(2L);
+        specialization.setName("Python");
 
-        offerService.addSpecializationToOffer(1L, 1L);
+        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
+        when(specializationRepository.findById(2L)).thenReturn(Optional.of(specialization));
+
+        offerService.addSpecializationToOffer(1L, 2L);
 
         assertTrue(offer1.getSpecializations().contains(specialization));
         assertTrue(specialization.getOffers().contains(offer1));
-
         verify(offerRepository, times(1)).save(offer1);
         verify(specializationRepository, times(1)).save(specialization);
     }
 
     @Test
     void testRemoveSpecializationFromOffer() {
-        offer1.getSpecializations().add(specialization);
-        specialization.getOffers().add(offer1);
-
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(specializationRepository.findById(1L)).thenReturn(Optional.of(specialization));
 
@@ -136,7 +155,6 @@ class OfferServiceTest {
 
         assertFalse(offer1.getSpecializations().contains(specialization));
         assertFalse(specialization.getOffers().contains(offer1));
-
         verify(offerRepository, times(1)).save(offer1);
         verify(specializationRepository, times(1)).save(specialization);
     }

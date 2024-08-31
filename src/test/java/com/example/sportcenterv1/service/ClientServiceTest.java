@@ -66,6 +66,9 @@ class ClientServiceTest {
         List<Client> result = clientService.getAllClientsByName("john");
         assertEquals(1, result.size());
         assertEquals("John", result.get(0).getFirstName());
+
+        result = clientService.getAllClientsByName("");
+        assertEquals(2, result.size());
     }
 
     @Test
@@ -102,5 +105,23 @@ class ClientServiceTest {
     void testDeleteClient() {
         clientService.deleteClient(1L);
         verify(clientRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void testUpdateClientWithNoChanges() {
+        when(clientRepository.findById(1L)).thenReturn(Optional.of(client1));
+        clientService.updateClient(1L, new Client());
+
+        verify(clientRepository, times(1)).findById(1L);
+        verify(clientRepository, never()).save(client1);
+    }
+
+    @Test
+    void testCreateClientWithNullAddress() {
+        client1.setAddress(null);
+        clientService.createClient(client1);
+
+        assertNotNull(client1.getAddress());
+        verify(clientRepository, times(1)).save(client1);
     }
 }

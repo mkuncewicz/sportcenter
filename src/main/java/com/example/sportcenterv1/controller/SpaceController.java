@@ -8,6 +8,7 @@ import com.example.sportcenterv1.entity.space.Space;
 import com.example.sportcenterv1.service.SpaceService;
 import com.example.sportcenterv1.service.SpaceSpecializationService;
 import com.example.sportcenterv1.service.SpecializationService;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -70,7 +71,7 @@ public class SpaceController {
     @FXML
     private VBox spaceDetails;
 
-    private SpaceDetails details = new SpaceDetails();
+    private SpaceDetails details;
 
     //Specialization
     @FXML
@@ -160,6 +161,11 @@ public class SpaceController {
 
         //Spec of Space
         listViewSpecOfSpace.setItems(specOfSpaceObservableList);
+
+        Platform.runLater(() -> {
+
+            details = new SpaceDetails();
+        });
     }
 
     private void getSpecOfSpace(Space space){
@@ -349,11 +355,11 @@ public class SpaceController {
             Optional<Space> updateSpace = spaceService.getSpace(space.getId());
             if (updateSpace.isPresent()){
 
-            space = updateSpace.get();
-            List<Specialization> specializationList = new ArrayList<>(space.getSpecializations());
-            specOfSpaceObservableList.setAll(specializationList);
+                space = updateSpace.get();
+                List<Specialization> specializationList = new ArrayList<>(space.getSpecializations());
+                specOfSpaceObservableList.setAll(specializationList);
 
-        }}
+            }}
     }
 
 
@@ -428,4 +434,3 @@ public class SpaceController {
         reloadSpecializationsList();
     }
 }
-

@@ -24,4 +24,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     @Query("SELECT o.name, COUNT(r) FROM Reservation r JOIN r.offer o JOIN o.specializations s WHERE s.id = :specializationId AND MONTH(r.date) = MONTH(:date) AND YEAR(r.date) = YEAR(:date) GROUP BY o.name ORDER BY COUNT(r) DESC")
     List<Object[]> findTopOffersBySpecializationInMonth(@Param("date") LocalDate date, @Param("specializationId") Long specializationId);
+
+    List<Reservation> findByEmployeeId(Long employeeId);
 }

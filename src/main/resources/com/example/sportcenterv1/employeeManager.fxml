@@ -75,7 +75,7 @@
                         <VBox fx:id="vboxSpecOfEmployee" prefHeight="440.0" prefWidth="497.0">
                            <children>
                               <ListView fx:id="listViewSpecOfEmployee" prefHeight="370.0" prefWidth="497.0" />
-                              <Button mnemonicParsing="false" onAction="#deleteSpecializationOfEmployee" prefHeight="75.0" prefWidth="500.0" styleClass="buttonSpecOfEmployee" text="Usuń" />
+                              <Button mnemonicParsing="false" onAction="#deleteSpecializationOfEmployee" prefHeight="75.0" prefWidth="500.0" styleClass="buttonSpecOfEmployee" text="Usuń specjalizacje" />
                            </children>
                         </VBox>
                      </children>

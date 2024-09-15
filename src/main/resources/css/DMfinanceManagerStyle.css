@@ -76,6 +76,12 @@ Text{
     -fx-background-color: #beb8b8;
 }
 
+.errorLabel{
+    -fx-font-size: 25px;
+    -fx-text-fill: red;
+    -fx-font-weight: 700;
+}
+
 /* barChar */
 
 .chart-legend {

@@ -18,7 +18,7 @@
          <children>
             <BarChart fx:id="barChartCostRevenue" prefHeight="800.0" prefWidth="1000.0">
                <xAxis>
-                  <CategoryAxis side="BOTTOM" />
+                  <CategoryAxis prefWidth="743.0" side="BOTTOM" tickLength="25.0" />
                </xAxis>
                <yAxis>
                   <NumberAxis side="LEFT" />
@@ -30,7 +30,7 @@
          <children>
             <BarChart fx:id="barChartOffer" prefHeight="800.0" prefWidth="1000.0">
                <xAxis>
-                  <CategoryAxis side="BOTTOM" />
+                  <CategoryAxis prefWidth="743.0" side="BOTTOM" />
                </xAxis>
                <yAxis>
                   <NumberAxis side="LEFT" />

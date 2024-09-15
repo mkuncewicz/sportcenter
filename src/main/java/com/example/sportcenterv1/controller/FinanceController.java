@@ -22,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -117,6 +118,8 @@ public class FinanceController {
         isDarkMode = darkModeSingleton.isDarkMode();
         checkActiveDarkMode();
 
+        setBarCharsCategoryAxis();
+
         setupBasicBarChart();
         setComboxDate();
 
@@ -196,6 +199,7 @@ public class FinanceController {
         xAxis.setLabel("Kategoria");
         yAxis.setLabel("Kwota");
 
+
         XYChart.Series<String, Number> series1 = new XYChart.Series<>();
         series1.setName("Przychody");
         XYChart.Series<String, Number> series2 = new XYChart.Series<>();
@@ -219,51 +223,43 @@ public class FinanceController {
         styleBars(series1, Color.GREEN);
         styleBars(series2, Color.RED);
 
-        // Ustawienia osi X
-        xAxis.setTickLabelRotation(-45);  // Rotacja etykiet o 45 stopni
-        xAxis.setTickLabelGap(10);        // Odstęp między etykietami a osią
 
-        barChartCostRevenue.setCategoryGap(20); // Ustawienie odstępu między kategoriami
+        barChartCostRevenue.setCategoryGap(20);
+
+
     }
 
     @FXML
     private void setBarChartByDate() {
         System.out.println("Starting setBarChartByDate");
 
-        // Czyszczenie poprzednich danych wykresu
         barChartCostRevenue.getData().clear();
         barChartCostRevenue.layout();
         System.out.println("Cleared previous data");
 
-        // Tworzenie nowych serii danych
         XYChart.Series<String, Number> series1 = new XYChart.Series<>();
         series1.setName("Przychody");
         XYChart.Series<String, Number> series2 = new XYChart.Series<>();
         series2.setName("Koszty");
 
-        // Sprawdzanie, czy wybrano datę
         if (comboboxMonth.getValue() == null || comboboxYear.getValue() == null) {
             errorLabel1.setText("Wybierz poprawnie datę");
             return;
         }
 
-        // Pobieranie wartości z comboboxów
         int month = comboboxMonth.getValue();
         int year = comboboxYear.getValue();
 
         LocalDate choiceDate = LocalDate.of(year, month, 1);
         String monthName = choiceDate.getMonth().getDisplayName(TextStyle.FULL, new Locale("pl", "PL"));
 
-        // Ustawianie tytułu wykresu
         barChartCostRevenue.setTitle("Przychody i Koszty w Miesiącu: " + monthName + " " + choiceDate.getYear());
         System.out.println("Set chart title");
 
-        // Pobieranie danych finansowych
         double costs = financeService.getCostFromAllContractsByMonth(choiceDate);
         double profit = financeService.getProfitFromAllReservationByMonth(choiceDate);
         System.out.println("Fetched data: costs = " + costs + ", profit = " + profit);
 
-        // Dodawanie danych do serii
         if (profit != 0) {
             series1.getData().add(new XYChart.Data<>("Przychody", profit));
             System.out.println("Added profit data: " + profit);
@@ -273,7 +269,6 @@ public class FinanceController {
             System.out.println("Added costs data: " + costs);
         }
 
-        // Tworzenie listy serii i dodawanie jej do wykresu
         ObservableList<XYChart.Series<String, Number>> seriesList = FXCollections.observableArrayList();
         seriesList.add(series1);
         seriesList.add(series2);
@@ -281,24 +276,17 @@ public class FinanceController {
         barChartCostRevenue.getData().addAll(seriesList);
         System.out.println("Updated chart data");
 
-        // Stylizacja słupków wykresu
+
         styleBars(series1, Color.GREEN);
         styleBars(series2, Color.RED);
         System.out.println("Styled bars");
 
-        // Ustawienia osi X
-        CategoryAxis xAxis = (CategoryAxis) barChartCostRevenue.getXAxis();
-        xAxis.setTickLabelRotation(-45);  // Rotacja etykiet o 45 stopni
-        xAxis.setTickLabelGap(10);        // Odstęp między etykietami a osią
+        barChartCostRevenue.setCategoryGap(20);
 
-        barChartCostRevenue.setCategoryGap(20); // Ustawienie odstępu między kategoriami
-
-        // Aktualizacja układu wykresu
         barChartCostRevenue.layout();
         barChartCostRevenue.requestLayout();
         errorLabel1.setText("");
 
-        // Wywołanie metody setBarChartOfferByDate
         setBarChartOfferByDate();
     }
 
@@ -339,12 +327,8 @@ public class FinanceController {
         barChartOffer.getData().addAll(seriesList);
         styleBars(offerSeries, Color.BLUE);
 
-        // Ustawienia osi X
-        CategoryAxis xAxis = (CategoryAxis) barChartOffer.getXAxis();
-        xAxis.setTickLabelRotation(-45);  // Rotacja etykiet o 45 stopni
-        xAxis.setTickLabelGap(10);        // Odstęp między etykietami a osią
 
-        barChartOffer.setCategoryGap(20); // Ustawienie odstępu między kategoriami
+        barChartOffer.setCategoryGap(20);
 
         barChartOffer.layout();
         barChartOffer.requestLayout();
@@ -377,16 +361,25 @@ public class FinanceController {
         barChartOffer.getData().addAll(seriesList);
         styleBars(series, Color.BLUE);
 
-        // Ustawienia osi X
-        CategoryAxis xAxis = (CategoryAxis) barChartOffer.getXAxis();
-        xAxis.setTickLabelRotation(-45);  // Rotacja etykiet o 45 stopni
-        xAxis.setTickLabelGap(10);        // Odstęp między etykietami a osią
 
-        barChartOffer.setCategoryGap(20); // Ustawienie odstępu między kategoriami
+        barChartOffer.setCategoryGap(20);
 
         barChartOffer.layout();
         barChartOffer.requestLayout();
         errorLabel1.setText("");
+    }
+
+    private void setBarCharsCategoryAxis(){
+        CategoryAxis xAxisCostRevenue = (CategoryAxis) barChartCostRevenue.getXAxis();
+        xAxisCostRevenue.setTickLabelRotation(-45);
+        xAxisCostRevenue.setTickLabelGap(10);
+        xAxisCostRevenue.setTickLabelFont(new Font(14));
+
+        CategoryAxis xAxixOffers = (CategoryAxis) barChartOffer.getXAxis();
+        xAxixOffers.setTickLabelRotation(-45);
+        xAxixOffers.setTickLabelGap(7);
+        xAxixOffers.setTickLabelFont(new Font(14));
+
     }
 
     private void styleBars(XYChart.Series<String, Number> series, Color color) {
